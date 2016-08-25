@@ -1,9 +1,9 @@
 package si.modrajagoda.didi.database;
 
+import com.j256.ormlite.android.apptools.OrmLiteConfigUtil;
+
 import java.io.IOException;
 import java.sql.SQLException;
-
-import com.j256.ormlite.android.apptools.OrmLiteConfigUtil;
 
 /**
  * Database helper class used to manage the creation and upgrading of your database. This class also usually provides
@@ -11,7 +11,7 @@ import com.j256.ormlite.android.apptools.OrmLiteConfigUtil;
  */
 public class DatabaseConfigUtil extends OrmLiteConfigUtil {
 
-	public static void main(String[] args) throws SQLException, IOException {
-		writeConfigFile("ormlite_config.txt");
-	}
+    public static void main(String[] args) throws SQLException, IOException {
+        writeConfigFile("ormlite_config.txt");
+    }
 }
