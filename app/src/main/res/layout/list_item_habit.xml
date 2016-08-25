@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal" >
+
+    <!-- Question number -->
+
+    <TextView
+        android:id="@+id/question_number"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="@dimen/margin_side"
+        android:layout_weight="0"
+        android:gravity="center_vertical"
+        android:textSize="@dimen/text_large" />
+
+    <!-- Did I text -->
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="0"
+        android:gravity="center_vertical"
+        android:text="@string/did_i"
+        android:textSize="@dimen/text_large" />
+
+    <!-- Name of habit -->
+
+    <TextView
+        android:id="@+id/habit_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:hint="@string/enter_habit"
+        android:minHeight="@dimen/item_height"
+        android:paddingLeft="@dimen/margin_side"
+        android:paddingRight="@dimen/margin_side"
+        android:textSize="@dimen/text_xlarge" />
+
+    <!-- Question -->
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="0"
+        android:gravity="center_vertical"
+        android:text="@string/question_mark"
+        android:layout_marginRight="8dp"
+        android:textSize="@dimen/text_large"/>
+
+</LinearLayout>
