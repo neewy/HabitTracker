@@ -33,5 +33,7 @@
 
     <string name="indicator_description">Indicator which represents a habit question, changes color based on answer of question (green for yes, red for no, grey for unanswered)</string>
     <string name="indicator_progress_description">Indicator which represents a habit question</string>
+    <string name="navigation_drawer_open">Opened drawer</string>
+    <string name="navigation_drawer_close">Closed drawer</string>
 
 </resources>

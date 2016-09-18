@@ -1,97 +1,50 @@
 package si.modrajagoda.didi;
 
-import android.app.ActionBar;
-import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.view.Menu;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 
-public class Main extends FragmentActivity implements ActionBar.TabListener {
+public class Main extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static final String STATE_SELECTED_NAVIGATION_ITEM = "selected_navigation_item";
-    private static final String TAB_TAG_HABITS = "habits";
-    private static final String TAB_TAG_PROGRESS = "progress";
+
+    DrawerLayout drawer;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        // Set up the action bar.
-        final ActionBar actionBar = getActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        // For each of the sections in the app, add a tab to the action bar.
-        actionBar.addTab(actionBar.newTab().setText(R.string.title_habits)
-                .setTag(TAB_TAG_HABITS).setTabListener(this));
-        actionBar.addTab(actionBar.newTab().setText(R.string.title_progress)
-                .setTag(TAB_TAG_PROGRESS).setTabListener(this));
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
     }
 
     @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
-        if (savedInstanceState.containsKey(STATE_SELECTED_NAVIGATION_ITEM)) {
-            getActionBar().setSelectedNavigationItem(
-                    savedInstanceState.getInt(STATE_SELECTED_NAVIGATION_ITEM));
-        }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putInt(STATE_SELECTED_NAVIGATION_ITEM, getActionBar()
-                .getSelectedNavigationIndex());
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_settings:
-                Intent intent = new Intent(this, EditHabits.class);
-                startActivity(intent);
+            case R.id.nav_today:
+                break;
+            case R.id.nav_all_tasks:
+                break;
+            default:
+                Log.d("Drawer", "Any other was clicked");
                 break;
         }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onTabUnselected(ActionBar.Tab tab,
-                                FragmentTransaction fragmentTransaction) {
-    }
-
-    @Override
-    public void onTabSelected(ActionBar.Tab tab,
-                              FragmentTransaction fragmentTransaction) {
-        // When the given tab is selected, show the tab contents in the
-        // container
-        if (tab.getTag() == TAB_TAG_HABITS) {
-            Fragment fragment = new FragmentHabits();
-            Bundle args = new Bundle();
-            fragment.setArguments(args);
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container, fragment).commit();
-        }
-        if (tab.getTag() == TAB_TAG_PROGRESS) {
-            Fragment fragment = new FragmentProgress();
-            Bundle args = new Bundle();
-            fragment.setArguments(args);
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container, fragment).commit();
-        }
-
-    }
-
-    @Override
-    public void onTabReselected(ActionBar.Tab tab,
-                                FragmentTransaction fragmentTransaction) {
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
 }
