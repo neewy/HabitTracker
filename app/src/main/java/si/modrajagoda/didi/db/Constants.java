@@ -13,7 +13,7 @@ public final class Constants {
     public static final SimpleDateFormat dateFormat =
             new SimpleDateFormat("yyyy-MM-dd H:mm:ss.S", Locale.ENGLISH);
 
-    // For DAO's from dataaccessobjectp package
+    // For DAOs from dataaccessobjects package
     public static final String DAO_ERROR = "DAO_ERROR";
     public static final String SQL_EXCEPTION_IN = "SQL Exception in";
     public static final char SPACE = ' ';
