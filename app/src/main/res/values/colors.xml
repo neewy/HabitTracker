@@ -7,4 +7,9 @@
     <color name="indicator_selected">#616161</color>
     <color name="transparent">#80000000</color>
 
+    <!--new colors-->
+    <color name="colorPrimary">#02b9e6</color>
+    <color name="colorPrimaryDark">#00a6cf</color>
+    <color name="colorAccent">#ff2880</color>
+
 </resources>
