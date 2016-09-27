@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="1">
+
+    <RelativeLayout
+        android:id="@+id/add_habit_header"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:background="@drawable/primary_background_with_shadow">
+        <!--Back button-->
+        <Button
+            android:id="@+id/add_habit_back_button"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="right"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/ic_add_habit_back"
+            android:enabled="true" />
+        <!--Confirm button-->
+        <Button
+            android:id="@+id/add_habit_confirm_button"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/ic_add_habit_confirm" />
+        <!--Habit name edit text-->
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/add_habit_title_edit_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/add_habit_back_button"
+            android:layout_centerHorizontal="true">
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/add_habit_name"
+                android:inputType="textAutoCorrect"
+                android:singleLine="true"
+                android:textColor="@color/colorText"
+                android:textColorHint="@color/colorHint" />
+        </android.support.design.widget.TextInputLayout>
+
+        <!--Custom question edit text-->
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/add_habit_question_edit_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/add_habit_title_edit_text"
+            android:layout_centerHorizontal="true">
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/add_habit_question"
+                android:inputType="textAutoCorrect"
+                android:singleLine="true"
+                android:textColor="@color/colorText"
+                android:textColorHint="@color/colorHint" />
+        </android.support.design.widget.TextInputLayout>
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal">
+
+        <!--Category-->
+        <ImageView
+            android:id="@+id/add_habit_category_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/ic_add_habit_category" />
+
+        <TextView
+            android:id="@+id/add_habit_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/add_habit_category_icon"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/add_habit_category_icon"
+            android:text="Category"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="@dimen/text_large" />
+
+        <TextView
+            android:id="@+id/add_habit_category_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/add_habit_category"
+            android:layout_below="@+id/add_habit_category"
+            android:layout_marginBottom="0dp"
+            android:layout_marginTop="-10dp"
+            android:text="Fitness"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/colorHint" />
+
+        <View
+            android:id="@+id/add_habit_category_line"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_alignLeft="@+id/add_habit_category"
+            android:layout_alignStart="@+id/add_habit_category"
+            android:layout_below="@+id/add_habit_category_hint"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorHint" />
+
+        <!--Reminder-->
+        <ImageView
+            android:id="@+id/add_habit_reminder_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/add_habit_category_icon"
+            android:layout_below="@id/add_habit_category_line"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/ic_add_habit_reminder" />
+
+        <TextView
+            android:id="@+id/add_habit_reminder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/add_habit_reminder_icon"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/add_habit_reminder_icon"
+            android:text="Remind at"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="@dimen/text_large" />
+
+        <TextView
+            android:id="@+id/add_habit_reminder_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/add_habit_reminder"
+            android:layout_below="@+id/add_habit_reminder"
+            android:layout_marginTop="-10dp"
+            android:text="None"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/colorHint" />
+
+        <View
+            android:id="@+id/add_habit_reminder_line"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_alignLeft="@+id/add_habit_reminder"
+            android:layout_alignStart="@+id/add_habit_reminder"
+            android:layout_below="@+id/add_habit_reminder_hint"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorHint" />
+
+        <!--Frequency-->
+        <ImageView
+            android:id="@+id/add_habit_frequency_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/add_habit_reminder_icon"
+            android:layout_below="@id/add_habit_reminder_line"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/ic_add_habit_frequency" />
+
+        <TextView
+            android:id="@+id/add_habit_frequency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/add_habit_frequency_icon"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_toRightOf="@id/add_habit_frequency_icon"
+            android:text="Frequency"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="@dimen/text_large" />
+
+        <TextView
+            android:id="@+id/add_habit_frequency_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/add_habit_frequency"
+            android:layout_below="@+id/add_habit_frequency"
+            android:layout_marginTop="-10dp"
+            android:text="Daily"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/colorHint" />
+
+        <View
+            android:id="@+id/add_habit_frequency_line"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_alignLeft="@+id/add_habit_frequency"
+            android:layout_alignStart="@+id/add_habit_frequency"
+            android:layout_below="@+id/add_habit_frequency_hint"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorHint" />
+
+        <!--Tune-->
+        <ImageView
+            android:id="@+id/add_habit_tune_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/add_habit_frequency_icon"
+            android:layout_below="@id/add_habit_frequency_line"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/ic_add_habit_tune" />
+
+        <TextView
+            android:id="@+id/add_habit_tune"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/add_habit_tune_icon"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_toRightOf="@id/add_habit_tune_icon"
+            android:text="Tune"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="@dimen/text_large" />
+
+        <TextView
+            android:id="@+id/add_habit_tune_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/add_habit_tune"
+            android:layout_below="@+id/add_habit_tune"
+            android:layout_marginTop="-10dp"
+            android:text="Standard"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/colorHint" />
+
+        <View
+            android:id="@+id/add_habit_tune_line"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_alignLeft="@+id/add_habit_tune"
+            android:layout_alignStart="@+id/add_habit_tune"
+            android:layout_below="@+id/add_habit_tune_hint"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorHint" />
+
+    </RelativeLayout>
+
+</LinearLayout>
