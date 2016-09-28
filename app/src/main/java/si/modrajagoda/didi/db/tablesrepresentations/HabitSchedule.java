@@ -14,7 +14,7 @@ import si.modrajagoda.didi.db.Constants;
 
 @DatabaseTable(tableName = "HabitSchedules")
 public class HabitSchedule {
-    @DatabaseField(id = true, unique = true)
+    @DatabaseField(generatedId = true, unique = true)
     private int id;
     @DatabaseField
     private Date datetime = null;

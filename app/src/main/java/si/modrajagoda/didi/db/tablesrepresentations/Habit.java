@@ -14,7 +14,7 @@ import si.modrajagoda.didi.db.Constants;
 
 @DatabaseTable(tableName = "Habits")
 public class Habit {
-    @DatabaseField(id = true, unique = true)
+    @DatabaseField(generatedId = true, unique = true)
     private int id;
     @DatabaseField(unique = true)
     private String name;

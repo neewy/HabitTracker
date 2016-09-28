@@ -9,7 +9,7 @@ import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "HabitCategories")
 public class HabitCategory {
-    @DatabaseField(id = true, unique = true)
+    @DatabaseField(generatedId = true, unique = true)
     private int id;
     @DatabaseField(unique = true)
     private String name;
