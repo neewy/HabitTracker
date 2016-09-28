@@ -20,7 +20,7 @@ import si.modrajagoda.didi.db.tablesrepresentations.HabitCategory;
  */
 
 public class DataAccessObjectsTest extends AndroidTestCase {
-    int id;
+    private int id;
     private String modifiedDateTime;
     private String name;
     private String question;
