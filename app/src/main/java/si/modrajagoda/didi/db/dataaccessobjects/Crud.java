@@ -7,13 +7,13 @@ import java.util.List;
  */
 
 public interface Crud {
-    public int create(Object item);
+    int create(Object item);
 
-    public int update(Object item);
+    int update(Object item);
 
-    public int delete(Object item);
+    int delete(Object item);
 
-    public List findAll();
+    List findAll();
 
-    public int createOrUpdateIfExists(Object item);
+    int createOrUpdateIfExists(Object item);
 }
