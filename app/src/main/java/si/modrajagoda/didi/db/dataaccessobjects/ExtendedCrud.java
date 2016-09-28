@@ -7,6 +7,16 @@ import java.util.List;
  */
 
 public interface ExtendedCrud extends Crud {
+    int create(Object item);
+
+    int update(Object item);
+
+    int delete(Object item);
+
+    List findAll();
+
+    int createOrUpdateIfExists(Object item);
+
     Object findById(int id);
 
     Object getObjectWithMaxId();
