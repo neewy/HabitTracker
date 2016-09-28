@@ -13,5 +13,7 @@
     <color name="colorAccent">#ff2880</color>
     <color name="colorText">#ffffff</color>
     <color name="colorHint">#c7c5c5</color>
+    <!-- A dark Holo shade of blue -->
+    <color name="holo_blue_dark">#ff0099cc</color>
 
 </resources>

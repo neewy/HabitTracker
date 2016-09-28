@@ -1,0 +1,67 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ripple="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal">
+
+        <!--Category-->
+        <si.modrajagoda.didi.RippleView
+            android:id="@+id/add_habit_category_block"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            ripple:rv_color="@color/colorAccent"
+            ripple:rv_type="rectangle">
+
+            <ImageView
+                android:id="@+id/add_habit_category_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/ic_add_habit_category" />
+
+            <TextView
+                android:id="@+id/add_habit_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/add_habit_category_icon"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/add_habit_category_icon"
+                android:text="Category"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="@dimen/text_large" />
+
+            <TextView
+                android:id="@+id/add_habit_category_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/add_habit_category"
+                android:layout_below="@+id/add_habit_category"
+                android:layout_marginBottom="0dp"
+                android:layout_marginTop="-10dp"
+                android:text="Fitness"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/colorHint" />
+
+            <View
+                android:id="@+id/add_habit_category_line"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_alignLeft="@+id/add_habit_category"
+                android:layout_alignStart="@+id/add_habit_category"
+                android:layout_below="@+id/add_habit_category_hint"
+                android:layout_marginTop="10dp"
+                android:background="@color/colorHint" />
+        </si.modrajagoda.didi.RippleView>
+    </RelativeLayout>
+</FrameLayout>

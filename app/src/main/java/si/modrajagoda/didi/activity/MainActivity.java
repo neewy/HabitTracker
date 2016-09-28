@@ -3,6 +3,7 @@ package si.modrajagoda.didi.activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -19,6 +20,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import si.modrajagoda.didi.R;
+import si.modrajagoda.didi.RippleView;
 import si.modrajagoda.didi.fragment.HabitListFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -54,12 +56,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fragmentManager.beginTransaction().replace(R.id.container, new HabitListFragment()).commit();
 
         // Process floating action bar
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        final RippleView fab = (RippleView) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), AddHabitActivity.class);
-                startActivity(intent);
+            public void onClick(View c) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent = new Intent(getApplicationContext(), AddHabitActivity.class);
+                        startActivity(intent);
+                    }
+                }, (int)(fab.getRippleDuration() * 1.5d));
+
             }
         });
     }
