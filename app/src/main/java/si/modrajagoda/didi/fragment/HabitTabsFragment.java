@@ -1,4 +1,4 @@
-package si.modrajagoda.didi.habitcard;
+package si.modrajagoda.didi.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import si.modrajagoda.didi.R;
+import si.modrajagoda.didi.fragment.HabitCardFragment;
 
 /**
  * Tabs controller class.

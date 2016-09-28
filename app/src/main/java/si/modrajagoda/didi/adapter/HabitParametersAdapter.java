@@ -27,8 +27,6 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
         this.parameters = parameters;
     }
 
-
-
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.habit_parameter, parent, false);
@@ -41,7 +39,6 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
         holder.title.setText(parameter.getTitle());
         holder.icon.setBackground(parameter.getIcon());
         holder.hint.setText(parameter.getHint());
-
     }
 
     @Override

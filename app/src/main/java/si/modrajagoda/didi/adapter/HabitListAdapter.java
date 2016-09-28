@@ -11,7 +11,7 @@ import java.util.List;
 
 import si.modrajagoda.didi.R;
 import si.modrajagoda.didi.db.tablesrepresentations.Habit;
-import si.modrajagoda.didi.habitcard.HabitTabsFragment;
+import si.modrajagoda.didi.fragment.HabitTabsFragment;
 
 /**
  * Created by Nikolay Yushkevich on 21.09.16.

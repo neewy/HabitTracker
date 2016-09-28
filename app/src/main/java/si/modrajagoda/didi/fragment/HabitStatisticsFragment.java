@@ -1,4 +1,4 @@
-package si.modrajagoda.didi.habitcard;
+package si.modrajagoda.didi.fragment;
 
 import android.support.v4.app.Fragment;
 

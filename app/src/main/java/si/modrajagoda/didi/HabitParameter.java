@@ -16,6 +16,9 @@ public class HabitParameter {
     private String hint;
     private Drawable icon;
 
+    public HabitParameter() {
+    }
+
     public HabitParameter(String title, String hint, Drawable icon) {
         this.title = title;
         this.hint = hint;
