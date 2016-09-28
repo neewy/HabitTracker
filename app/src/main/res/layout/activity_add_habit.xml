@@ -13,7 +13,7 @@
         android:background="@drawable/primary_background_with_shadow">
         <!--Back button-->
 
-        <si.modrajagoda.didi.RippleView
+        <si.modrajagoda.didi.views.RippleView
             android:id="@+id/add_habit_back_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -28,9 +28,9 @@
                 android:layout_marginTop="15dp"
                 android:background="@color/colorPrimary"
                 android:src="@drawable/ic_add_habit_back" />
-        </si.modrajagoda.didi.RippleView>
+        </si.modrajagoda.didi.views.RippleView>
 
-        <si.modrajagoda.didi.RippleView
+        <si.modrajagoda.didi.views.RippleView
             android:id="@+id/add_habit_confirm_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -45,7 +45,7 @@
                 android:layout_marginTop="15dp"
                 android:background="@color/colorPrimary"
                 android:src="@drawable/ic_add_habit_confirm" />
-        </si.modrajagoda.didi.RippleView>
+        </si.modrajagoda.didi.views.RippleView>
         <!--Habit name edit text-->
         <android.support.design.widget.TextInputLayout
             android:id="@+id/add_habit_title_edit_text"

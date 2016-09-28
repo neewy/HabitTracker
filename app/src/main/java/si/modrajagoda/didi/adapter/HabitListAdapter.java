@@ -1,5 +1,6 @@
 package si.modrajagoda.didi.adapter;
 
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,19 +10,35 @@ import android.widget.TextView;
 import java.util.List;
 
 import si.modrajagoda.didi.R;
-import si.modrajagoda.didi.database.Habit;
+import si.modrajagoda.didi.db.tablesrepresentations.Habit;
+import si.modrajagoda.didi.habitcard.HabitTabsFragment;
 
 /**
  * Created by Nikolay Yushkevich on 21.09.16.
  */
 public class HabitListAdapter extends RecyclerView.Adapter<HabitListAdapter.ViewHolder> {
 
+    private List<Habit> habits;
     private String[] dummyList = new String[]{"Test1", "Test2", "Test3", "Test4", "Test5"};
+    private FragmentManager fragmentManager;
 
+    public HabitListAdapter(FragmentManager fragmentManager) {
+        this.fragmentManager = fragmentManager;
+    }
+
+    /*public HabitListAdapter(List<Habit> habits) {
+        this.habits = habits;
+    }*/
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.habit_card, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.habit_list_card, parent, false);
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragmentManager.beginTransaction().replace(R.id.container, new HabitTabsFragment()).commit();
+            }
+        });
         return new ViewHolder(v);
     }
 

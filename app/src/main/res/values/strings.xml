@@ -35,6 +35,8 @@
     <string name="indicator_progress_description">Indicator which represents a habit question</string>
     <string name="navigation_drawer_open">Opened drawer</string>
     <string name="navigation_drawer_close">Closed drawer</string>
+    <string name="habit_tabs_general">General</string>
+    <string name="habit_tabs_statistics">Statistics</string>
 
 
     <!--Navigation bar header text-->

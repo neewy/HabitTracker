@@ -1,4 +1,4 @@
-package si.modrajagoda.didi;
+package si.modrajagoda.didi.legacy;
 
 import android.app.Activity;
 import android.content.Context;
@@ -21,6 +21,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import si.modrajagoda.didi.R;
 import si.modrajagoda.didi.database.DatabaseHelper;
 import si.modrajagoda.didi.database.Day;
 import si.modrajagoda.didi.database.Habit;

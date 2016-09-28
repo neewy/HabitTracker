@@ -33,7 +33,7 @@
         </activity>
         <activity android:name=".activity.AddHabitActivity" />
         <activity
-            android:name=".EditHabits"
+            android:name=".legacy.EditHabits"
             android:windowSoftInputMode="adjustPan" />
     </application>
 

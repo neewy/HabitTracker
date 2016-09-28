@@ -1,4 +1,4 @@
-package si.modrajagoda.didi;
+package si.modrajagoda.didi.legacy;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,6 +18,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import si.modrajagoda.didi.R;
 import si.modrajagoda.didi.database.DatabaseHelper;
 import si.modrajagoda.didi.database.Habit;
 

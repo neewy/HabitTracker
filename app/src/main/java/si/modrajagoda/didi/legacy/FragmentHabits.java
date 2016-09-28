@@ -1,4 +1,4 @@
-package si.modrajagoda.didi;
+package si.modrajagoda.didi.legacy;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import si.modrajagoda.didi.R;
 import si.modrajagoda.didi.database.DatabaseHelper;
 import si.modrajagoda.didi.database.Day;
 import si.modrajagoda.didi.database.Habit;
