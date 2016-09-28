@@ -10,8 +10,10 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import si.modrajagoda.didi.db.dataaccessobjects.HabitCategoryDAO;
 import si.modrajagoda.didi.db.dataaccessobjects.HabitDAO;
 import si.modrajagoda.didi.db.tablesrepresentations.Habit;
+import si.modrajagoda.didi.db.tablesrepresentations.HabitCategory;
 
 /**
  * Created by alnedorezov on 9/28/16.
@@ -102,8 +104,7 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         assertFalse(habitDAO.findAll().size() > 0 && newHabit == habitDAO.getObjectWithMaxId());
 
         habitDAO.create(newHabit);
-        confirmAfterMinutes = 90;
-        // change confirmAfterMinutes to 90
+        // confirmAfterMinutes are equal to 90
         newHabit = new Habit(id, name, question, modifiedDateTime, latitude, longitude,
                 range, audioResource, usesConfirmation, confirmAfterMinutes, categoryId);
         habitDAO.update(newHabit);
@@ -113,5 +114,63 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         assertEquals(newHabit, habitFromMobileDatabaseWithMaxId);
         habitDAO.delete(newHabit);
         assertFalse(habitDAO.findAll().size() > 0 && newHabit == habitDAO.getObjectWithMaxId());
+    }
+
+    @Test
+    public void testWritingNewHabitCategoryDataToMobileDB() throws ParseException {
+        HabitCategoryDAO habitCategoryDAO = new HabitCategoryDAO(this.getContext());
+
+        HabitCategory habitCategoryWithTheSameId;
+        HabitCategory habitCategoryFromMobileDatabaseWithMaxId;
+
+        HabitCategory newHabitCategory = new HabitCategory(id, name);
+        habitCategoryDAO.create(newHabitCategory);
+
+        // create(), findById() check
+        habitCategoryWithTheSameId = (HabitCategory) habitCategoryDAO.findById(id);
+        assertEquals(newHabitCategory, habitCategoryWithTheSameId);
+
+        List<HabitCategory> habitCategoryList = new ArrayList<>();
+        habitCategoryList.add(newHabitCategory);
+
+        List<HabitCategory> allHabitCategorysList = (List<HabitCategory>) habitCategoryDAO.findAll();
+
+        // findAll() check
+        assertEquals(habitCategoryList, allHabitCategorysList);
+
+        habitCategoryFromMobileDatabaseWithMaxId = (HabitCategory) habitCategoryDAO.getObjectWithMaxId();
+
+        // getObjectWithMaxId() check
+        assertEquals(newHabitCategory, habitCategoryFromMobileDatabaseWithMaxId);
+        // delete() check
+        habitCategoryDAO.delete(newHabitCategory);
+        assertFalse(habitCategoryDAO.findAll().size() > 0 && newHabitCategory == habitCategoryDAO.getObjectWithMaxId());
+
+        habitCategoryDAO.createOrUpdateIfExists(newHabitCategory);
+        habitCategoryFromMobileDatabaseWithMaxId = (HabitCategory) habitCategoryDAO.getObjectWithMaxId();
+        // createOrUpdateIfExists() check creation
+        assertEquals(newHabitCategory, habitCategoryFromMobileDatabaseWithMaxId);
+
+        name = "sport";
+        // change name to "sport"
+        newHabitCategory = new HabitCategory(id, name);
+        habitCategoryDAO.createOrUpdateIfExists(newHabitCategory);
+        habitCategoryFromMobileDatabaseWithMaxId = (HabitCategory) habitCategoryDAO.getObjectWithMaxId();
+        // createOrUpdateIfExists() check update
+        assertEquals(habitCategoryFromMobileDatabaseWithMaxId.getName(), name);
+        assertEquals(newHabitCategory, habitCategoryFromMobileDatabaseWithMaxId);
+        habitCategoryDAO.delete(newHabitCategory);
+        assertFalse(habitCategoryDAO.findAll().size() > 0 && newHabitCategory == habitCategoryDAO.getObjectWithMaxId());
+
+        habitCategoryDAO.create(newHabitCategory);
+        // name currently equals "sport"
+        newHabitCategory = new HabitCategory(id, name);
+        habitCategoryDAO.update(newHabitCategory);
+        habitCategoryFromMobileDatabaseWithMaxId = (HabitCategory) habitCategoryDAO.getObjectWithMaxId();
+        // check update()
+        assertEquals(habitCategoryFromMobileDatabaseWithMaxId.getName(), name);
+        assertEquals(newHabitCategory, habitCategoryFromMobileDatabaseWithMaxId);
+        habitCategoryDAO.delete(newHabitCategory);
+        assertFalse(habitCategoryDAO.findAll().size() > 0 && newHabitCategory == habitCategoryDAO.getObjectWithMaxId());
     }
 }
