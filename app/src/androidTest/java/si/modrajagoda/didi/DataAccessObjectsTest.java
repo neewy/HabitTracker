@@ -12,8 +12,10 @@ import java.util.List;
 
 import si.modrajagoda.didi.db.dataaccessobjects.HabitCategoryDAO;
 import si.modrajagoda.didi.db.dataaccessobjects.HabitDAO;
+import si.modrajagoda.didi.db.dataaccessobjects.HabitScheduleDAO;
 import si.modrajagoda.didi.db.tablesrepresentations.Habit;
 import si.modrajagoda.didi.db.tablesrepresentations.HabitCategory;
+import si.modrajagoda.didi.db.tablesrepresentations.HabitSchedule;
 
 /**
  * Created by alnedorezov on 9/28/16.
@@ -31,6 +33,7 @@ public class DataAccessObjectsTest extends AndroidTestCase {
     private boolean usesConfirmation;
     private int confirmAfterMinutes;
     private int categoryId;
+    private boolean isPerformed;
 
     @Before
     public void setUp() throws Exception {
@@ -45,7 +48,7 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         range = 9;
 
         String filename = "/meouing_kittten.mp3";
-        // Environment.getExternalStorageDirectory().getPath() represents /sdcard/
+        // Environment.getExternalStorageDirectory().getPath() represents /sdcard/extended/0
         if (Environment.isExternalStorageEmulated())
             audioResource = Environment.getExternalStorageDirectory().getPath() + filename;
         else
@@ -53,6 +56,7 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         usesConfirmation = true;
         confirmAfterMinutes = 60;
         categoryId = 1;
+        isPerformed = false;
     }
 
     @Test
@@ -98,19 +102,19 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         habitDAO.createOrUpdateIfExists(newHabit);
         habitFromMobileDatabaseWithMaxId = (Habit) habitDAO.getObjectWithMaxId();
         // createOrUpdateIfExists() check update
-        assertEquals(habitFromMobileDatabaseWithMaxId.getConfirmAfterMinutes(), 90);
+        assertEquals(habitFromMobileDatabaseWithMaxId.getConfirmAfterMinutes(), confirmAfterMinutes);
         assertEquals(newHabit, habitFromMobileDatabaseWithMaxId);
         habitDAO.delete(newHabit);
         assertFalse(habitDAO.findAll().size() > 0 && newHabit == habitDAO.getObjectWithMaxId());
 
         habitDAO.create(newHabit);
-        // confirmAfterMinutes are equal to 90
+        // confirmAfterMinutes is equal to 90
         newHabit = new Habit(id, name, question, modifiedDateTime, latitude, longitude,
                 range, audioResource, usesConfirmation, confirmAfterMinutes, categoryId);
         habitDAO.update(newHabit);
         habitFromMobileDatabaseWithMaxId = (Habit) habitDAO.getObjectWithMaxId();
         // check update()
-        assertEquals(habitFromMobileDatabaseWithMaxId.getConfirmAfterMinutes(), 90);
+        assertEquals(habitFromMobileDatabaseWithMaxId.getConfirmAfterMinutes(), confirmAfterMinutes);
         assertEquals(newHabit, habitFromMobileDatabaseWithMaxId);
         habitDAO.delete(newHabit);
         assertFalse(habitDAO.findAll().size() > 0 && newHabit == habitDAO.getObjectWithMaxId());
@@ -172,5 +176,63 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         assertEquals(newHabitCategory, habitCategoryFromMobileDatabaseWithMaxId);
         habitCategoryDAO.delete(newHabitCategory);
         assertFalse(habitCategoryDAO.findAll().size() > 0 && newHabitCategory == habitCategoryDAO.getObjectWithMaxId());
+    }
+
+    @Test
+    public void testWritingNewHabitScheduleDataToMobileDB() throws ParseException {
+        HabitScheduleDAO habitScheduleDAO = new HabitScheduleDAO(this.getContext());
+
+        HabitSchedule habitScheduleWithTheSameId;
+        HabitSchedule habitScheduleFromMobileDatabaseWithMaxId;
+
+        HabitSchedule newHabitSchedule = new HabitSchedule(id, modifiedDateTime, isPerformed, id);
+        habitScheduleDAO.create(newHabitSchedule);
+
+        // create(), findById() check
+        habitScheduleWithTheSameId = (HabitSchedule) habitScheduleDAO.findById(id);
+        assertEquals(newHabitSchedule, habitScheduleWithTheSameId);
+
+        List<HabitSchedule> habitScheduleList = new ArrayList<>();
+        habitScheduleList.add(newHabitSchedule);
+
+        List<HabitSchedule> allHabitSchedulesList = (List<HabitSchedule>) habitScheduleDAO.findAll();
+
+        // findAll() check
+        assertEquals(habitScheduleList, allHabitSchedulesList);
+
+        habitScheduleFromMobileDatabaseWithMaxId = (HabitSchedule) habitScheduleDAO.getObjectWithMaxId();
+
+        // getObjectWithMaxId() check
+        assertEquals(newHabitSchedule, habitScheduleFromMobileDatabaseWithMaxId);
+        // delete() check
+        habitScheduleDAO.delete(newHabitSchedule);
+        assertFalse(habitScheduleDAO.findAll().size() > 0 && newHabitSchedule == habitScheduleDAO.getObjectWithMaxId());
+
+        habitScheduleDAO.createOrUpdateIfExists(newHabitSchedule);
+        habitScheduleFromMobileDatabaseWithMaxId = (HabitSchedule) habitScheduleDAO.getObjectWithMaxId();
+        // createOrUpdateIfExists() check creation
+        assertEquals(newHabitSchedule, habitScheduleFromMobileDatabaseWithMaxId);
+
+        isPerformed = true;
+        // change isPerformed to true
+        newHabitSchedule = new HabitSchedule(id, modifiedDateTime, isPerformed, id);
+        habitScheduleDAO.createOrUpdateIfExists(newHabitSchedule);
+        habitScheduleFromMobileDatabaseWithMaxId = (HabitSchedule) habitScheduleDAO.getObjectWithMaxId();
+        // createOrUpdateIfExists() check update
+        assertEquals(habitScheduleFromMobileDatabaseWithMaxId.isPerformed(), isPerformed);
+        assertEquals(newHabitSchedule, habitScheduleFromMobileDatabaseWithMaxId);
+        habitScheduleDAO.delete(newHabitSchedule);
+        assertFalse(habitScheduleDAO.findAll().size() > 0 && newHabitSchedule == habitScheduleDAO.getObjectWithMaxId());
+
+        habitScheduleDAO.create(newHabitSchedule);
+        // isPerformed is equal to true
+        newHabitSchedule = new HabitSchedule(id, modifiedDateTime, isPerformed, id);
+        habitScheduleDAO.update(newHabitSchedule);
+        habitScheduleFromMobileDatabaseWithMaxId = (HabitSchedule) habitScheduleDAO.getObjectWithMaxId();
+        // check update()
+        assertEquals(habitScheduleFromMobileDatabaseWithMaxId.isPerformed(), isPerformed);
+        assertEquals(newHabitSchedule, habitScheduleFromMobileDatabaseWithMaxId);
+        habitScheduleDAO.delete(newHabitSchedule);
+        assertFalse(habitScheduleDAO.findAll().size() > 0 && newHabitSchedule == habitScheduleDAO.getObjectWithMaxId());
     }
 }
