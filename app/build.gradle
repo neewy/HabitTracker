@@ -8,12 +8,27 @@ android {
         applicationId "si.modrajagoda.didi"
         minSdkVersion 16
         targetSdkVersion 24
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+
+    // To avoid "Method ... not mocked." errors
+    // The android.jar file that is used to run unit tests does not contain
+    // any actual code - that is provided by the Android system image on real devices.
+    // Instead, all methods throw exceptions (by default). This is to make sure your unit tests
+    // only test your code and do not depend on any particular behaviour of the Android platform
+    // (that you have not explicitly mocked e.g. using Mockito).
+    // As that proves problematic, we added the snippet below
+    // to our build.gradle to change this behavior
+    testOptions {
+        unitTests {
+            returnDefaultValues = true
         }
     }
 }
@@ -31,4 +46,15 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:24.2.1' /*to use RecyclerView as a list of habits*/
     compile 'com.android.support:palette-v7:24.2.1'
     compile 'com.squareup.picasso:picasso:2.5.1'
+    compile 'com.android.support:appcompat-v7:24.2.1'
+    compile 'com.android.support:design:24.2.1'
+    /* for Android Tests to work */
+    androidTestCompile 'com.android.support.test:runner:0.5'
+    androidTestCompile 'com.android.support:support-annotations:24.2.1'
+    androidTestCompile 'com.android.support.test:rules:0.5'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
+    androidTestCompile('com.android.support.test.espresso:espresso-contrib:2.0') {
+        exclude group: 'javax.inject'
+        exclude group: 'com.android.support'
+    }
 }
