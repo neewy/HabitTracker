@@ -3,12 +3,9 @@ package si.modrajagoda.didi;
 import android.os.Environment;
 import android.test.AndroidTestCase;
 
-import com.j256.ormlite.stmt.QueryBuilder;
-
 import org.junit.Before;
 import org.junit.Test;
 
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +43,8 @@ public class DataAccessObjectsTest extends AndroidTestCase {
     public void setUp() throws Exception {
         DatabaseManager.setHelper(this.getContext());
         helper = DatabaseManager.getHelper();
+        helper.onUpgrade(helper.getReadableDatabase(), helper.getConnectionSource(),
+                Constants.DATABASE_VERSION, Constants.DATABASE_VERSION);
 
         id = 1;
         modifiedDateTime = "2015-01-02 03:04:05.6";
@@ -70,21 +69,6 @@ public class DataAccessObjectsTest extends AndroidTestCase {
     @Test
     public void testWritingNewHabitDataToMobileDB() throws ParseException {
         HabitDAO habitDAO = new HabitDAO(this.getContext());
-
-        /* if table is not empty, id = maxIdInTheTable+1, else id=1 */
-        QueryBuilder<Habit, Integer> qBuilder;
-        try {
-            qBuilder = helper.getHabitDao().queryBuilder();
-            if (qBuilder.query().size() > 0) {
-                qBuilder.orderBy(Constants.ID, false); // false for descending order
-                qBuilder.limit(1);
-                id = qBuilder.query().get(0).getId() + 1;
-            } else {
-                id = 1;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
 
         Habit habitWithTheSameId;
         Habit habitFromMobileDatabaseWithMaxId;
@@ -113,6 +97,12 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         habitDAO.delete(newHabit);
         assertFalse(habitDAO.findAll().size() > 0 && newHabit == habitDAO.getObjectWithMaxId());
 
+        // As auto-increment is used for the ids,
+        // the id of the next created element will be bigger on 1
+        id++;
+        newHabit = new Habit(id, name, question, modifiedDateTime, latitude, longitude,
+                range, audioResource, usesConfirmation, confirmAfterMinutes, categoryId);
+
         habitDAO.createOrUpdateIfExists(newHabit);
         habitFromMobileDatabaseWithMaxId = (Habit) habitDAO.getObjectWithMaxId();
         // createOrUpdateIfExists() check creation
@@ -130,6 +120,12 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         habitDAO.delete(newHabit);
         assertFalse(habitDAO.findAll().size() > 0 && newHabit == habitDAO.getObjectWithMaxId());
 
+        // As auto-increment is used for the ids,
+        // the id of the next created element will be bigger on 1
+        id++;
+        newHabit = new Habit(id, name, question, modifiedDateTime, latitude, longitude,
+                range, audioResource, usesConfirmation, confirmAfterMinutes, categoryId);
+
         habitDAO.create(newHabit);
         // confirmAfterMinutes is equal to 90
         newHabit = new Habit(id, name, question, modifiedDateTime, latitude, longitude,
@@ -146,21 +142,6 @@ public class DataAccessObjectsTest extends AndroidTestCase {
     @Test
     public void testWritingNewHabitCategoryDataToMobileDB() throws ParseException {
         HabitCategoryDAO habitCategoryDAO = new HabitCategoryDAO(this.getContext());
-
-        /* if table is not empty, id = maxIdInTheTable+1, else id=1 */
-        QueryBuilder<HabitCategory, Integer> qBuilder;
-        try {
-            qBuilder = helper.getHabitCategoryDao().queryBuilder();
-            if (qBuilder.query().size() > 0) {
-                qBuilder.orderBy(Constants.ID, false); // false for descending order
-                qBuilder.limit(1);
-                id = qBuilder.query().get(0).getId() + 1;
-            } else {
-                id = 1;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
 
         HabitCategory habitCategoryWithTheSameId;
         HabitCategory habitCategoryFromMobileDatabaseWithMaxId;
@@ -188,6 +169,11 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         habitCategoryDAO.delete(newHabitCategory);
         assertFalse(habitCategoryDAO.findAll().size() > 0 && newHabitCategory == habitCategoryDAO.getObjectWithMaxId());
 
+        // As auto-increment is used for the ids,
+        // the id of the next created element will be bigger on 1
+        id++;
+        newHabitCategory = new HabitCategory(id, name);
+
         habitCategoryDAO.createOrUpdateIfExists(newHabitCategory);
         habitCategoryFromMobileDatabaseWithMaxId = (HabitCategory) habitCategoryDAO.getObjectWithMaxId();
         // createOrUpdateIfExists() check creation
@@ -204,6 +190,11 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         habitCategoryDAO.delete(newHabitCategory);
         assertFalse(habitCategoryDAO.findAll().size() > 0 && newHabitCategory == habitCategoryDAO.getObjectWithMaxId());
 
+        // As auto-increment is used for the ids,
+        // the id of the next created element will be bigger on 1
+        id++;
+        newHabitCategory = new HabitCategory(id, name);
+
         habitCategoryDAO.create(newHabitCategory);
         // name currently equals "sport"
         newHabitCategory = new HabitCategory(id, name);
@@ -219,21 +210,6 @@ public class DataAccessObjectsTest extends AndroidTestCase {
     @Test
     public void testWritingNewHabitScheduleDataToMobileDB() throws ParseException {
         HabitScheduleDAO habitScheduleDAO = new HabitScheduleDAO(this.getContext());
-
-        /* if table is not empty, id = maxIdInTheTable+1, else id=1 */
-        QueryBuilder<HabitSchedule, Integer> qBuilder;
-        try {
-            qBuilder = helper.getHabitScheduleDao().queryBuilder();
-            if (qBuilder.query().size() > 0) {
-                qBuilder.orderBy(Constants.ID, false); // false for descending order
-                qBuilder.limit(1);
-                id = qBuilder.query().get(0).getId() + 1;
-            } else {
-                id = 1;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
 
         HabitSchedule habitScheduleWithTheSameId;
         HabitSchedule habitScheduleFromMobileDatabaseWithMaxId;
@@ -261,6 +237,11 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         habitScheduleDAO.delete(newHabitSchedule);
         assertFalse(habitScheduleDAO.findAll().size() > 0 && newHabitSchedule == habitScheduleDAO.getObjectWithMaxId());
 
+        // As auto-increment is used for the ids,
+        // the id of the next created element will be bigger on 1
+        id++;
+        newHabitSchedule = new HabitSchedule(id, modifiedDateTime, isPerformed, id);
+
         habitScheduleDAO.createOrUpdateIfExists(newHabitSchedule);
         habitScheduleFromMobileDatabaseWithMaxId = (HabitSchedule) habitScheduleDAO.getObjectWithMaxId();
         // createOrUpdateIfExists() check creation
@@ -276,6 +257,11 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         assertEquals(newHabitSchedule, habitScheduleFromMobileDatabaseWithMaxId);
         habitScheduleDAO.delete(newHabitSchedule);
         assertFalse(habitScheduleDAO.findAll().size() > 0 && newHabitSchedule == habitScheduleDAO.getObjectWithMaxId());
+
+        // As auto-increment is used for the ids,
+        // the id of the next created element will be bigger on 1
+        id++;
+        newHabitSchedule = new HabitSchedule(id, modifiedDateTime, isPerformed, id);
 
         habitScheduleDAO.create(newHabitSchedule);
         // isPerformed is equal to true
