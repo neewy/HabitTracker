@@ -1,4 +1,4 @@
-package si.modrajagoda.didi;
+package si.modrajagoda.didi.legacy;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -9,6 +9,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import java.util.Calendar;
+
+import si.modrajagoda.didi.legacy.AlarmReceiver;
 
 public class BootReceiver extends BroadcastReceiver {
 

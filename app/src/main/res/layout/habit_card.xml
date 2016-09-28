@@ -1,77 +1,101 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content">
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
 
-    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/cardView"
-        android:layout_width="fill_parent"
-        android:layout_height="120dp"
-        card_view:cardBackgroundColor="#ffffff"
-        card_view:cardCornerRadius="6dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp">
+    <!--top card, which contains name, question and buttons-->
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/habit_confirmation"
+        android:layout_width="match_parent"
+        android:layout_height="200dp">
+
 
         <RelativeLayout
-            android:id="@+id/habit_card_frame"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="200dp">
 
-            <TextView
-                android:id="@+id/habit_name"
+            <!-- Name -->
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/habit_card_name"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="60sp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
                 android:text="Gym"
-                android:textColor="#333333"
-                android:textSize="22sp"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="15dp" />
+                android:textColor="#3999b2"
+                android:textSize="40sp" />
 
-            <TextView
-                android:id="@+id/habit_time"
+            <!-- Question -->
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/habit_card_question"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Today"
-                android:textColor="#333333"
-                android:textSize="16sp"
-                android:layout_alignParentLeft="false"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginTop="12dp"
-                android:layout_marginRight="20dp" />
+                android:layout_height="30dp"
+                android:layout_below="@+id/habit_card_name"
+                android:layout_centerHorizontal="true"
+                android:text="Did I biceps?"
+                android:textSize="20sp" />
 
-            <TextView
-                android:id="@+id/habit_question"
+            <!-- Two buttons -->
+            <LinearLayout
+                android:id="@+id/habit_card_buttons"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Did I Biceps and Legs?"
-                android:textSize="16sp"
-                android:textColor="#bdbdbd"
-                android:layout_below="@+id/habit_name"
-                android:layout_marginTop="5dp"
-                android:layout_alignLeft="@+id/habit_name" />
-
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/habit_skip"
-                android:layout_width="70dp"
-                android:layout_height="wrap_content"
-                style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                android:text="SKIP"
-                android:textColor="#37474f"
+                android:layout_height="40dp"
                 android:layout_alignParentBottom="true"
-                android:layout_marginLeft="0dp"
-                android:layout_marginBottom="2dp" />
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="35dp">
 
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/habit_done"
-                android:layout_width="70dp"
-                android:layout_height="wrap_content"
-                style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                android:text="DONE"
-                android:layout_toRightOf="@+id/habit_skip"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="2dp" />
+                <!-- Skip -->
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/habit_card_skip"
+                    android:layout_width="80dp"
+                    android:layout_height="40dp"
+                    android:layout_marginRight="50dp"
+                    style="@style/Widget.AppCompat.Button.Colored"
+                    android:background="@color/neutral"
+                    android:textColor="@color/transparent"
+                    android:text="SKIP"
+                    />
+
+                <!-- Done -->
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/habit_card_done"
+                    android:layout_width="80dp"
+                    android:layout_height="40dp"
+                    style="@style/Widget.AppCompat.Button.Colored"
+                    android:background="@color/colorPrimaryDark"
+                    android:text="DONE" />
+
+
+            </LinearLayout>
+
         </RelativeLayout>
     </android.support.v7.widget.CardView>
-</FrameLayout>
+
+    <!-- List with card settings -->
+    <!-- TODO: add title at the top of the list -->
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/habit_settings"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="false"
+        android:layout_below="@+id/habit_confirmation"
+        android:layout_gravity="center_horizontal|top">
+
+    </android.support.v7.widget.RecyclerView>
+
+    <!-- Edit button -->
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="bottom|right"
+        android:layout_margin="@dimen/fab_margin"
+        app:srcCompat="@drawable/ic_edit_white" />
+
+</RelativeLayout>

@@ -1,25 +1,16 @@
 package si.modrajagoda.didi.activity;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import si.modrajagoda.didi.HabitParameter;
 import si.modrajagoda.didi.R;
-import si.modrajagoda.didi.RippleView;
+import si.modrajagoda.didi.views.RippleView;
 import si.modrajagoda.didi.adapter.HabitParametersAdapter;
 
 /**
@@ -59,59 +50,7 @@ public class AddHabitActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        mAdapter = new HabitParametersAdapter(createParameters());
+        mAdapter = new HabitParametersAdapter(HabitParameter.createParameters(getApplicationContext()));
         mRecyclerView.setAdapter(mAdapter);
     }
-
-    private List<HabitParameter> createParameters() {
-        List<HabitParameter> habitParameters = new ArrayList<>();
-        HabitParameter parameter = new HabitParameter("Category", "Fitness", ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_add_habit_category));
-        habitParameters.add(parameter);
-        parameter = new HabitParameter("Remind at", "None", ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_add_habit_reminder));
-        habitParameters.add(parameter);
-        parameter = new HabitParameter("Frequency", "Daily", ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_add_habit_frequency));
-        habitParameters.add(parameter);
-        parameter = new HabitParameter("Tune", "Standard", ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_add_habit_tune));
-        habitParameters.add(parameter);
-        parameter = new HabitParameter("Confirmation", "After 30 min", ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_add_habit_confirmation));
-        habitParameters.add(parameter);
-        return habitParameters;
-    }
-
-    public class HabitParameter {
-        private String title;
-        private String hint;
-        private Drawable icon;
-
-        public HabitParameter(String title, String hint, Drawable icon) {
-            this.title = title;
-            this.hint = hint;
-            this.icon = icon;
-        }
-
-        public String getTitle() {
-            return title;
-        }
-
-        public void setTitle(String title) {
-            this.title = title;
-        }
-
-        public String getHint() {
-            return hint;
-        }
-
-        public void setHint(String hint) {
-            this.hint = hint;
-        }
-
-        public Drawable getIcon() {
-            return icon;
-        }
-
-        public void setIcon(Drawable icon) {
-            this.icon = icon;
-        }
-    }
-
 }

@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import si.modrajagoda.didi.HabitParameter;
 import si.modrajagoda.didi.R;
 import si.modrajagoda.didi.activity.AddHabitActivity;
 
@@ -20,9 +21,9 @@ import si.modrajagoda.didi.activity.AddHabitActivity;
  */
 public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParametersAdapter.ViewHolder> {
 
-    private List<AddHabitActivity.HabitParameter> parameters;
+    private List<HabitParameter> parameters;
 
-    public HabitParametersAdapter(List<AddHabitActivity.HabitParameter> parameters) {
+    public HabitParametersAdapter(List<HabitParameter> parameters) {
         this.parameters = parameters;
     }
 
@@ -34,11 +35,10 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        AddHabitActivity.HabitParameter parameter = parameters.get(position);
+        HabitParameter parameter = parameters.get(position);
         holder.title.setText(parameter.getTitle());
         holder.icon.setBackground(parameter.getIcon());
         holder.hint.setText(parameter.getHint());
-
     }
 
     @Override

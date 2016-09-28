@@ -1,0 +1,71 @@
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/cardView"
+        android:layout_width="fill_parent"
+        android:layout_height="120dp"
+        card_view:cardCornerRadius="6dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp">
+
+        <RelativeLayout
+            android:id="@+id/habit_card_frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/habit_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gym"
+                android:textColor="#333333"
+                android:textSize="22sp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="15dp" />
+
+            <TextView
+                android:id="@+id/habit_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Today"
+                android:textColor="#333333"
+                android:textSize="16sp"
+                android:layout_alignParentLeft="false"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="12dp"
+                android:layout_marginRight="20dp" />
+
+            <TextView
+                android:id="@+id/habit_question"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Did I Biceps and Legs?"
+                android:textSize="16sp"
+                android:textColor="#bdbdbd"
+                android:layout_below="@+id/habit_name"
+                android:layout_marginTop="5dp"
+                android:layout_alignLeft="@+id/habit_name" />
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/habit_skip"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:text="SKIP"
+                android:textColor="#37474f"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="0dp"
+                android:layout_marginBottom="2dp" />
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/habit_done"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:text="DONE"
+                android:layout_toRightOf="@+id/habit_skip"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="2dp" />
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>

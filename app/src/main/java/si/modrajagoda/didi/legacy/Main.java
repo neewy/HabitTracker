@@ -1,8 +1,7 @@
-package si.modrajagoda.didi.activity;
+package si.modrajagoda.didi.legacy;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -13,12 +12,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 
 import si.modrajagoda.didi.R;
 import si.modrajagoda.didi.fragment.HabitListFragment;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class Main extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener  {
 
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
@@ -26,7 +24,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     /**
      * <b>onCreate</b> is invoked when Activity is first created (and not visible yet to the user)
-     *
      * @param savedInstanceState
      */
     @Override
@@ -49,6 +46,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         fragmentManager.beginTransaction().replace(R.id.container, new HabitListFragment()).commit();
+    }
+
+    /**
+     * <b>onStart</b> is invoked before Activity is visible to the user
+     */
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 
     @Override

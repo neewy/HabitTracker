@@ -1,4 +1,4 @@
-package si.modrajagoda.didi;
+package si.modrajagoda.didi.views;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -19,6 +19,8 @@ import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.AdapterView;
 import android.widget.RelativeLayout;
+
+import si.modrajagoda.didi.R;
 
 
 public class RippleView extends RelativeLayout {
