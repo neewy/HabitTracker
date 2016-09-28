@@ -18,6 +18,7 @@ public final class Constants {
     public static final String SQL_EXCEPTION_IN = "SQL Exception in";
     public static final char SPACE = ' ';
     public static final char UNDERSCORE = '_';
+    public static final String ID = "id";
 
     // For DatabaseHelper
     public static final String DB_HELPER = "DB_HELPER";
