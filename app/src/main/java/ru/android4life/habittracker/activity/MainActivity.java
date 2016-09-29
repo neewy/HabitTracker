@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import ru.android4life.habittracker.R;
+import ru.android4life.habittracker.db.DatabaseManager;
 import ru.android4life.habittracker.fragment.HabitListFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -45,6 +46,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (navigationView != null) {
             navigationView.setNavigationItemSelectedListener(this);
         }
+
+        //Init the database manager
+        DatabaseManager.setHelper(this);
 
         fragmentManager.beginTransaction().replace(R.id.container, new HabitListFragment()).commit();
     }
