@@ -1,5 +1,6 @@
 package ru.android4life.habittracker.adapter;
 
+import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +11,8 @@ import android.widget.TextView;
 import java.util.List;
 
 import ru.android4life.habittracker.R;
+import ru.android4life.habittracker.activity.MainActivity;
+import ru.android4life.habittracker.db.dataaccessobjects.HabitDAO;
 import ru.android4life.habittracker.db.tablesrepresentations.Habit;
 import ru.android4life.habittracker.fragment.HabitTabsFragment;
 
@@ -19,11 +22,14 @@ import ru.android4life.habittracker.fragment.HabitTabsFragment;
 public class HabitListAdapter extends RecyclerView.Adapter<HabitListAdapter.ViewHolder> {
 
     private List<Habit> habits;
-    private String[] dummyList = new String[]{"Test1", "Test2", "Test3", "Test4", "Test5"};
     private FragmentManager fragmentManager;
+    private Context context;
 
     public HabitListAdapter(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
+        context = MainActivity.getContext();
+        HabitDAO habitDAO = new HabitDAO(context);
+        habits = (List<Habit>) habitDAO.findAll();
     }
 
     /*public HabitListAdapter(List<Habit> habits) {
@@ -44,21 +50,31 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitListAdapter.View
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        String record = dummyList[position];
-        holder.title.setText(record);
+        holder.title.setText(habits.get(position).getName());
+        holder.question.setText(String.format(getStringFromResources(R.string.did_i_question),
+                habits.get(position).getQuestion()));
+        holder.time.setText("Today");
     }
 
     @Override
     public int getItemCount() {
-        return dummyList.length;
+        return habits.size();
+    }
+
+    private String getStringFromResources(int resource) {
+        return context.getResources().getString(resource);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
         private TextView title;
+        private TextView question;
+        private TextView time;
 
         public ViewHolder(View itemView) {
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.habit_name);
+            question = (TextView) itemView.findViewById(R.id.habit_question);
+            time = (TextView) itemView.findViewById(R.id.habit_time);
         }
     }
 }

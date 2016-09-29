@@ -1,7 +1,9 @@
 package ru.android4life.habittracker.activity;
 
+import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -13,15 +15,27 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 
+import java.text.ParseException;
+
 import ru.android4life.habittracker.R;
+import ru.android4life.habittracker.db.Constants;
 import ru.android4life.habittracker.db.DatabaseManager;
+import ru.android4life.habittracker.db.dataaccessobjects.HabitCategoryDAO;
+import ru.android4life.habittracker.db.dataaccessobjects.HabitDAO;
+import ru.android4life.habittracker.db.dataaccessobjects.HabitScheduleDAO;
+import ru.android4life.habittracker.db.tablesrepresentations.Habit;
 import ru.android4life.habittracker.fragment.HabitListFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    private static Context context;
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
     private FragmentManager fragmentManager;
+
+    public static Context getContext() {
+        return context;
+    }
 
     /**
      * <b>onCreate</b> is invoked when Activity is first created (and not visible yet to the user)
@@ -49,6 +63,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //Init the database manager
         DatabaseManager.setHelper(this);
+
+        /* Creation of demo data while the creation buttons doesn't work */
+        HabitCategoryDAO habitCategoryDAO = new HabitCategoryDAO(this.getApplicationContext());
+        HabitDAO habitDAO = new HabitDAO(this.getApplicationContext());
+        HabitScheduleDAO habitScheduleDAO = new HabitScheduleDAO(this.getApplicationContext());
+        try {
+            habitDAO.create(new Habit(1, "Privuichka 1", "do privuichka 1", "2015-01-02 03:04:05.6",
+                    55.75417935, 48.7440855, 9, Environment.getExternalStorageDirectory().getPath()
+                    + "/meouing_kittten.mp3", true, 60, 1));
+        } catch (ParseException e) {
+            Log.e(Constants.ERROR, e.getMessage(), e.fillInStackTrace());
+        }
+
+        context = this.getApplicationContext();
 
         fragmentManager.beginTransaction().replace(R.id.container, new HabitListFragment()).commit();
     }
@@ -98,5 +126,4 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Pass any configuration change to the drawer toggles
         toggle.onConfigurationChanged(newConfig);
     }
-
 }
