@@ -10,7 +10,7 @@
         android:layout_gravity="center_horizontal">
 
         <!--Category-->
-        <si.modrajagoda.didi.views.RippleView
+        <ru.android4life.habittracker.views.RippleView
             android:id="@+id/add_habit_category_block"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -63,6 +63,6 @@
                 android:layout_below="@+id/add_habit_category_hint"
                 android:layout_marginTop="10dp"
                 android:background="@color/colorHint" />
-        </si.modrajagoda.didi.views.RippleView>
+        </ru.android4life.habittracker.views.RippleView>
     </RelativeLayout>
 </FrameLayout>

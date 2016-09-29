@@ -2,7 +2,7 @@
 # generated on 2012/10/07 11:08:18
 #
 # --table-start--
-dataClass=si.modrajagoda.didi.database.Day
+dataClass=Day
 tableName=days
 # --table-fields-start--
 # --field-start--
@@ -25,7 +25,7 @@ foreign=true
 # --table-end--
 #################################
 # --table-start--
-dataClass=si.modrajagoda.didi.database.Habit
+dataClass=Habit
 tableName=habits
 # --table-fields-start--
 # --field-start--
