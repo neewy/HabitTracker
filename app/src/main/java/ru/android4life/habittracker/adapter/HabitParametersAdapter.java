@@ -1,6 +1,9 @@
 package ru.android4life.habittracker.adapter;
 
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import java.util.List;
 
@@ -21,9 +25,17 @@ import ru.android4life.habittracker.views.RippleView;
 public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParametersAdapter.ViewHolder> {
 
     private List<HabitParameter> parameters;
+    private TimePickerDialog.OnTimeSetListener timePickerListener;
 
     public HabitParametersAdapter(List<HabitParameter> parameters) {
         this.parameters = parameters;
+        timePickerListener = new TimePickerDialog.OnTimeSetListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+            public void onTimeSet(TimePicker timePicker, int i, int i1) {
+                System.out.println(timePicker.getHour() + " " + timePicker.getMinute());
+            }
+        };
     }
 
     @Override
@@ -58,7 +70,9 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
 
             @Override
             public void onReminder(View caller) {
-
+                TimePickerDialog timePickerDialog = new TimePickerDialog(
+                        parent.getContext(), timePickerListener, 0, 0, true);
+                timePickerDialog.show();
             }
 
             @Override
