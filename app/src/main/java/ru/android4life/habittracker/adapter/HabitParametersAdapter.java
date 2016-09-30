@@ -1,5 +1,7 @@
 package ru.android4life.habittracker.adapter;
 
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +13,7 @@ import java.util.List;
 
 import ru.android4life.habittracker.HabitParameter;
 import ru.android4life.habittracker.R;
+import ru.android4life.habittracker.views.RippleView;
 
 /**
  * Created by Bulat Mukhutdinov on 28.09.2016.
@@ -24,9 +27,56 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.habit_parameter, parent, false);
-        return new ViewHolder(v);
+        HabitParametersAdapter.ViewHolder vh = new ViewHolder(v, new ViewHolder.AddHabitParameterListener() {
+            @Override
+            public void onCategory(View caller) {
+                //TODO replace items with values from db
+                final CharSequence[] items = {" Fitness ", " Health ", " Study ", " Other "};
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                        parent.getContext());
+                alertDialogBuilder.setTitle("Select category");
+                alertDialogBuilder
+                        .setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int item) {
+                                //TODO save selected value
+                                System.out.println(items[item]);
+
+                                dialog.cancel();
+                            }
+                        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+                // create alert dialog
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                // show it
+                alertDialog.show();
+            }
+
+            @Override
+            public void onReminder(View caller) {
+
+            }
+
+            @Override
+            public void onFrequency(View caller) {
+
+            }
+
+            @Override
+            public void onTune(View caller) {
+
+            }
+
+            @Override
+            public void onConfirmation(View caller) {
+
+            }
+        });
+        return vh;
     }
 
     @Override
@@ -42,16 +92,50 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
         return parameters.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView title;
         private TextView hint;
         private ImageView icon;
+        private RippleView block;
+        public AddHabitParameterListener mListener;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(View itemView, AddHabitParameterListener listener) {
             super(itemView);
+            mListener = listener;
             title = (TextView) itemView.findViewById(R.id.add_habit_category);
             hint = (TextView) itemView.findViewById(R.id.add_habit_category_hint);
             icon = (ImageView) itemView.findViewById(R.id.add_habit_category_icon);
+            block = (RippleView) itemView.findViewById(R.id.add_habit_category_block);
+            block.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            if (title.getText().toString().equals(view.getResources().getString(R.string.add_habit_name_category))) {
+                mListener.onCategory(view);
+            } else if (title.getText().toString().equals(view.getResources().getString(R.string.add_habit_name_reminder))) {
+                mListener.onReminder(view);
+            } else if (title.getText().toString().equals(view.getResources().getString(R.string.add_habit_name_frequency))) {
+                mListener.onFrequency(view);
+            } else if (title.getText().toString().equals(view.getResources().getString(R.string.add_habit_name_tune))) {
+                mListener.onTune(view);
+            } else {
+                mListener.onConfirmation(view);
+            }
+        }
+
+        public interface AddHabitParameterListener {
+            void onCategory(View caller);
+
+            void onReminder(View caller);
+
+            void onFrequency(View caller);
+
+            void onTune(View caller);
+
+            void onConfirmation(View caller);
+
         }
     }
 }
