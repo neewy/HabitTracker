@@ -54,7 +54,6 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
                             public void onClick(DialogInterface dialog, int item) {
                                 //TODO save selected value
                                 System.out.println(items[item]);
-
                                 dialog.cancel();
                             }
                         }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -77,7 +76,29 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
 
             @Override
             public void onFrequency(View caller) {
-
+                final CharSequence[] items = {" Daily ", " Weekly ", " Monthly ", " Specified days "};
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                        parent.getContext());
+                alertDialogBuilder.setTitle("Select a frequency");
+                alertDialogBuilder
+                        .setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int item) {
+                                //TODO save selected value
+                                System.out.println(items[item]);
+                                if (item == 3) {
+                                    createFrequencySpecifiedDaysDialog(parent);
+                                }
+                                dialog.cancel();
+                            }
+                        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+                // create alert dialog
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                // show it
+                alertDialog.show();
             }
 
             @Override
@@ -91,6 +112,46 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
             }
         });
         return vh;
+    }
+
+    private void createFrequencySpecifiedDaysDialog(ViewGroup parent) {
+        final boolean[] mCheckedItems = {false, false, false, false, false, false, false};
+        final CharSequence[] items = {" Monday ", " Tuesday ", " Wednesday ", " Thursday ", " Friday ", " Saturday ", " Sunday "};
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                parent.getContext());
+        alertDialogBuilder.setTitle("Select category");
+        alertDialogBuilder
+                .setMultiChoiceItems(items, mCheckedItems,
+                        new DialogInterface.OnMultiChoiceClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog,
+                                                int which, boolean isChecked) {
+                                mCheckedItems[which] = isChecked;
+                            }
+                        })
+                .setPositiveButton("Done",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog,
+                                                int id) {
+                                StringBuilder stringBuilder = new StringBuilder();
+                                for (int i = 0; i < mCheckedItems.length; i++) {
+                                    if (mCheckedItems[i]) {
+                                        stringBuilder.append(items[i] + " ");
+                                    }
+                                }
+                                System.out.println(stringBuilder);
+                            }
+                        })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        // show it
+        alertDialog.show();
     }
 
     @Override
