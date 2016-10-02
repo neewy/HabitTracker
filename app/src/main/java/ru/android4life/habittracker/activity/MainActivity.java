@@ -15,10 +15,11 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 
-import java.text.ParseException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import ru.android4life.habittracker.R;
-import ru.android4life.habittracker.db.Constants;
 import ru.android4life.habittracker.db.DatabaseManager;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitCategoryDAO;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitDAO;
@@ -68,13 +69,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         HabitCategoryDAO habitCategoryDAO = new HabitCategoryDAO(this.getApplicationContext());
         HabitDAO habitDAO = new HabitDAO(this.getApplicationContext());
         HabitScheduleDAO habitScheduleDAO = new HabitScheduleDAO(this.getApplicationContext());
-        try {
-            habitDAO.create(new Habit(1, "Privuichka 1", "do privuichka 1", "2015-01-02 03:04:05.6",
-                    55.75417935, 48.7440855, 9, Environment.getExternalStorageDirectory().getPath()
-                    + "/meouing_kittten.mp3", true, 60, 1));
-        } catch (ParseException e) {
-            Log.e(Constants.ERROR, e.getMessage(), e.fillInStackTrace());
-        }
+        Calendar c = new GregorianCalendar();
+        c.set(Calendar.HOUR_OF_DAY, 10);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        Date today = c.getTime();
+        c.add(Calendar.DATE, 1);
+        Date tomorrow = c.getTime();
+        c.add(Calendar.DATE, 1);
+        Date twoDaysAfterToday = c.getTime();
+        habitDAO.create(new Habit(1, "Privuichka 1", "do privuichka 1", today, 55.75417935,
+                48.7440855, 9, Environment.getExternalStorageDirectory().getPath()
+                + "/meouing_kittten.mp3", true, 60, 1));
+        habitDAO.create(new Habit(2, "Privuichka 2", "do privuichka 2", tomorrow, 55.75417935,
+                48.7440855, 9, Environment.getExternalStorageDirectory().getPath()
+                + "/meouing_kittten.mp3", true, 60, 1));
+        habitDAO.create(new Habit(3, "Privuichka 3", "do privuichka 3", twoDaysAfterToday,
+                55.75417935, 48.7440855, 9, Environment.getExternalStorageDirectory().getPath()
+                + "/meouing_kittten.mp3", true, 60, 1));
 
         context = this.getApplicationContext();
 
