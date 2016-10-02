@@ -166,4 +166,28 @@ public class HabitScheduleDAO implements ExtendedCrud {
 
         return items;
     }
+
+    public List<HabitSchedule> findHabitSchedulesForTomorrow() {
+        Calendar c = new GregorianCalendar();
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        c.add(Calendar.DATE, 1);
+        Date tomorrow = c.getTime();
+        c.add(Calendar.DATE, 1);
+        Date twoDaysAfterToday = c.getTime();
+
+        List<HabitSchedule> items = new ArrayList<>();
+
+        try {
+            QueryBuilder<HabitSchedule, Integer> qBuilder = helper.getHabitScheduleDao().queryBuilder();
+            qBuilder.where().ge(Constants.DATETIME, tomorrow).and().lt(Constants.DATETIME, twoDaysAfterToday);
+            items = qBuilder.query();
+        } catch (SQLException e) {
+            Log.d(Constants.DAO_ERROR, Constants.SQL_EXCEPTION_IN + Constants.SPACE +
+                    HabitScheduleDAO.class.getSimpleName());
+        }
+
+        return items;
+    }
 }

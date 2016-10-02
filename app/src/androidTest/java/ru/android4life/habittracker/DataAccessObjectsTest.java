@@ -276,7 +276,12 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         assertEquals(newHabitSchedule, habitScheduleFromMobileDatabaseWithMaxId);
         habitScheduleDAO.delete(newHabitSchedule);
         assertFalse(habitScheduleDAO.findAll().size() > 0 && newHabitSchedule == habitScheduleDAO.getObjectWithMaxId());
+    }
 
+    @Test
+    public void testFindingHabitSchedulesFoundForToday() throws ParseException {
+        HabitScheduleDAO habitScheduleDAO = new HabitScheduleDAO(this.getContext());
+        HabitSchedule newHabitSchedule = new HabitSchedule(id, modifiedDateTime, isPerformed, id);
         // Test schedules for today
         Calendar c = new GregorianCalendar();
         c.set(Calendar.HOUR_OF_DAY, 10);
@@ -284,14 +289,40 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         c.set(Calendar.SECOND, 0);
         Date today = c.getTime();
         c.add(Calendar.DATE, 2);
-        Date twoDaysAfter = c.getTime();
+        Date twoDaysAfterToday = c.getTime();
         habitScheduleDAO.create(newHabitSchedule);
         HabitSchedule habitScheduleForToday = new HabitSchedule(id, today, isPerformed, id);
         habitScheduleDAO.create(habitScheduleForToday);
-        newHabitSchedule = new HabitSchedule(id, twoDaysAfter, isPerformed, id);
+        newHabitSchedule = new HabitSchedule(id, twoDaysAfterToday, isPerformed, id);
         habitScheduleDAO.create(newHabitSchedule);
-        habitScheduleList = habitScheduleDAO.findHabitSchedulesForToday();
+        List<HabitSchedule> habitScheduleList = habitScheduleDAO.findHabitSchedulesForToday();
         assertEquals(habitScheduleList.size(), 1);
         assertEquals(habitScheduleList.get(0), habitScheduleForToday);
+    }
+
+    @Test
+    public void testFindingHabitSchedulesFoundForTomorrow() throws ParseException {
+        HabitScheduleDAO habitScheduleDAO = new HabitScheduleDAO(this.getContext());
+        HabitSchedule newHabitSchedule = new HabitSchedule(id, modifiedDateTime, isPerformed, id);
+        // Test schedules for tomorrow
+        Calendar c = new GregorianCalendar();
+        c.set(Calendar.HOUR_OF_DAY, 10);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        Date today = c.getTime();
+        c.add(Calendar.DATE, 1);
+        Date tomorrow = c.getTime();
+        c.add(Calendar.DATE, 1);
+        Date twoDaysAfterToday = c.getTime();
+        habitScheduleDAO.create(newHabitSchedule);
+        newHabitSchedule = new HabitSchedule(id, today, isPerformed, id);
+        habitScheduleDAO.create(newHabitSchedule);
+        HabitSchedule habitScheduleForTomorrow = new HabitSchedule(id, tomorrow, isPerformed, id);
+        habitScheduleDAO.create(habitScheduleForTomorrow);
+        newHabitSchedule = new HabitSchedule(id, twoDaysAfterToday, isPerformed, id);
+        habitScheduleDAO.create(newHabitSchedule);
+        List<HabitSchedule> habitScheduleList = habitScheduleDAO.findHabitSchedulesForTomorrow();
+        assertEquals(habitScheduleList.size(), 1);
+        assertEquals(habitScheduleList.get(0), habitScheduleForTomorrow);
     }
 }
