@@ -96,7 +96,7 @@ public class HabitTabsFragment extends Fragment {
                     return tab1;
                 case 1:
                     //TODO: Add statistics fragment
-                    Fragment tab2 = new Fragment();
+                    Fragment tab2 = new HabitStatisticsFragment();
                     return tab2;
                 default:
                     return null;

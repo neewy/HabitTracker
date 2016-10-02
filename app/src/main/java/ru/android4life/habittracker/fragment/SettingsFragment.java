@@ -48,7 +48,7 @@ public class SettingsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = (RelativeLayout) inflater.inflate(R.layout.settings_list, container, false);
+        view = (RelativeLayout) inflater.inflate(R.layout.fragment_settings_list, container, false);
         personalSettings = (RecyclerView) view.findViewById(R.id.personal_settings);
         inAppSettings = (RecyclerView) view.findViewById(R.id.in_app_info);
 
