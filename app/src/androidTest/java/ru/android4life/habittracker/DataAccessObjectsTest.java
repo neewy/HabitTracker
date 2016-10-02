@@ -325,4 +325,27 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         assertEquals(habitScheduleList.size(), 1);
         assertEquals(habitScheduleList.get(0), habitScheduleForTomorrow);
     }
+
+    @Test
+    public void testFindingHabitSchedulesFoundForNextMonth() throws ParseException {
+        HabitScheduleDAO habitScheduleDAO = new HabitScheduleDAO(this.getContext());
+        HabitSchedule newHabitSchedule = new HabitSchedule(id, modifiedDateTime, isPerformed, id);
+        // Test schedules for tomorrow
+        Calendar c = new GregorianCalendar();
+        c.set(Calendar.HOUR_OF_DAY, 10);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        c.add(Calendar.DATE, 1);
+        Date tomorrow = c.getTime();
+        c.add(Calendar.MONTH, 1);
+        Date aDayAndAMonthAfterToday = c.getTime();
+        habitScheduleDAO.create(newHabitSchedule);
+        HabitSchedule habitScheduleForTomorrow = new HabitSchedule(id, tomorrow, isPerformed, id);
+        habitScheduleDAO.create(habitScheduleForTomorrow);
+        newHabitSchedule = new HabitSchedule(id, aDayAndAMonthAfterToday, isPerformed, id);
+        habitScheduleDAO.create(newHabitSchedule);
+        List<HabitSchedule> habitScheduleList = habitScheduleDAO.findHabitSchedulesForTomorrow();
+        assertEquals(habitScheduleList.size(), 1);
+        assertEquals(habitScheduleList.get(0), habitScheduleForTomorrow);
+    }
 }
