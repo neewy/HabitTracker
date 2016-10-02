@@ -33,7 +33,7 @@ public class HabitCardFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         // adapter for habits parameters (thank you, Bulat)
-        mAdapter = new HabitParametersAdapter(HabitParameter.createParameters(getContext()));
+        mAdapter = new HabitParametersAdapter(getActivity(), HabitParameter.createParameters(getContext()));
     }
 
     @Nullable
