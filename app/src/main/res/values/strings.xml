@@ -52,4 +52,16 @@
     <string name="add_habit_name_frequency">Frequency</string>
     <string name="add_habit_name_tune">Tune</string>
     <string name="add_habit_name_confirmation">Confirmation</string>
+
+    <!--Settings-->
+    <string name="personal_settings">Personal Settings</string>
+    <string name="first_name">Fisrt name</string>
+    <string name="username">Username</string>
+    <string name="favorite_color">Favorite color</string>
+    <string name="sky_blue">Sky Blue</string>
+    <string name="language">Language</string>
+    <string name="english">English</string>
+    <string name="about">About</string>
+    <string name="contributors">Contributors</string>
+    <string name="notifications">Notifcations</string>
 </resources>

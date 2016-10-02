@@ -15,6 +15,7 @@ import android.view.MenuItem;
 
 import ru.android4life.habittracker.R;
 import ru.android4life.habittracker.fragment.HabitListFragment;
+import ru.android4life.habittracker.fragment.SettingsFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -61,6 +62,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 fragment = new HabitListFragment();
                 break;
             case R.id.nav_all_tasks:
+                break;
+            case R.id.nav_settings:
+                fragment = new SettingsFragment();
                 break;
             default:
                 Log.d("Drawer", "Any other was clicked");
