@@ -8,6 +8,9 @@ import org.junit.Test;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import ru.android4life.habittracker.db.Constants;
@@ -273,5 +276,22 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         assertEquals(newHabitSchedule, habitScheduleFromMobileDatabaseWithMaxId);
         habitScheduleDAO.delete(newHabitSchedule);
         assertFalse(habitScheduleDAO.findAll().size() > 0 && newHabitSchedule == habitScheduleDAO.getObjectWithMaxId());
+
+        // Test schedules for today
+        Calendar c = new GregorianCalendar();
+        c.set(Calendar.HOUR_OF_DAY, 10);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        Date today = c.getTime();
+        c.add(Calendar.DATE, 2);
+        Date twoDaysAfter = c.getTime();
+        habitScheduleDAO.create(newHabitSchedule);
+        HabitSchedule habitScheduleForToday = new HabitSchedule(id, today, isPerformed, id);
+        habitScheduleDAO.create(habitScheduleForToday);
+        newHabitSchedule = new HabitSchedule(id, twoDaysAfter, isPerformed, id);
+        habitScheduleDAO.create(newHabitSchedule);
+        habitScheduleList = habitScheduleDAO.findHabitSchedulesForToday();
+        assertEquals(habitScheduleList.size(), 1);
+        assertEquals(habitScheduleList.get(0), habitScheduleForToday);
     }
 }

@@ -7,6 +7,9 @@ import com.j256.ormlite.stmt.QueryBuilder;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import ru.android4life.habittracker.db.Constants;
@@ -139,5 +142,28 @@ public class HabitScheduleDAO implements ExtendedCrud {
         }
 
         return index;
+    }
+
+    public List<HabitSchedule> findHabitSchedulesForToday() {
+        Calendar c = new GregorianCalendar();
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        Date today = c.getTime();
+        c.add(Calendar.DATE, 1);
+        Date tomorrow = c.getTime();
+
+        List<HabitSchedule> items = new ArrayList<>();
+
+        try {
+            QueryBuilder<HabitSchedule, Integer> qBuilder = helper.getHabitScheduleDao().queryBuilder();
+            qBuilder.where().ge(Constants.DATETIME, today).and().lt(Constants.DATETIME, tomorrow);
+            items = qBuilder.query();
+        } catch (SQLException e) {
+            Log.d(Constants.DAO_ERROR, Constants.SQL_EXCEPTION_IN + Constants.SPACE +
+                    HabitScheduleDAO.class.getSimpleName());
+        }
+
+        return items;
     }
 }
