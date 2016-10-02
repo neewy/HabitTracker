@@ -12,6 +12,7 @@ import java.util.List;
 
 import ru.android4life.habittracker.R;
 import ru.android4life.habittracker.activity.MainActivity;
+import ru.android4life.habittracker.db.Constants;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitDAO;
 import ru.android4life.habittracker.db.tablesrepresentations.Habit;
 import ru.android4life.habittracker.fragment.HabitTabsFragment;
@@ -53,7 +54,7 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitListAdapter.View
         holder.title.setText(habits.get(position).getName());
         holder.question.setText(String.format(getStringFromResources(R.string.did_i_question),
                 habits.get(position).getQuestion()));
-        holder.time.setText("Today");
+        holder.time.setText(Constants.prettyTime.format(habits.get(position).getNotificationTime()));
     }
 
     @Override

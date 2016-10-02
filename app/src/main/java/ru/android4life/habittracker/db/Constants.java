@@ -1,5 +1,7 @@
 package ru.android4life.habittracker.db;
 
+import org.ocpsoft.prettytime.PrettyTime;
+
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
@@ -27,6 +29,9 @@ public final class Constants {
     public static final String ON_UPGRADE = "onUpgrade";
     public static final String CANNOT_CREATE_DATABASE = "Can't create database";
     public static final String CANNOT_DROP_DATABASES = "Can't drop databases";
+
+    // For habits list
+    public static final PrettyTime prettyTime = new PrettyTime(new Locale("en"));
 
     // Utility classes, which are a collection of static members, are not meant to be instantiated
     private Constants() {
