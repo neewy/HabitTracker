@@ -10,7 +10,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import ru.android4life.habittracker.R;
-import ru.android4life.habittracker.db.tablesrepresentations.Habit;
+import ru.android4life.habittracker.database.Habit;
 import ru.android4life.habittracker.fragment.HabitTabsFragment;
 
 /**
@@ -22,7 +22,8 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitListAdapter.View
     private String[] dummyList = new String[]{"Test1", "Test2", "Test3", "Test4", "Test5"};
     private FragmentManager fragmentManager;
 
-    public HabitListAdapter(FragmentManager fragmentManager) {
+    public HabitListAdapter(List<Habit> habits, FragmentManager fragmentManager) {
+        this.habits = habits;
         this.fragmentManager = fragmentManager;
     }
 

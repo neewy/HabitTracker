@@ -11,10 +11,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.ViewSwitcher;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import ru.android4life.habittracker.R;
 import ru.android4life.habittracker.activity.AddHabitActivity;
 import ru.android4life.habittracker.adapter.HabitListAdapter;
+import ru.android4life.habittracker.database.Habit;
 
 /**
  * Created by Nikolay Yushkevich on 21.09.16.
@@ -25,11 +30,14 @@ public class HabitListFragment extends Fragment {
     private RecyclerView listView;
     private LinearLayoutManager mLinearLayoutManager;
     private HabitListAdapter mAdapter;
+    private List<Habit> habits;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAdapter = new HabitListAdapter(getFragmentManager());
+        habits = createDummyListOfHabits();
+        mAdapter = new HabitListAdapter(habits, getFragmentManager());
     }
 
     @Nullable
@@ -39,8 +47,7 @@ public class HabitListFragment extends Fragment {
         view = (RelativeLayout) inflater.inflate(R.layout.habit_list, container, false);
         listView = (RecyclerView) view.findViewById(R.id.habits_list);
 
-        mLinearLayoutManager = new LinearLayoutManager(getActivity());
-        mLinearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        showHabits();
 
         // Process floating action bar
         final FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
@@ -52,10 +59,36 @@ public class HabitListFragment extends Fragment {
             }
         });
 
+        return view;
+    }
+
+
+    // creates some dummy objects, so the list appears in the view
+    // tip: comment addition of habits to check empty list view
+    private List<Habit> createDummyListOfHabits() {
+        List<Habit> list = new ArrayList<>();
+        list.add(new Habit());
+        list.add(new Habit());
+        list.add(new Habit());
+        return list;
+    }
+
+    private void showHabits(){
+        if (habits.isEmpty()) {
+            ViewSwitcher switcher = (ViewSwitcher) view.findViewById(R.id.switcher);
+            switcher.showNext();
+        } else {
+            setUpAndShowListOfHabits();
+        }
+    }
+
+    private void setUpAndShowListOfHabits() {
+        mLinearLayoutManager = new LinearLayoutManager(getActivity());
+        mLinearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+
         listView.setHasFixedSize(true);
         listView.setLayoutManager(mLinearLayoutManager);
         listView.setAdapter(mAdapter);
-        return view;
     }
 
 }
