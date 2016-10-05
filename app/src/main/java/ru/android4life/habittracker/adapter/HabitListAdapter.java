@@ -2,6 +2,7 @@ package ru.android4life.habittracker.adapter;
 
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,17 +27,19 @@ import ru.android4life.habittracker.fragment.HabitTabsFragment;
  */
 public class HabitListAdapter extends RecyclerView.Adapter<HabitListAdapter.ViewHolder> {
 
-    HabitScheduleDAO habitScheduleDAO;
-    HabitDAO habitDAO;
+    private HabitScheduleDAO habitScheduleDAO;
+    private HabitDAO habitDAO;
     private List<HabitSchedule> habitSchedules;
     private FragmentManager fragmentManager;
     private Context context;
+    private DrawerSelectionMode drawerSelectionMode;
 
     public HabitListAdapter(FragmentManager fragmentManager, DrawerSelectionMode drawerSelectionMode) {
         this.fragmentManager = fragmentManager;
         context = MainActivity.getContext();
         habitDAO = new HabitDAO(context);
         habitScheduleDAO = new HabitScheduleDAO(context);
+        this.drawerSelectionMode = drawerSelectionMode;
         habitSchedules =
                 getHabitSchedulesDependOnDrawerSelectionMode(drawerSelectionMode);
     }
@@ -58,12 +61,37 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitListAdapter.View
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        Habit habit = (Habit) habitDAO.findById(habitSchedules.get(position).getHabitId());
+    public void onBindViewHolder(final ViewHolder holder, int position) {
+        final HabitSchedule habitSchedule = habitSchedules.get(position);
+        final Habit habit = (Habit) habitDAO.findById(habitSchedule.getHabitId());
         holder.title.setText(habit.getName());
         holder.question.setText(String.format(getStringFromResources(R.string.did_i_question),
                 habit.getQuestion()));
-        holder.time.setText(Constants.prettyTime.format(habitSchedules.get(position).getDatetime()));
+        holder.time.setText(Constants.prettyTime.format(habitSchedule.getDatetime()));
+
+        holder.skip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HabitSchedule updatedHabitSchedule = new HabitSchedule(habitSchedule.getId(),
+                        habitSchedule.getDatetime(), habitSchedule.isPerformed(), true,
+                        habitSchedule.getHabitId());
+                habitScheduleDAO.update(updatedHabitSchedule);
+                habitSchedules = getHabitSchedulesDependOnDrawerSelectionMode(drawerSelectionMode);
+                notifyItemRemoved(holder.getAdapterPosition());
+            }
+        });
+
+        holder.done.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HabitSchedule updatedHabitSchedule = new HabitSchedule(habitSchedule.getId(),
+                        habitSchedule.getDatetime(), true, habitSchedule.isSkipped(),
+                        habitSchedule.getHabitId());
+                habitScheduleDAO.update(updatedHabitSchedule);
+                habitSchedules = getHabitSchedulesDependOnDrawerSelectionMode(drawerSelectionMode);
+                notifyItemRemoved(holder.getAdapterPosition());
+            }
+        });
     }
 
     @Override
@@ -101,12 +129,16 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitListAdapter.View
         private TextView title;
         private TextView question;
         private TextView time;
+        private AppCompatButton skip;
+        private AppCompatButton done;
 
         public ViewHolder(View itemView) {
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.habit_name);
             question = (TextView) itemView.findViewById(R.id.habit_question);
             time = (TextView) itemView.findViewById(R.id.habit_time);
+            skip = (AppCompatButton) itemView.findViewById(R.id.habit_skip);
+            done = (AppCompatButton) itemView.findViewById(R.id.habit_done);
         }
     }
 }
