@@ -22,6 +22,8 @@ public final class Constants {
     public static final char UNDERSCORE = '_';
     public static final String ID = "id";
     public static final String DATETIME = "datetime";
+    public static final String IS_PERFORMED = "isPerformed";
+    public static final String IS_SKIPPED = "isSkipped";
 
     // For DatabaseHelper
     public static final String DB_HELPER = "DB_HELPER";
