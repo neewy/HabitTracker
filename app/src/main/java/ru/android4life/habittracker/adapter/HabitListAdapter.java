@@ -88,7 +88,10 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitListAdapter.View
                         habitSchedule.getHabitId());
                 habitScheduleDAO.update(updatedHabitSchedule);
                 habitSchedules = getHabitSchedulesDependOnDrawerSelectionMode(drawerSelectionMode);
-                notifyItemRemoved(holder.getAdapterPosition());
+                if (drawerSelectionMode != DrawerSelectionMode.ALL_TASKS)
+                    notifyItemRemoved(holder.getAdapterPosition());
+                else
+                    notifyItemChanged(holder.getAdapterPosition());
             }
         });
 
@@ -100,7 +103,10 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitListAdapter.View
                         habitSchedule.getHabitId());
                 habitScheduleDAO.update(updatedHabitSchedule);
                 habitSchedules = getHabitSchedulesDependOnDrawerSelectionMode(drawerSelectionMode);
-                notifyItemRemoved(holder.getAdapterPosition());
+                if (drawerSelectionMode != DrawerSelectionMode.ALL_TASKS)
+                    notifyItemRemoved(holder.getAdapterPosition());
+                else
+                    notifyItemChanged(holder.getAdapterPosition());
             }
         });
     }
