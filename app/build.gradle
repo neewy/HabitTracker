@@ -48,7 +48,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:design:24.2.1'
 
-    compile 'com.github.PhilJay:MPAndroidChart:v3.0.0-beta1'
+    compile 'com.github.lecho:hellocharts-android:v1.5.8'
 
     /* for Android Tests to work */
     androidTestCompile 'com.android.support.test:runner:0.5'
