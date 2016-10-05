@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/personal_settings_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/personal_settings"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/personal_settings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/personal_settings_title"
+        android:layout_marginTop="10dp">
+
+    </android.support.v7.widget.RecyclerView>
+
+    <View
+        android:id="@+id/lower_bound_of_personal"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_below="@+id/personal_settings"
+        android:background="@color/colorHint" />
+
+    <TextView
+        android:id="@+id/personal_settings_second_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/notifications"
+        android:layout_alignLeft="@id/personal_settings_title"
+        android:layout_below="@id/personal_settings"
+        android:layout_marginTop="10dp" />
+
+
+    <android.support.v7.widget.SwitchCompat
+        android:id="@+id/settings_notifications_switch"
+        android:text="Show notifications"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="15dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/personal_settings_second_title"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"/>
+
+    <View
+        android:id="@+id/upper_bound_of_inapp"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_below="@id/settings_notifications_switch"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorHint" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/in_app_info"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/upper_bound_of_inapp">
+
+    </android.support.v7.widget.RecyclerView>
+
+</RelativeLayout>

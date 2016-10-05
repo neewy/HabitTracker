@@ -29,6 +29,7 @@ import ru.android4life.habittracker.db.tablesrepresentations.Habit;
 import ru.android4life.habittracker.db.tablesrepresentations.HabitSchedule;
 import ru.android4life.habittracker.fragment.DrawerSelectionMode;
 import ru.android4life.habittracker.fragment.HabitListFragment;
+import ru.android4life.habittracker.fragment.SettingsFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -110,6 +111,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_all_tasks:
                 drawerSelectionMode = DrawerSelectionMode.ALL_TASKS;
                 fragment = new HabitListFragment();
+                break;
+            case R.id.nav_settings:
+                fragment = new SettingsFragment();
                 break;
             default:
                 Log.d("Drawer", "Any other was clicked");

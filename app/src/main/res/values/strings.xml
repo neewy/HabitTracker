@@ -47,6 +47,23 @@
     <!--Add habit-->
     <string name="add_habit_name">Name of habit*</string>
     <string name="add_habit_question">Custom question</string>
+    <string name="add_habit_name_category">Category</string>
+    <string name="add_habit_name_reminder">Remind at</string>
+    <string name="add_habit_name_frequency">Frequency</string>
+    <string name="add_habit_name_tune">Tune</string>
+    <string name="add_habit_name_confirmation">Confirmation</string>
+
+    <!--Settings-->
+    <string name="personal_settings">Personal Settings</string>
+    <string name="first_name">Fisrt name</string>
+    <string name="username">Username</string>
+    <string name="favorite_color">Favorite color</string>
+    <string name="sky_blue">Sky Blue</string>
+    <string name="language">Language</string>
+    <string name="english">English</string>
+    <string name="about">About</string>
+    <string name="contributors">Contributors</string>
+    <string name="notifications">Notifcations</string>
 
     <!--Habits List-->
     <string name="did_i_question">Did I %1$s?</string>

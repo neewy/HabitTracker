@@ -27,15 +27,15 @@ public class HabitParameter {
 
     public static List<HabitParameter> createParameters(Context context) {
         List<HabitParameter> habitParameters = new ArrayList<>();
-        HabitParameter parameter = new HabitParameter("Category", "Fitness", ContextCompat.getDrawable(context, R.drawable.ic_add_habit_category));
+        HabitParameter parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_category), "Fitness", ContextCompat.getDrawable(context, R.drawable.ic_add_habit_category));
         habitParameters.add(parameter);
-        parameter = new HabitParameter("Remind at", "None", ContextCompat.getDrawable(context, R.drawable.ic_add_habit_reminder));
+        parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_reminder), "None", ContextCompat.getDrawable(context, R.drawable.ic_add_habit_reminder));
         habitParameters.add(parameter);
-        parameter = new HabitParameter("Frequency", "Daily", ContextCompat.getDrawable(context, R.drawable.ic_add_habit_frequency));
+        parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_frequency), "Daily", ContextCompat.getDrawable(context, R.drawable.ic_add_habit_frequency));
         habitParameters.add(parameter);
-        parameter = new HabitParameter("Tune", "Standard", ContextCompat.getDrawable(context, R.drawable.ic_add_habit_tune));
+        parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_tune), "Standard", ContextCompat.getDrawable(context, R.drawable.ic_add_habit_tune));
         habitParameters.add(parameter);
-        parameter = new HabitParameter("Confirmation", "After 30 min", ContextCompat.getDrawable(context, R.drawable.ic_add_habit_confirmation));
+        parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_confirmation), "After 30 min", ContextCompat.getDrawable(context, R.drawable.ic_add_habit_confirmation));
         habitParameters.add(parameter);
         return habitParameters;
     }
