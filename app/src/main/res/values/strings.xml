@@ -73,4 +73,5 @@
 
     <!--Main Activity-->
     <string name="drawerSelectionMode">drawerSelectionMode</string>
+    <string name="done_to_skipped_ratio">Done to skipped ratio</string>
 </resources>
