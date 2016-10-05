@@ -2,18 +2,12 @@ package ru.android4life.habittracker.adapter;
 
 import android.app.Activity;
 import android.app.TimePickerDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Build;
-import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
-import android.support.v4.content.CursorLoader;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -183,11 +177,11 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        public AddHabitParameterListener mListener;
         private TextView title;
         private TextView hint;
         private ImageView icon;
         private RippleView block;
-        public AddHabitParameterListener mListener;
 
         public ViewHolder(View itemView, AddHabitParameterListener listener) {
             super(itemView);

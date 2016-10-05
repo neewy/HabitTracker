@@ -78,6 +78,7 @@ public class SettingsFragment extends Fragment {
 
     /**
      * Generates a list of personal settings
+     *
      * @return personal settings list
      */
     private List<Setting> createListOfPersonalSettings() {
@@ -90,6 +91,7 @@ public class SettingsFragment extends Fragment {
 
     /**
      * Generates list of in-app settings
+     *
      * @return in-app settings list
      */
     private List<Setting> createListOfInAppSettings() {
@@ -98,6 +100,10 @@ public class SettingsFragment extends Fragment {
         inAppSettingsList.add(new Setting(getString(R.string.contributors)));
         inAppSettingsList.add(new Setting(getString(R.string.language)));
         return inAppSettingsList;
+    }
+
+    private enum SettingsType {
+        INAPP, PERSONAL
     }
 
     private class SettingsListAdapter extends RecyclerView.Adapter<SettingsListAdapter.SettingsViewHolder> {
@@ -166,9 +172,5 @@ public class SettingsFragment extends Fragment {
         public Setting(String title) {
             this.title = title;
         }
-    }
-
-    private enum SettingsType {
-        INAPP, PERSONAL
     }
 }
