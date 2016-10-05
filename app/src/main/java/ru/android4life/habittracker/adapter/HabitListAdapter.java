@@ -8,13 +8,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ru.android4life.habittracker.R;
 import ru.android4life.habittracker.activity.MainActivity;
 import ru.android4life.habittracker.db.Constants;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitDAO;
+import ru.android4life.habittracker.db.dataaccessobjects.HabitScheduleDAO;
 import ru.android4life.habittracker.db.tablesrepresentations.Habit;
+import ru.android4life.habittracker.db.tablesrepresentations.HabitSchedule;
+import ru.android4life.habittracker.fragment.DrawerSelectionMode;
 import ru.android4life.habittracker.fragment.HabitTabsFragment;
 
 /**
@@ -22,15 +26,19 @@ import ru.android4life.habittracker.fragment.HabitTabsFragment;
  */
 public class HabitListAdapter extends RecyclerView.Adapter<HabitListAdapter.ViewHolder> {
 
-    private List<Habit> habits;
+    HabitScheduleDAO habitScheduleDAO;
+    HabitDAO habitDAO;
+    private List<HabitSchedule> habitSchedules;
     private FragmentManager fragmentManager;
     private Context context;
 
-    public HabitListAdapter(FragmentManager fragmentManager) {
+    public HabitListAdapter(FragmentManager fragmentManager, DrawerSelectionMode drawerSelectionMode) {
         this.fragmentManager = fragmentManager;
         context = MainActivity.getContext();
-        HabitDAO habitDAO = new HabitDAO(context);
-        habits = (List<Habit>) habitDAO.findAll();
+        habitDAO = new HabitDAO(context);
+        habitScheduleDAO = new HabitScheduleDAO(context);
+        habitSchedules =
+                getHabitSchedulesDependOnDrawerSelectionMode(drawerSelectionMode);
     }
 
     /*public HabitListAdapter(List<Habit> habits) {
@@ -51,19 +59,42 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitListAdapter.View
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.title.setText(habits.get(position).getName());
+        Habit habit = (Habit) habitDAO.findById(habitSchedules.get(position).getHabitId());
+        holder.title.setText(habit.getName());
         holder.question.setText(String.format(getStringFromResources(R.string.did_i_question),
-                habits.get(position).getQuestion()));
-        holder.time.setText(Constants.prettyTime.format(habits.get(position).getNotificationTime()));
+                habit.getQuestion()));
+        holder.time.setText(Constants.prettyTime.format(habitSchedules.get(position).getDatetime()));
     }
 
     @Override
     public int getItemCount() {
-        return habits.size();
+        return habitSchedules.size();
     }
 
     private String getStringFromResources(int resource) {
         return context.getResources().getString(resource);
+    }
+
+    private List<HabitSchedule> getHabitSchedulesDependOnDrawerSelectionMode(
+            DrawerSelectionMode drawerSelectionMode) {
+        List<HabitSchedule> result = new ArrayList<>();
+        switch (drawerSelectionMode) {
+            case TODAY:
+                result = habitScheduleDAO.findHabitSchedulesForToday();
+                break;
+            case TOMORROW:
+                result = habitScheduleDAO.findHabitSchedulesForTomorrow();
+                break;
+            case NEXT_MONTH:
+                result = habitScheduleDAO.findHabitSchedulesForNextMonth();
+                break;
+            case ALL_TASKS:
+                result = (List<HabitSchedule>) habitScheduleDAO.findAll();
+                break;
+            default:
+                break;
+        }
+        return result;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

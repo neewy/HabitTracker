@@ -41,6 +41,7 @@ public class DataAccessObjectsTest extends AndroidTestCase {
     private int confirmAfterMinutes;
     private int categoryId;
     private boolean isPerformed;
+    private boolean isSkipped;
 
     @Before
     public void setUp() throws Exception {
@@ -67,6 +68,7 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         confirmAfterMinutes = 60;
         categoryId = 1;
         isPerformed = false;
+        isSkipped = false;
     }
 
     @Test
@@ -217,7 +219,7 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         HabitSchedule habitScheduleWithTheSameId;
         HabitSchedule habitScheduleFromMobileDatabaseWithMaxId;
 
-        HabitSchedule newHabitSchedule = new HabitSchedule(id, modifiedDateTime, isPerformed, id);
+        HabitSchedule newHabitSchedule = new HabitSchedule(id, modifiedDateTime, isPerformed, isSkipped, id);
         habitScheduleDAO.create(newHabitSchedule);
 
         // create(), findById() check
@@ -243,7 +245,7 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         // As auto-increment is used for the ids,
         // the id of the next created element will be bigger on 1
         id++;
-        newHabitSchedule = new HabitSchedule(id, modifiedDateTime, isPerformed, id);
+        newHabitSchedule = new HabitSchedule(id, modifiedDateTime, isPerformed, isSkipped, id);
 
         habitScheduleDAO.createOrUpdateIfExists(newHabitSchedule);
         habitScheduleFromMobileDatabaseWithMaxId = (HabitSchedule) habitScheduleDAO.getObjectWithMaxId();
@@ -252,7 +254,7 @@ public class DataAccessObjectsTest extends AndroidTestCase {
 
         isPerformed = true;
         // change isPerformed to true
-        newHabitSchedule = new HabitSchedule(id, modifiedDateTime, isPerformed, id);
+        newHabitSchedule = new HabitSchedule(id, modifiedDateTime, isPerformed, isSkipped, id);
         habitScheduleDAO.createOrUpdateIfExists(newHabitSchedule);
         habitScheduleFromMobileDatabaseWithMaxId = (HabitSchedule) habitScheduleDAO.getObjectWithMaxId();
         // createOrUpdateIfExists() check update
@@ -264,11 +266,11 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         // As auto-increment is used for the ids,
         // the id of the next created element will be bigger on 1
         id++;
-        newHabitSchedule = new HabitSchedule(id, modifiedDateTime, isPerformed, id);
+        newHabitSchedule = new HabitSchedule(id, modifiedDateTime, isPerformed, isSkipped, id);
 
         habitScheduleDAO.create(newHabitSchedule);
         // isPerformed is equal to true
-        newHabitSchedule = new HabitSchedule(id, modifiedDateTime, isPerformed, id);
+        newHabitSchedule = new HabitSchedule(id, modifiedDateTime, isPerformed, isSkipped, id);
         habitScheduleDAO.update(newHabitSchedule);
         habitScheduleFromMobileDatabaseWithMaxId = (HabitSchedule) habitScheduleDAO.getObjectWithMaxId();
         // check update()
@@ -281,7 +283,7 @@ public class DataAccessObjectsTest extends AndroidTestCase {
     @Test
     public void testFindingHabitSchedulesFoundForToday() throws ParseException {
         HabitScheduleDAO habitScheduleDAO = new HabitScheduleDAO(this.getContext());
-        HabitSchedule newHabitSchedule = new HabitSchedule(id, modifiedDateTime, isPerformed, id);
+        HabitSchedule newHabitSchedule = new HabitSchedule(id, modifiedDateTime, isPerformed, isSkipped, id);
         // Test schedules for today
         Calendar c = new GregorianCalendar();
         c.set(Calendar.HOUR_OF_DAY, 10);
@@ -291,9 +293,9 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         c.add(Calendar.DATE, 2);
         Date twoDaysAfterToday = c.getTime();
         habitScheduleDAO.create(newHabitSchedule);
-        HabitSchedule habitScheduleForToday = new HabitSchedule(id, today, isPerformed, id);
+        HabitSchedule habitScheduleForToday = new HabitSchedule(id, today, isPerformed, isSkipped, id);
         habitScheduleDAO.create(habitScheduleForToday);
-        newHabitSchedule = new HabitSchedule(id, twoDaysAfterToday, isPerformed, id);
+        newHabitSchedule = new HabitSchedule(id, twoDaysAfterToday, isPerformed, isSkipped, id);
         habitScheduleDAO.create(newHabitSchedule);
         List<HabitSchedule> habitScheduleList = habitScheduleDAO.findHabitSchedulesForToday();
         assertEquals(habitScheduleList.size(), 1);
@@ -303,7 +305,7 @@ public class DataAccessObjectsTest extends AndroidTestCase {
     @Test
     public void testFindingHabitSchedulesFoundForTomorrow() throws ParseException {
         HabitScheduleDAO habitScheduleDAO = new HabitScheduleDAO(this.getContext());
-        HabitSchedule newHabitSchedule = new HabitSchedule(id, modifiedDateTime, isPerformed, id);
+        HabitSchedule newHabitSchedule = new HabitSchedule(id, modifiedDateTime, isPerformed, isSkipped, id);
         // Test schedules for tomorrow
         Calendar c = new GregorianCalendar();
         c.set(Calendar.HOUR_OF_DAY, 10);
@@ -315,11 +317,11 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         c.add(Calendar.DATE, 1);
         Date twoDaysAfterToday = c.getTime();
         habitScheduleDAO.create(newHabitSchedule);
-        newHabitSchedule = new HabitSchedule(id, today, isPerformed, id);
+        newHabitSchedule = new HabitSchedule(id, today, isPerformed, isSkipped, id);
         habitScheduleDAO.create(newHabitSchedule);
-        HabitSchedule habitScheduleForTomorrow = new HabitSchedule(id, tomorrow, isPerformed, id);
+        HabitSchedule habitScheduleForTomorrow = new HabitSchedule(id, tomorrow, isPerformed, isSkipped, id);
         habitScheduleDAO.create(habitScheduleForTomorrow);
-        newHabitSchedule = new HabitSchedule(id, twoDaysAfterToday, isPerformed, id);
+        newHabitSchedule = new HabitSchedule(id, twoDaysAfterToday, isPerformed, isSkipped, id);
         habitScheduleDAO.create(newHabitSchedule);
         List<HabitSchedule> habitScheduleList = habitScheduleDAO.findHabitSchedulesForTomorrow();
         assertEquals(habitScheduleList.size(), 1);
@@ -329,7 +331,7 @@ public class DataAccessObjectsTest extends AndroidTestCase {
     @Test
     public void testFindingHabitSchedulesFoundForNextMonth() throws ParseException {
         HabitScheduleDAO habitScheduleDAO = new HabitScheduleDAO(this.getContext());
-        HabitSchedule newHabitSchedule = new HabitSchedule(id, modifiedDateTime, isPerformed, id);
+        HabitSchedule newHabitSchedule = new HabitSchedule(id, modifiedDateTime, isPerformed, isSkipped, id);
         // Test schedules for tomorrow
         Calendar c = new GregorianCalendar();
         c.set(Calendar.HOUR_OF_DAY, 10);
@@ -340,9 +342,9 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         c.add(Calendar.MONTH, 1);
         Date aDayAndAMonthAfterToday = c.getTime();
         habitScheduleDAO.create(newHabitSchedule);
-        HabitSchedule habitScheduleForTomorrow = new HabitSchedule(id, tomorrow, isPerformed, id);
+        HabitSchedule habitScheduleForTomorrow = new HabitSchedule(id, tomorrow, isPerformed, isSkipped, id);
         habitScheduleDAO.create(habitScheduleForTomorrow);
-        newHabitSchedule = new HabitSchedule(id, aDayAndAMonthAfterToday, isPerformed, id);
+        newHabitSchedule = new HabitSchedule(id, aDayAndAMonthAfterToday, isPerformed, isSkipped, id);
         habitScheduleDAO.create(newHabitSchedule);
         List<HabitSchedule> habitScheduleList = habitScheduleDAO.findHabitSchedulesForTomorrow();
         assertEquals(habitScheduleList.size(), 1);

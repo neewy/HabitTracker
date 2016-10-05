@@ -1,6 +1,7 @@
 package ru.android4life.habittracker.activity;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Environment;
@@ -25,17 +26,25 @@ import ru.android4life.habittracker.db.dataaccessobjects.HabitCategoryDAO;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitDAO;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitScheduleDAO;
 import ru.android4life.habittracker.db.tablesrepresentations.Habit;
+import ru.android4life.habittracker.db.tablesrepresentations.HabitSchedule;
+import ru.android4life.habittracker.fragment.DrawerSelectionMode;
 import ru.android4life.habittracker.fragment.HabitListFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static Context context;
+    private static DrawerSelectionMode drawerSelectionMode;
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
     private FragmentManager fragmentManager;
+    private SharedPreferences prefs = null;
 
     public static Context getContext() {
         return context;
+    }
+
+    public static DrawerSelectionMode getDrawerSelectionMode() {
+        return drawerSelectionMode;
     }
 
     /**
@@ -65,32 +74,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //Init the database manager
         DatabaseManager.setHelper(this);
 
-        /* Creation of demo data while the creation buttons doesn't work */
-        HabitCategoryDAO habitCategoryDAO = new HabitCategoryDAO(this.getApplicationContext());
-        HabitDAO habitDAO = new HabitDAO(this.getApplicationContext());
-        HabitScheduleDAO habitScheduleDAO = new HabitScheduleDAO(this.getApplicationContext());
-        Calendar c = new GregorianCalendar();
-        c.set(Calendar.HOUR_OF_DAY, 10);
-        c.set(Calendar.MINUTE, 0);
-        c.set(Calendar.SECOND, 0);
-        Date today = c.getTime();
-        c.add(Calendar.DATE, 1);
-        Date tomorrow = c.getTime();
-        c.add(Calendar.DATE, 1);
-        Date twoDaysAfterToday = c.getTime();
-        habitDAO.create(new Habit(1, "Privuichka 1", "do privuichka 1", today, 55.75417935,
-                48.7440855, 9, Environment.getExternalStorageDirectory().getPath()
-                + "/meouing_kittten.mp3", true, 60, 1));
-        habitDAO.create(new Habit(2, "Privuichka 2", "do privuichka 2", tomorrow, 55.75417935,
-                48.7440855, 9, Environment.getExternalStorageDirectory().getPath()
-                + "/meouing_kittten.mp3", true, 60, 1));
-        habitDAO.create(new Habit(3, "Privuichka 3", "do privuichka 3", twoDaysAfterToday,
-                55.75417935, 48.7440855, 9, Environment.getExternalStorageDirectory().getPath()
-                + "/meouing_kittten.mp3", true, 60, 1));
+        // run method forFirstRun only if the application wasn't run after installation
+        prefs = getSharedPreferences("firstRun", MODE_PRIVATE);
+        if (prefs.getBoolean("firstrun", true)) {
+            forFirstRun();
+        }
 
         context = this.getApplicationContext();
 
-        fragmentManager.beginTransaction().replace(R.id.container, new HabitListFragment()).commit();
+        drawerSelectionMode = DrawerSelectionMode.TODAY;
+        fragmentManager.beginTransaction().replace(R.id.container,
+                new HabitListFragment()).commit();
     }
 
     @Override
@@ -102,9 +96,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Fragment fragment = null;
         switch (item.getItemId()) {
             case R.id.nav_today:
+                drawerSelectionMode = DrawerSelectionMode.TODAY;
+                fragment = new HabitListFragment();
+                break;
+            case R.id.nav_tomorrow:
+                drawerSelectionMode = DrawerSelectionMode.TOMORROW;
+                fragment = new HabitListFragment();
+                break;
+            case R.id.nav_next_month:
+                drawerSelectionMode = DrawerSelectionMode.NEXT_MONTH;
                 fragment = new HabitListFragment();
                 break;
             case R.id.nav_all_tasks:
+                drawerSelectionMode = DrawerSelectionMode.ALL_TASKS;
+                fragment = new HabitListFragment();
                 break;
             default:
                 Log.d("Drawer", "Any other was clicked");
@@ -137,5 +142,44 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onConfigurationChanged(newConfig);
         // Pass any configuration change to the drawer toggles
         toggle.onConfigurationChanged(newConfig);
+    }
+
+    void forFirstRun() {
+
+        // Do first run stuff here then set 'firstrun' as false
+        /* Creation of demo data while the creation buttons doesn't work */
+        HabitCategoryDAO habitCategoryDAO = new HabitCategoryDAO(this.getApplicationContext());
+        HabitDAO habitDAO = new HabitDAO(this.getApplicationContext());
+        HabitScheduleDAO habitScheduleDAO = new HabitScheduleDAO(this.getApplicationContext());
+        Calendar c = new GregorianCalendar();
+        c.set(Calendar.HOUR_OF_DAY, 10);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        Date today = c.getTime();
+        c.add(Calendar.DATE, 1);
+        Date tomorrow = c.getTime();
+        c.add(Calendar.DATE, 1);
+        Date twoDaysAfterToday = c.getTime();
+        habitDAO.create(new Habit(1, "Privuichka 1", "do privuichka 1", today, 55.75417935,
+                48.7440855, 9, Environment.getExternalStorageDirectory().getPath()
+                + "/meouing_kittten.mp3", true, 60, 1));
+        habitDAO.create(new Habit(2, "Privuichka 2", "do privuichka 2", tomorrow, 55.75417935,
+                48.7440855, 9, Environment.getExternalStorageDirectory().getPath()
+                + "/meouing_kittten.mp3", true, 60, 1));
+        habitDAO.create(new Habit(3, "Privuichka 3", "do privuichka 3", twoDaysAfterToday,
+                55.75417935, 48.7440855, 9, Environment.getExternalStorageDirectory().getPath()
+                + "/meouing_kittten.mp3", true, 60, 1));
+        habitScheduleDAO.create(new HabitSchedule(1, today, false, false, 1));
+        habitScheduleDAO.create(new HabitSchedule(2, today, true, false, 2));
+        habitScheduleDAO.create(new HabitSchedule(3, today, false, false, 3));
+        habitScheduleDAO.create(new HabitSchedule(4, tomorrow, false, false, 1));
+        habitScheduleDAO.create(new HabitSchedule(5, tomorrow, false, false, 2));
+        habitScheduleDAO.create(new HabitSchedule(6, tomorrow, false, false, 3));
+        habitScheduleDAO.create(new HabitSchedule(7, twoDaysAfterToday, false, false, 1));
+        habitScheduleDAO.create(new HabitSchedule(8, twoDaysAfterToday, false, false, 2));
+        habitScheduleDAO.create(new HabitSchedule(9, twoDaysAfterToday, true, false, 3));
+
+        // using the following line to edit/commit prefs
+        prefs.edit().putBoolean("firstrun", false).apply();
     }
 }

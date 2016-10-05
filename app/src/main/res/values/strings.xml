@@ -50,4 +50,10 @@
 
     <!--Habits List-->
     <string name="did_i_question">Did I %1$s?</string>
+
+    <!--HabitListFragment-->
+    <string name="today_capital_case">TODAY</string>
+
+    <!--Main Activity-->
+    <string name="drawerSelectionMode">drawerSelectionMode</string>
 </resources>

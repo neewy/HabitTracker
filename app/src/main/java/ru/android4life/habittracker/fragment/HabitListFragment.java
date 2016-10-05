@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 
 import ru.android4life.habittracker.R;
 import ru.android4life.habittracker.activity.AddHabitActivity;
+import ru.android4life.habittracker.activity.MainActivity;
 import ru.android4life.habittracker.adapter.HabitListAdapter;
 
 /**
@@ -29,7 +30,7 @@ public class HabitListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAdapter = new HabitListAdapter(getFragmentManager());
+        mAdapter = new HabitListAdapter(getFragmentManager(), MainActivity.getDrawerSelectionMode());
     }
 
     @Nullable

@@ -21,20 +21,25 @@ public class HabitSchedule {
     @DatabaseField
     private boolean isPerformed;
     @DatabaseField
+    private boolean isSkipped;
+    @DatabaseField
     private int habitId;
 
-    public HabitSchedule(int id, Date datetime, boolean isPerformed, int habitId) {
+    public HabitSchedule(int id, Date datetime, boolean isPerformed,
+                         boolean isSkipped, int habitId) {
         this.id = id;
         this.datetime = datetime;
         this.isPerformed = isPerformed;
+        this.isSkipped = isSkipped;
         this.habitId = habitId;
     }
 
-    public HabitSchedule(int id, String datetimeString, boolean isPerformed,
+    public HabitSchedule(int id, String datetimeString, boolean isPerformed, boolean isSkipped,
                          int habitId) throws ParseException {
         this.id = id;
         this.datetime = Constants.dateFormat.parse(datetimeString);
         this.isPerformed = isPerformed;
+        this.isSkipped = isSkipped;
         this.habitId = habitId;
     }
 
@@ -59,6 +64,10 @@ public class HabitSchedule {
         return isPerformed;
     }
 
+    public boolean isSkipped() {
+        return isSkipped;
+    }
+
     public int getHabitId() {
         return habitId;
     }
@@ -76,10 +85,11 @@ public class HabitSchedule {
             return false;
         if (isPerformed() != that.isPerformed())
             return false;
+        if (isSkipped() != that.isSkipped())
+            return false;
         if (getHabitId() != that.getHabitId())
             return false;
-        return getDatetime() != null ? getDatetime()
-                .equals(that.getDatetime()) : that.getDatetime() == null;
+        return getDatetime() != null ? getDatetime().equals(that.getDatetime()) : that.getDatetime() == null;
 
     }
 
@@ -88,6 +98,7 @@ public class HabitSchedule {
         int result = getId();
         result = 31 * result + (getDatetime() != null ? getDatetime().hashCode() : 0);
         result = 31 * result + (isPerformed() ? 1 : 0);
+        result = 31 * result + (isSkipped() ? 1 : 0);
         result = 31 * result + getHabitId();
         return result;
     }
