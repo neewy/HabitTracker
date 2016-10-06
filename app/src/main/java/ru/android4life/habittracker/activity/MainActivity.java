@@ -21,6 +21,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import ru.android4life.habittracker.R;
+import ru.android4life.habittracker.db.Constants;
+import ru.android4life.habittracker.db.DatabaseHelper;
 import ru.android4life.habittracker.db.DatabaseManager;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitCategoryDAO;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitDAO;
@@ -30,6 +32,7 @@ import ru.android4life.habittracker.db.tablesrepresentations.HabitSchedule;
 import ru.android4life.habittracker.fragment.DrawerSelectionMode;
 import ru.android4life.habittracker.fragment.HabitListFragment;
 import ru.android4life.habittracker.fragment.SettingsFragment;
+import ru.android4life.habittracker.fragment.StatisticsFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -39,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ActionBarDrawerToggle toggle;
     private FragmentManager fragmentManager;
     private SharedPreferences prefs = null;
+    private DatabaseHelper database;
 
     public static Context getContext() {
         return context;
@@ -82,7 +86,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         context = this.getApplicationContext();
-
+        // Initiate db
+        DatabaseManager.setHelper(context);
+        database = DatabaseManager.getHelper();
+        database.onUpgrade(database.getReadableDatabase(), database.getConnectionSource(),
+                Constants.DATABASE_VERSION, Constants.DATABASE_VERSION);
         drawerSelectionMode = DrawerSelectionMode.TODAY;
         fragmentManager.beginTransaction().replace(R.id.container,
                 new HabitListFragment()).commit();
@@ -111,6 +119,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_all_tasks:
                 drawerSelectionMode = DrawerSelectionMode.ALL_TASKS;
                 fragment = new HabitListFragment();
+                break;
+            case R.id.nav_statistics:
+                fragment = new StatisticsFragment();
                 break;
             case R.id.nav_settings:
                 fragment = new SettingsFragment();

@@ -49,6 +49,7 @@ dependencies {
     compile 'com.android.support:design:24.2.1'
     compile 'org.ocpsoft.prettytime:prettytime:4.0.1.Final' //human readable date
 
+    /* Charts */
     compile 'com.github.lecho:hellocharts-android:v1.5.8'
 
     /* for Android Tests to work */

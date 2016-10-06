@@ -10,12 +10,17 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import ru.android4life.habittracker.activity.MainActivity;
 import ru.android4life.habittracker.db.Constants;
 import ru.android4life.habittracker.db.DatabaseHelper;
 import ru.android4life.habittracker.db.DatabaseManager;
+import ru.android4life.habittracker.db.tablesrepresentations.Habit;
 import ru.android4life.habittracker.db.tablesrepresentations.HabitSchedule;
+import ru.android4life.habittracker.legacy.Main;
 
 /**
  * Created by alnedorezov on 9/28/16.
@@ -209,13 +214,29 @@ public class HabitScheduleDAO implements ExtendedCrud {
             QueryBuilder<HabitSchedule, Integer> qBuilder = helper.getHabitScheduleDao().queryBuilder();
             qBuilder.where().ge(Constants.DATETIME, today).and().lt(Constants.DATETIME, monthAfterToday)
                     .and().eq(Constants.IS_PERFORMED, false).and().eq(Constants.IS_SKIPPED, false);
-            ;
             items = qBuilder.query();
         } catch (SQLException e) {
             Log.d(Constants.DAO_ERROR, Constants.SQL_EXCEPTION_IN + Constants.SPACE +
                     HabitScheduleDAO.class.getSimpleName());
         }
+        return items;
+    }
 
+    public List<HabitSchedule> findHabitSchedulesForCurrentMonth() {
+        List<HabitSchedule> items = new ArrayList<>();
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.DAY_OF_MONTH, 1);
+        Date firstDay = c.getTime();
+        c.set(Calendar.DATE, c.getActualMaximum(Calendar.DATE));
+        Date lastDay = c.getTime();
+        try {
+            QueryBuilder<HabitSchedule, Integer> qBuilder = helper.getHabitScheduleDao().queryBuilder();
+            qBuilder.where().ge(Constants.DATETIME, firstDay).and().lt(Constants.DATETIME, lastDay);
+            items = qBuilder.query();
+        } catch (SQLException e) {
+            Log.d(Constants.DAO_ERROR, Constants.SQL_EXCEPTION_IN + Constants.SPACE +
+                    HabitScheduleDAO.class.getSimpleName());
+        }
         return items;
     }
 }
