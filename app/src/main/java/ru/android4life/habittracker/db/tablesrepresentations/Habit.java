@@ -16,9 +16,9 @@ import ru.android4life.habittracker.db.Constants;
 public class Habit {
     @DatabaseField(generatedId = true, unique = true)
     private int id;
-    @DatabaseField(unique = true)
+    @DatabaseField
     private String name;
-    @DatabaseField(unique = true)
+    @DatabaseField
     private String question;
     @DatabaseField
     private Date notificationTime = null;
