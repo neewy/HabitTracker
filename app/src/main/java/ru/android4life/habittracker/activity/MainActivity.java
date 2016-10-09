@@ -89,8 +89,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Initiate db
         DatabaseManager.setHelper(context);
         database = DatabaseManager.getHelper();
-        database.onUpgrade(database.getReadableDatabase(), database.getConnectionSource(),
-                Constants.DATABASE_VERSION, Constants.DATABASE_VERSION);
         drawerSelectionMode = DrawerSelectionMode.TODAY;
         fragmentManager.beginTransaction().replace(R.id.container,
                 new HabitListFragment()).commit();

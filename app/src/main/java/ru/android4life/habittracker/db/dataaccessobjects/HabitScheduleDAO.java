@@ -221,8 +221,19 @@ public class HabitScheduleDAO implements ExtendedCrud {
         }
         return items;
     }
-
-    public List<HabitSchedule> findHabitSchedulesForCurrentMonth() {
+    public List<HabitSchedule> findInRange(Date from, Date to) {
+        List<HabitSchedule> items = new ArrayList<>();
+        try {
+            QueryBuilder<HabitSchedule, Integer> qBuilder = helper.getHabitScheduleDao().queryBuilder();
+            qBuilder.where().ge(Constants.DATETIME, from).and().lt(Constants.DATETIME, to);
+            items = qBuilder.query();
+        } catch (SQLException e) {
+            Log.d(Constants.DAO_ERROR, Constants.SQL_EXCEPTION_IN + Constants.SPACE +
+                    HabitScheduleDAO.class.getSimpleName());
+        }
+        return  items;
+    }
+    public List<HabitSchedule> findForCurrentMonth() {
         List<HabitSchedule> items = new ArrayList<>();
         Calendar c = Calendar.getInstance();
         c.set(Calendar.DAY_OF_MONTH, 1);
