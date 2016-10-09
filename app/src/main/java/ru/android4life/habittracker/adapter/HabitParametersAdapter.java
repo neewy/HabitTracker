@@ -2,6 +2,7 @@ package ru.android4life.habittracker.adapter;
 
 import android.app.Activity;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.RingtoneManager;
@@ -21,6 +22,10 @@ import java.util.List;
 import ru.android4life.habittracker.HabitParameter;
 import ru.android4life.habittracker.R;
 import ru.android4life.habittracker.activity.AddHabitActivity;
+import ru.android4life.habittracker.activity.MainActivity;
+import ru.android4life.habittracker.db.dataaccessobjects.HabitCategoryDAO;
+import ru.android4life.habittracker.db.dataaccessobjects.HabitDAO;
+import ru.android4life.habittracker.db.dataaccessobjects.HabitScheduleDAO;
 import ru.android4life.habittracker.views.RippleView;
 
 /**
@@ -31,10 +36,18 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
     private List<HabitParameter> parameters;
     private TimePickerDialog.OnTimeSetListener timePickerListener;
     private Activity activity;
+    private HabitScheduleDAO habitScheduleDAO;
+    private HabitDAO habitDAO;
+    private HabitCategoryDAO habitCategoryDAO;
+    private Context context;
 
     public HabitParametersAdapter(Activity activity, List<HabitParameter> parameters) {
         this.parameters = parameters;
         this.activity = activity;
+        context = MainActivity.getContext();
+        habitCategoryDAO = new HabitCategoryDAO(context);
+        habitDAO = new HabitDAO(context);
+        habitScheduleDAO = new HabitScheduleDAO(context);
         timePickerListener = new TimePickerDialog.OnTimeSetListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
@@ -51,7 +64,9 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
             @Override
             public void onCategory(View caller) {
                 //TODO replace items with values from db
-                final CharSequence[] items = {" Fitness ", " Health ", " Study ", " Other "};
+                final CharSequence[] items = habitCategoryDAO.getArrayOfAllNames();
+
+
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                         parent.getContext());
                 alertDialogBuilder.setTitle("Select category");

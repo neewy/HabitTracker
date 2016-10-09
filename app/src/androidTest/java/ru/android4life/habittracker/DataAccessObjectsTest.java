@@ -350,4 +350,19 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         assertEquals(habitScheduleList.size(), 1);
         assertEquals(habitScheduleList.get(0), habitScheduleForTomorrow);
     }
+
+    @Test
+    public void testGetArrayOfAllHabitCategoryNames() throws ParseException {
+        HabitCategoryDAO habitCategoryDAO = new HabitCategoryDAO(this.getContext());
+        HabitCategory habitCategory = new HabitCategory(id, name);
+        habitCategoryDAO.create(habitCategory);
+        // change name to "abrakadabra"
+        habitCategory = new HabitCategory(id, "abrakadabra");
+        habitCategoryDAO.create(habitCategory);
+        CharSequence[] categoryNamesArray = habitCategoryDAO.getArrayOfAllNames();
+        List<HabitCategory> habitCategories = (List<HabitCategory>) habitCategoryDAO.findAll();
+        assertEquals(categoryNamesArray.length, habitCategories.size());
+        for (int i = 0; i < categoryNamesArray.length; i++)
+            assertEquals(categoryNamesArray[i], habitCategories.get(i).getName());
+    }
 }

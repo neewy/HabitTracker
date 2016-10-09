@@ -141,14 +141,13 @@ public class HabitCategoryDAO implements ExtendedCrud {
         return index;
     }
 
-    public List<String> getAllNames() {
-
-        List<String> categoryNames = new ArrayList<>();
+    public CharSequence[] getArrayOfAllNames() {
 
         List<HabitCategory> habitCategories = (List<HabitCategory>) findAll();
-        for(HabitCategory habitCategory: habitCategories)
-            categoryNames.add(habitCategory.getName());
+        CharSequence[] categoryNamesArray = new CharSequence[habitCategories.size()];
+        for (int i = 0; i < categoryNamesArray.length; i++)
+            categoryNamesArray[i] = habitCategories.get(i).getName();
 
-        return categoryNames;
+        return categoryNamesArray;
     }
 }
