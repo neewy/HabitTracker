@@ -41,7 +41,7 @@
 
     <!--Navigation bar header text-->
     <string name="navigation_drawer_header_title">Did I? 2K16</string>
-    <string name="navigation_drawer_header_support_address">support@android4life.com</string>
+    <string name="navigation_drawer_header_support_address">support@android4life.ru</string>
 
 
     <!--Add habit-->

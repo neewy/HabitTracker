@@ -26,6 +26,7 @@ import ru.android4life.habittracker.db.dataaccessobjects.HabitCategoryDAO;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitDAO;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitScheduleDAO;
 import ru.android4life.habittracker.db.tablesrepresentations.Habit;
+import ru.android4life.habittracker.db.tablesrepresentations.HabitCategory;
 import ru.android4life.habittracker.db.tablesrepresentations.HabitSchedule;
 import ru.android4life.habittracker.fragment.DrawerSelectionMode;
 import ru.android4life.habittracker.fragment.HabitListFragment;
@@ -155,6 +156,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         HabitCategoryDAO habitCategoryDAO = new HabitCategoryDAO(this.getApplicationContext());
         HabitDAO habitDAO = new HabitDAO(this.getApplicationContext());
         HabitScheduleDAO habitScheduleDAO = new HabitScheduleDAO(this.getApplicationContext());
+        habitCategoryDAO.create(new HabitCategory(1, "Sport"));
+        habitCategoryDAO.create(new HabitCategory(2, "Reading"));
+        habitCategoryDAO.create(new HabitCategory(3, "Cooking"));
+        habitCategoryDAO.create(new HabitCategory(4, "Cleaning"));
+        habitCategoryDAO.create(new HabitCategory(5, "Studying"));
+        habitCategoryDAO.create(new HabitCategory(6, "Health"));
+        habitCategoryDAO.create(new HabitCategory(1, "Other"));
+
+
         Calendar c = new GregorianCalendar();
         c.set(Calendar.HOUR_OF_DAY, 10);
         c.set(Calendar.MINUTE, 0);

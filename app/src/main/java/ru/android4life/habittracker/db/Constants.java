@@ -24,6 +24,7 @@ public final class Constants {
     public static final String DATETIME = "datetime";
     public static final String IS_PERFORMED = "isPerformed";
     public static final String IS_SKIPPED = "isSkipped";
+    public static final String NAME = "name";
 
     // For DatabaseHelper
     public static final String DB_HELPER = "DB_HELPER";
