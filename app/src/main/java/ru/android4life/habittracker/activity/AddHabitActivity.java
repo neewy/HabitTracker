@@ -20,7 +20,7 @@ import ru.android4life.habittracker.views.RippleView;
 /**
  * Created by Bulat Mukhutdinov on 24.09.2016.
  */
-public class AddHabitActivity extends AppCompatActivity {
+public class AddHabitActivity extends AppCompatActivity {//implements View.OnClickListener {
 
     public static final int PICK_AUDIO_REQUEST = 0;
     private RecyclerView mRecyclerView;
@@ -45,6 +45,24 @@ public class AddHabitActivity extends AppCompatActivity {
 
             }
         });
+
+        final RippleView confirmButton = (RippleView) findViewById(R.id.add_habit_confirm_button);
+        confirmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // TODO: Get data from HabitParametersAdapter, create Habits according to it
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
+                    }
+                }, (int) (textView.getRippleDuration() * 1.1d));
+            }
+        });
+
         mRecyclerView = (RecyclerView) findViewById(R.id.habit_parameters_list);
 
         // use this setting to improve performance if you know that changes

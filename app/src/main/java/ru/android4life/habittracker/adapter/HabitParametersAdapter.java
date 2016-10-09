@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
@@ -26,6 +27,7 @@ import ru.android4life.habittracker.activity.MainActivity;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitCategoryDAO;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitDAO;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitScheduleDAO;
+import ru.android4life.habittracker.db.tablesrepresentations.HabitCategory;
 import ru.android4life.habittracker.views.RippleView;
 
 /**
@@ -62,10 +64,10 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.habit_parameter, parent, false);
         HabitParametersAdapter.ViewHolder vh = new ViewHolder(v, new ViewHolder.AddHabitParameterListener() {
             @Override
-            public void onCategory(View caller) {
+            public void onCategory(View caller, final TextView hint) {
                 //TODO replace items with values from db
                 final CharSequence[] items = habitCategoryDAO.getArrayOfAllNames();
-
+                final List<HabitCategory> habitCategories = (List<HabitCategory>) habitCategoryDAO.findAll();
 
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                         parent.getContext());
@@ -74,7 +76,7 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
                         .setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int item) {
                                 //TODO save selected value
-                                System.out.println(items[item]);
+                                hint.setText(habitCategories.get(item).getName());
                                 dialog.cancel();
                             }
                         }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -89,14 +91,14 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
             }
 
             @Override
-            public void onReminder(View caller) {
+            public void onReminder(View caller, final TextView hint) {
                 TimePickerDialog timePickerDialog = new TimePickerDialog(
                         parent.getContext(), timePickerListener, 0, 0, true);
                 timePickerDialog.show();
             }
 
             @Override
-            public void onFrequency(View caller) {
+            public void onFrequency(View caller, final TextView hint) {
                 final CharSequence[] items = {" Daily ", " Weekly ", " Monthly ", " Specified days "};
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                         parent.getContext());
@@ -105,7 +107,7 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
                         .setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int item) {
                                 //TODO save selected value
-                                System.out.println(items[item]);
+                                hint.setText(items[item]);
                                 if (item == 3) {
                                     createFrequencySpecifiedDaysDialog(parent);
                                 }
@@ -123,14 +125,14 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
             }
 
             @Override
-            public void onTune(View caller) {
+            public void onTune(View caller, final TextView hint) {
                 Intent tmpIntent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
                 tmpIntent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
                 activity.startActivityForResult(tmpIntent, AddHabitActivity.PICK_AUDIO_REQUEST);
             }
 
             @Override
-            public void onConfirmation(View caller) {
+            public void onConfirmation(View caller, final TextView hint) {
 
             }
         });
@@ -211,29 +213,46 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
         @Override
         public void onClick(View view) {
             if (title.getText().toString().equals(view.getResources().getString(R.string.add_habit_name_category))) {
-                mListener.onCategory(view);
+                mListener.onCategory(view, hint);
             } else if (title.getText().toString().equals(view.getResources().getString(R.string.add_habit_name_reminder))) {
-                mListener.onReminder(view);
+                mListener.onReminder(view, hint);
             } else if (title.getText().toString().equals(view.getResources().getString(R.string.add_habit_name_frequency))) {
-                mListener.onFrequency(view);
+                mListener.onFrequency(view, hint);
             } else if (title.getText().toString().equals(view.getResources().getString(R.string.add_habit_name_tune))) {
-                mListener.onTune(view);
+                mListener.onTune(view, hint);
             } else {
-                mListener.onConfirmation(view);
+                mListener.onConfirmation(view, hint);
             }
         }
 
         public interface AddHabitParameterListener {
-            void onCategory(View caller);
+            void onCategory(View caller, final TextView hint);
 
-            void onReminder(View caller);
+            void onReminder(View caller, final TextView hint);
 
-            void onFrequency(View caller);
+            void onFrequency(View caller, final TextView hint);
 
-            void onTune(View caller);
+            void onTune(View caller, final TextView hint);
 
-            void onConfirmation(View caller);
+            void onConfirmation(View caller, final TextView hint);
 
+        }
+    }
+
+    public static class HabitSettings {
+        private String categoryName;
+        private int notificationHour;
+        private int notificationMinute;
+        private Uri notificationSoundUri;
+
+        public HabitSettings() {
+            Context context = MainActivity.getContext();
+            HabitCategoryDAO habitCategoryDAO = new HabitCategoryDAO(context);
+            CharSequence[] categoryNames = habitCategoryDAO.getArrayOfAllNames();
+            this.categoryName = (String) categoryNames[0];
+            notificationHour = 0;
+            notificationMinute = 0;
+            notificationSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         }
     }
 }
