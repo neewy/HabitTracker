@@ -7,6 +7,9 @@ import android.support.v4.content.ContextCompat;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.android4life.habittracker.db.dataaccessobjects.HabitCategoryDAO;
+import ru.android4life.habittracker.db.tablesrepresentations.HabitCategory;
+
 /**
  * Dummy class, which is to be replaced by habit DAO
  */
@@ -26,16 +29,19 @@ public class HabitParameter {
     }
 
     public static List<HabitParameter> createParameters(Context context) {
+        HabitCategoryDAO habitCategoryDAO = new HabitCategoryDAO(context);
+        List<HabitCategory> habitCategories = (List<HabitCategory>) habitCategoryDAO.findAll();
         List<HabitParameter> habitParameters = new ArrayList<>();
-        HabitParameter parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_category), "Fitness", ContextCompat.getDrawable(context, R.drawable.ic_add_habit_category));
+        HabitParameter parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_category),
+                habitCategories.get(0).getName(), ContextCompat.getDrawable(context, R.drawable.ic_add_habit_category));
         habitParameters.add(parameter);
-        parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_reminder), "None", ContextCompat.getDrawable(context, R.drawable.ic_add_habit_reminder));
+        parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_reminder), "0:00", ContextCompat.getDrawable(context, R.drawable.ic_add_habit_reminder));
         habitParameters.add(parameter);
         parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_frequency), "Daily", ContextCompat.getDrawable(context, R.drawable.ic_add_habit_frequency));
         habitParameters.add(parameter);
         parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_tune), "Standard", ContextCompat.getDrawable(context, R.drawable.ic_add_habit_tune));
         habitParameters.add(parameter);
-        parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_confirmation), "After 30 min", ContextCompat.getDrawable(context, R.drawable.ic_add_habit_confirmation));
+        parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_confirmation), "After 60 minutes", ContextCompat.getDrawable(context, R.drawable.ic_add_habit_confirmation));
         habitParameters.add(parameter);
         return habitParameters;
     }

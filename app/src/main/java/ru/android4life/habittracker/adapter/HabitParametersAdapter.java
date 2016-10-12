@@ -195,12 +195,12 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
                                 for (int i = 0; i < mCheckedItems.length; i++) {
                                     if (mCheckedItems[i]) {
                                         stringBuilder.append(items[i]).append(" ");
-                                        selectedDaysInTwoLetters.append(shortenDaysOfWeek[i]).append(" ,");
+                                        selectedDaysInTwoLetters.append(shortenDaysOfWeek[i]).append(", ");
                                     }
                                 }
                                 System.out.println(stringBuilder);
-                                if (selectedDaysInTwoLetters.length() > 0)
-                                    selectedDaysInTwoLetters.deleteCharAt(selectedDaysInTwoLetters.length() - 1);
+                                if (selectedDaysInTwoLetters.length() > 1)
+                                    selectedDaysInTwoLetters.deleteCharAt(selectedDaysInTwoLetters.length() - 2);
                                 hint.setText(context.getResources().getString(R.string.on_every,
                                         selectedDaysInTwoLetters));
                             }
