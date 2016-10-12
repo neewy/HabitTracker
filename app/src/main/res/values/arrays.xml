@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <integer-array name="primary_colors">
+        <item>@color/blue</item>
+        <item>@color/purple</item>
+        <item>@color/red</item>
+        <item>@color/teal</item>
+    </integer-array>
+
+    <string-array name="primary_names">
+        <item>@string/color_setting_name_blue</item>
+        <item>@string/color_setting_name_purple</item>
+        <item>@string/color_setting_name_red</item>
+        <item>@string/color_setting_name_teal</item>
+    </string-array>
+
+    <string-array name="primary_ids">
+        <item>@string/color_setting_name_blue_id</item>
+        <item>@string/color_setting_name_purple_id</item>
+        <item>@string/color_setting_name_red_id</item>
+        <item>@string/color_setting_name_teal_id</item>
+    </string-array>
+
+</resources>

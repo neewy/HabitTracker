@@ -7,13 +7,23 @@
     <color name="indicator_selected">#616161</color>
     <color name="transparent">#80000000</color>
 
-    <!--new colors-->
-    <color name="colorPrimary">#02b9e6</color>
-    <color name="colorPrimaryDark">#00a6cf</color>
-    <color name="colorAccent">#ff2880</color>
     <color name="colorText">#ffffff</color>
-    <color name="colorHint">#c7c5c5</color>
-    <!-- A dark Holo shade of blue -->
-    <color name="holo_blue_dark">#ff0099cc</color>
+    <color name="colorHint">#e4e4e4</color>
+
+    <color name="blue">#3F51B5</color>
+    <color name="darkBlue">#303F9F</color>
+    <color name="pink">#FF4081</color>
+
+    <color name="purple">#9B26AF</color>
+    <color name="purpleDark">#691A99</color>
+    <color name="green">#68EFAD</color>
+
+    <color name="red">#F44336</color>
+    <color name="redDark">#D32F2F</color>
+    <color name="brightBlue">#536DFE</color>
+
+    <color name="teal">#009688</color>
+    <color name="tealDark">#00695C</color>
+    <color name="lime">#CDDC39</color>
 
 </resources>

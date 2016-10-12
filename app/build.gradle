@@ -50,6 +50,7 @@ dependencies {
     compile 'org.ocpsoft.prettytime:prettytime:4.0.1.Final' //human readable date
 
     compile 'com.github.lecho:hellocharts-android:v1.5.8'
+    compile 'pl.coreorb:selection-dialogs:0.9.1'
 
     /* for Android Tests to work */
     androidTestCompile 'com.android.support.test:runner:0.5'

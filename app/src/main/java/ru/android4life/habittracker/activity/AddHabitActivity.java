@@ -20,7 +20,7 @@ import ru.android4life.habittracker.views.RippleView;
 /**
  * Created by Bulat Mukhutdinov on 24.09.2016.
  */
-public class AddHabitActivity extends AppCompatActivity {
+public class AddHabitActivity extends BaseActivity {
 
     public static final int PICK_AUDIO_REQUEST = 0;
     private RecyclerView mRecyclerView;
