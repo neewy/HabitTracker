@@ -1,6 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:plainpie="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal">
 
     <android.support.v7.widget.AppCompatTextView
@@ -9,14 +10,16 @@
         android:layout_width="wrap_content"
         android:text="@string/done_to_skipped_ratio"
         android:layout_margin="20dp"
-        android:textSize="22sp"/>
+        android:textSize="22sp" />
 
-    <lecho.lib.hellocharts.view.LineChartView
-        android:id="@+id/chart"
-        android:layout_width="match_parent"
-        android:layout_below="@+id/statistics_title"
-        android:layout_height="300dp"
-        android:layout_marginLeft="22dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp" />
+    <az.plainpie.PieView
+        android:id="@+id/pie_view"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        plainpie:inner_pie_padding="30"
+        plainpie:inner_text_visibility="true"
+        plainpie:percentage="75"
+        plainpie:percentage_size="70"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true" />
 </RelativeLayout>
