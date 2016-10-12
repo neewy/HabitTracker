@@ -26,7 +26,7 @@
                 android:layout_gravity="left"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="15dp"
-                android:background="@color/colorPrimary"
+                android:background="?colorPrimary"
                 android:src="@drawable/ic_add_habit_back" />
         </ru.android4life.habittracker.views.RippleView>
 
@@ -43,7 +43,7 @@
                 android:layout_gravity="left"
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="15dp"
-                android:background="@color/colorPrimary"
+                android:background="?colorPrimary"
                 android:src="@drawable/ic_add_habit_confirm" />
         </ru.android4life.habittracker.views.RippleView>
         <!--Habit name edit text-->
@@ -54,7 +54,7 @@
             android:layout_below="@id/add_habit_back_button"
             android:layout_centerHorizontal="true">
 
-            <EditText
+            <android.support.v7.widget.AppCompatEditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -62,7 +62,7 @@
                 android:inputType="textAutoCorrect"
                 android:singleLine="true"
                 android:textColor="@color/colorText"
-                android:textColorHint="@color/colorHint" />
+                android:textColorHint="?colorAccent" />
         </android.support.design.widget.TextInputLayout>
 
         <!--Custom question edit text-->
@@ -73,7 +73,7 @@
             android:layout_below="@id/add_habit_title_edit_text"
             android:layout_centerHorizontal="true">
 
-            <EditText
+            <android.support.v7.widget.AppCompatEditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -81,7 +81,7 @@
                 android:inputType="textAutoCorrect"
                 android:singleLine="true"
                 android:textColor="@color/colorText"
-                android:textColorHint="@color/colorHint" />
+                android:textColorHint="?colorAccent" />
         </android.support.design.widget.TextInputLayout>
 
 

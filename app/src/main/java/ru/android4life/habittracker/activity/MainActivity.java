@@ -34,14 +34,13 @@ import ru.android4life.habittracker.fragment.HabitListFragment;
 import ru.android4life.habittracker.fragment.SettingsFragment;
 import ru.android4life.habittracker.fragment.StatisticsFragment;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static Context context;
     private static DrawerSelectionMode drawerSelectionMode;
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
     private FragmentManager fragmentManager;
-    private SharedPreferences prefs = null;
     private DatabaseHelper database;
 
     public static Context getContext() {
@@ -60,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
         fragmentManager = getSupportFragmentManager();
@@ -80,7 +80,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         DatabaseManager.setHelper(this);
 
         // run method forFirstRun only if the application wasn't run after installation
-        prefs = getSharedPreferences("firstRun", MODE_PRIVATE);
         if (prefs.getBoolean("firstrun", true)) {
             forFirstRun();
         }

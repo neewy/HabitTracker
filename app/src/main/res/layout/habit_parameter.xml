@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:paddingLeft="15dp"
-            ripple:rv_color="@color/colorAccent"
+            ripple:rv_color="?colorAccent"
             ripple:rv_type="rectangle">
 
             <ImageView

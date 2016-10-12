@@ -1,5 +1,6 @@
 package ru.android4life.habittracker.fragment;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,12 +10,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import ru.android4life.habittracker.R;
+import ru.android4life.habittracker.activity.MainActivity;
+import ru.android4life.habittracker.adapter.SettingsListAdapter;
+
+import static android.content.Context.MODE_PRIVATE;
+import static ru.android4life.habittracker.activity.BaseActivity.SHARED_PREF;
 
 /**
  * This class is a controller for in-app settings view.
@@ -41,7 +46,9 @@ public class SettingsFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         // two types are possible, and each is using different views for their elements (1 or 2 text lines list element)
+        SettingsListAdapter.fragmentManager = getFragmentManager();
         personalAdapter = new SettingsListAdapter(createListOfPersonalSettings(), SettingsType.PERSONAL);
+        personalAdapter.setMainActivity((MainActivity) getActivity());
         inAppAdapter = new SettingsListAdapter(createListOfInAppSettings(), SettingsType.INAPP);
     }
 
@@ -82,9 +89,10 @@ public class SettingsFragment extends Fragment {
      * @return personal settings list
      */
     private List<Setting> createListOfPersonalSettings() {
+        SharedPreferences prefs = getActivity().getSharedPreferences(SHARED_PREF, MODE_PRIVATE);
         List<Setting> personalSettingsList = new ArrayList<>();
         personalSettingsList.add(new Setting(getString(R.string.first_name), getString(R.string.username)));
-        personalSettingsList.add(new Setting(getString(R.string.favorite_color), getString(R.string.sky_blue)));
+        personalSettingsList.add(new Setting(getString(R.string.primary_color), prefs.getString("color", "")));
         personalSettingsList.add(new Setting(getString(R.string.language), getString(R.string.english)));
         return personalSettingsList;
     }
@@ -102,67 +110,13 @@ public class SettingsFragment extends Fragment {
         return inAppSettingsList;
     }
 
-    private enum SettingsType {
+    public enum SettingsType {
         INAPP, PERSONAL
     }
 
-    private class SettingsListAdapter extends RecyclerView.Adapter<SettingsListAdapter.SettingsViewHolder> {
-
-        private List<Setting> applicationSettings;
-        private SettingsType type;
-
-        public SettingsListAdapter(List<Setting> applicationSettings, SettingsType type) {
-            this.applicationSettings = applicationSettings;
-            this.type = type;
-        }
-
-        @Override
-        public SettingsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            int layout = 0;
-            switch (type) {
-                case INAPP:
-                    layout = android.R.layout.simple_list_item_1;
-                    break;
-                case PERSONAL:
-                    layout = android.R.layout.simple_list_item_2;
-                    break;
-            }
-            View v = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
-            return new SettingsViewHolder(v);
-        }
-
-        @Override
-        public void onBindViewHolder(SettingsViewHolder holder, int position) {
-            Setting setting = applicationSettings.get(position);
-            holder.settingTitle.setText(setting.title);
-
-            // to set the text for second line, if the type of elements are personal settings
-            if (type == SettingsType.PERSONAL) {
-                holder.settingSelection.setText(setting.selection);
-            }
-        }
-
-        @Override
-        public int getItemCount() {
-            return applicationSettings.size();
-        }
-
-        protected class SettingsViewHolder extends RecyclerView.ViewHolder {
-
-            private TextView settingTitle;
-            private TextView settingSelection;
-
-            public SettingsViewHolder(View itemView) {
-                super(itemView);
-                settingTitle = (TextView) itemView.findViewById(android.R.id.text1);
-                settingSelection = (TextView) itemView.findViewById(android.R.id.text2);
-            }
-        }
-    }
-
-    private class Setting {
-        protected String title;
-        protected String selection;
+    public class Setting {
+        public String title;
+        public String selection;
 
         public Setting(String title, String selection) {
             this.title = title;
@@ -173,4 +127,5 @@ public class SettingsFragment extends Fragment {
             this.title = title;
         }
     }
+
 }
