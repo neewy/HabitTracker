@@ -1,6 +1,5 @@
 package ru.android4life.habittracker.adapter;
 
-import android.content.SharedPreferences;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.os.OperationCanceledException;
 import android.support.v7.app.AppCompatActivity;
@@ -25,21 +24,18 @@ import static ru.android4life.habittracker.activity.MainActivity.getContext;
 /**
  * This adapter populates the list of settings in the application.
  * Currently, it implements the feature of style selection by the user.
- *
+ * <p>
  * Created by Nikolay Yushkevich on 09.10.16.
  */
 
 public class SettingsListAdapter extends RecyclerView.Adapter<SettingsListAdapter.SettingsViewHolder> {
 
-    // list of settings
-    private List<SettingsFragment.Setting> applicationSettings;
-
-    // what is their type (are they personal or global/in-app settings)
-    private SettingsFragment.SettingsType type;
-
     // in order to create dialogs of settings
     public static FragmentManager fragmentManager;
-
+    // list of settings
+    private List<SettingsFragment.Setting> applicationSettings;
+    // what is their type (are they personal or global/in-app settings)
+    private SettingsFragment.SettingsType type;
     // for access to shared prefs and in order to change the style
     private AppCompatActivity mainActivity;
 
@@ -97,6 +93,28 @@ public class SettingsListAdapter extends RecyclerView.Adapter<SettingsListAdapte
         return applicationSettings.size();
     }
 
+    private void createPrimaryColorPickerDialog() {
+        if (mainActivity != null) {
+            final ColorSelectDialog dialog = new ColorSelectDialog.Builder(getContext())
+                    .setColors(R.array.primary_ids,
+                            R.array.primary_names,
+                            R.array.primary_colors)
+                    .setTitle(R.string.color_select)
+                    .setSortColorsByName(true)
+                    .build();
+            dialog.show(fragmentManager, "primary_color_dialog");
+            dialog.setOnColorSelectedListener(new ColorSelectDialog.OnColorSelectedListener() {
+                @Override
+                public void onColorSelected(SelectableColor selectedItem) {
+                    mainActivity.getSharedPreferences(SHARED_PREF, MODE_PRIVATE).edit().putString("color", selectedItem.getName()).apply();
+                    dialog.dismiss();
+                    mainActivity.recreate();
+                }
+            });
+        } else {
+            Log.e("No activity", "No activity in Setting List Adapter", new OperationCanceledException());
+        }
+    }
 
     static class SettingsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -124,30 +142,6 @@ public class SettingsListAdapter extends RecyclerView.Adapter<SettingsListAdapte
 
         interface SettingsListener {
             void onPrimaryColor(View caller);
-        }
-    }
-
-
-    private void createPrimaryColorPickerDialog() {
-        if (mainActivity != null) {
-            final ColorSelectDialog dialog = new ColorSelectDialog.Builder(getContext())
-                    .setColors(R.array.primary_ids,
-                            R.array.primary_names,
-                            R.array.primary_colors)
-                    .setTitle(R.string.color_select)
-                    .setSortColorsByName(true)
-                    .build();
-            dialog.show(fragmentManager, "primary_color_dialog");
-            dialog.setOnColorSelectedListener(new ColorSelectDialog.OnColorSelectedListener() {
-                @Override
-                public void onColorSelected(SelectableColor selectedItem) {
-                    mainActivity.getSharedPreferences(SHARED_PREF, MODE_PRIVATE).edit().putString("color", selectedItem.getName()).apply();
-                    dialog.dismiss();
-                    mainActivity.recreate();
-                }
-            });
-        } else {
-            Log.e("No activity", "No activity in Setting List Adapter", new OperationCanceledException());
         }
     }
 }

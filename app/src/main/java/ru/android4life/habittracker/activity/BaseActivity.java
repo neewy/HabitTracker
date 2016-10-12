@@ -10,14 +10,14 @@ import ru.android4life.habittracker.R;
 /**
  * This activity is for setting style for the activities,
  * if the user checks different style in settings.
- *
+ * <p>
  * Created by Nikolay Yushkevich on 12.10.16.
  */
 
 public class BaseActivity extends AppCompatActivity {
 
-    protected SharedPreferences prefs = null;
     public final static String SHARED_PREF = "SHARED_PREF";
+    protected SharedPreferences prefs = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,7 +35,7 @@ public class BaseActivity extends AppCompatActivity {
 
     private void setApplicationStyle() {
         //we check if the style was selected in settings:
-        switch (prefs.getString("color", "")){
+        switch (prefs.getString("color", "")) {
             case "Red":
                 setTheme(R.style.AppThemeRedAndBlue);
                 break;

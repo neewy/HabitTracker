@@ -15,7 +15,7 @@ import ru.android4life.habittracker.R;
 /**
  * This class represents a fragment of right tab,
  * which contains statistics of habit.
- *
+ * <p>
  * Created by Nikolay Yushkevich on 2.10.16.
  */
 

@@ -10,17 +10,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import ru.android4life.habittracker.activity.MainActivity;
 import ru.android4life.habittracker.db.Constants;
 import ru.android4life.habittracker.db.DatabaseHelper;
 import ru.android4life.habittracker.db.DatabaseManager;
-import ru.android4life.habittracker.db.tablesrepresentations.Habit;
 import ru.android4life.habittracker.db.tablesrepresentations.HabitSchedule;
-import ru.android4life.habittracker.legacy.Main;
 
 /**
  * Created by alnedorezov on 9/28/16.
@@ -221,6 +216,7 @@ public class HabitScheduleDAO implements ExtendedCrud {
         }
         return items;
     }
+
     public List<HabitSchedule> findInRange(Date from, Date to) {
         List<HabitSchedule> items = new ArrayList<>();
         try {
@@ -231,8 +227,9 @@ public class HabitScheduleDAO implements ExtendedCrud {
             Log.d(Constants.DAO_ERROR, Constants.SQL_EXCEPTION_IN + Constants.SPACE +
                     HabitScheduleDAO.class.getSimpleName());
         }
-        return  items;
+        return items;
     }
+
     public List<HabitSchedule> findForCurrentMonth() {
         List<HabitSchedule> items = new ArrayList<>();
         Calendar c = Calendar.getInstance();

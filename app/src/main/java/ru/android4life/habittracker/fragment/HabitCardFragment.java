@@ -20,7 +20,7 @@ import ru.android4life.habittracker.adapter.HabitParametersAdapter;
  * This class represents a fragment of left tab,
  * which contains confirmation card of habit,
  * and list of habit settings as well.
- *
+ * <p>
  * Created by Nikolay Yushkevich on 27.09.16.
  */
 
