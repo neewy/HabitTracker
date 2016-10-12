@@ -114,13 +114,13 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
                                 hint.setText(items[item]);
                                 switch (item) {
                                     case 1:
-                                        createFrequencyWeeklyDialog(parent);
+                                        createFrequencyWeeklyDialog(parent, hint);
                                         break;
                                     case 2:
-                                        createFrequencyMonthlyDialog(parent);
+                                        createFrequencyMonthlyDialog(parent, hint);
                                         break;
                                     case 3:
-                                        createFrequencySpecifiedDaysDialog(parent);
+                                        createFrequencySpecifiedDaysDialog(parent, hint);
                                         break;
                                 }
                                 dialog.cancel();
@@ -151,9 +151,11 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
         return vh;
     }
 
-    private void createFrequencySpecifiedDaysDialog(ViewGroup parent) {
+    private void createFrequencySpecifiedDaysDialog(ViewGroup parent, final TextView hint) {
         final boolean[] mCheckedItems = {false, false, false, false, false, false, false};
-        final CharSequence[] items = {" Monday ", " Tuesday ", " Wednesday ", " Thursday ", " Friday ", " Saturday ", " Sunday "};
+        final CharSequence[] items = {" Monday ", " Tuesday ", " Wednesday ", " Thursday ",
+                " Friday ", " Saturday ", " Sunday "};
+        final CharSequence[] shortenDaysOfWeek = context.getResources().getStringArray(R.array.shorten_days_of_week);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 parent.getContext());
         alertDialogBuilder.setTitle("Select days");
@@ -172,12 +174,18 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
                             public void onClick(DialogInterface dialog,
                                                 int id) {
                                 StringBuilder stringBuilder = new StringBuilder();
+                                StringBuilder selectedDaysInTwoLetters = new StringBuilder();
                                 for (int i = 0; i < mCheckedItems.length; i++) {
                                     if (mCheckedItems[i]) {
-                                        stringBuilder.append(items[i] + " ");
+                                        stringBuilder.append(items[i]).append(" ");
+                                        selectedDaysInTwoLetters.append(shortenDaysOfWeek[i]).append(" ,");
                                     }
                                 }
                                 System.out.println(stringBuilder);
+                                if (selectedDaysInTwoLetters.length() > 0)
+                                    selectedDaysInTwoLetters.deleteCharAt(selectedDaysInTwoLetters.length() - 1);
+                                hint.setText(context.getResources().getString(R.string.on_every,
+                                        selectedDaysInTwoLetters));
                             }
                         })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -191,7 +199,7 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
         alertDialog.show();
     }
 
-    private void createFrequencyWeeklyDialog(ViewGroup parent) {
+    private void createFrequencyWeeklyDialog(ViewGroup parent, final TextView hint) {
         final CharSequence[] items = {" Monday ", " Tuesday ", " Wednesday ", " Thursday ", " Friday ", " Saturday ", " Sunday "};
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 parent.getContext());
@@ -199,7 +207,8 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
         alertDialogBuilder
                 .setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int item) {
-                        System.out.println(items[item]);
+                        hint.setText(context.getResources().getString(R.string.two_subsequent_strings,
+                                hint.getText(), String.valueOf(items[item])));
                         dialog.cancel();
                     }
                 }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -214,7 +223,7 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private void createFrequencyMonthlyDialog(ViewGroup parent) {
+    private void createFrequencyMonthlyDialog(ViewGroup parent, final TextView hint) {
         Calendar calendar = Calendar.getInstance();
         DatePickerDialog dpd = new DatePickerDialog(parent.getContext(), null, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_WEEK));
         calendar.set(Calendar.DAY_OF_MONTH, 1);
@@ -224,7 +233,8 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
         dpd.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                System.out.println("Every month of " + i2);
+                hint.setText(context.getResources().getString(R.string.every_month_of_space_string,
+                        String.valueOf(i2)));
             }
         });
         dpd.show();
@@ -243,6 +253,10 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
         return parameters.size();
     }
 
+
+    public enum NotificationFrequencyType {
+        DAILY, WEEKLY, MONTHLY, SPECIFIED_DAYS
+    }
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public AddHabitParameterListener mListener;
@@ -294,16 +308,39 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
         private String categoryName;
         private int notificationHour;
         private int notificationMinute;
+        private NotificationFrequencyType notificationFrequencyType;
+        private int notificationFrequencyWeekNumberOrDate;
+        private boolean[] notificationFrequencySpecifiedDays;
         private Uri notificationSoundUri;
+        private int minutesBeforeConfirmation;
+
+        public HabitSettings(String categoryName, int notificationHour, int notificationMinute,
+                             NotificationFrequencyType notificationFrequencyType,
+                             int notificationFrequencyWeekNumberOrDate, boolean[] notificationFrequencySpecifiedDays,
+                             Uri notificationSoundUri, int minutesBeforeConfirmation) {
+            this.categoryName = categoryName;
+            this.notificationHour = notificationHour;
+            this.notificationMinute = notificationMinute;
+            this.notificationFrequencyType = notificationFrequencyType;
+            this.notificationFrequencyWeekNumberOrDate = notificationFrequencyWeekNumberOrDate;
+            this.notificationFrequencySpecifiedDays = notificationFrequencySpecifiedDays;
+            this.notificationSoundUri = notificationSoundUri;
+            this.minutesBeforeConfirmation = minutesBeforeConfirmation;
+        }
 
         public HabitSettings() {
             Context context = MainActivity.getContext();
             HabitCategoryDAO habitCategoryDAO = new HabitCategoryDAO(context);
             CharSequence[] categoryNames = habitCategoryDAO.getArrayOfAllNames();
             this.categoryName = (String) categoryNames[0];
-            notificationHour = 0;
-            notificationMinute = 0;
-            notificationSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            this.notificationHour = 0;
+            this.notificationMinute = 0;
+            this.notificationFrequencyType = NotificationFrequencyType.DAILY;
+            this.notificationFrequencyWeekNumberOrDate = 1;
+            boolean[] notificationFrequencySpecifiedDays = new boolean[7];
+            this.notificationFrequencySpecifiedDays = notificationFrequencySpecifiedDays;
+            this.notificationSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            this.minutesBeforeConfirmation = 60;
         }
     }
 }
