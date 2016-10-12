@@ -111,7 +111,10 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
                             @RequiresApi(api = Build.VERSION_CODES.N)
                             public void onClick(DialogInterface dialog, int item) {
                                 //TODO save selected value
-                                hint.setText(items[item]);
+                                if (item == 0)
+                                    hint.setText(context.getResources().getString(R.string.every_day));
+                                else
+                                    hint.setText("");
                                 switch (item) {
                                     case 1:
                                         createFrequencyWeeklyDialog(parent, hint);
@@ -208,7 +211,7 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
                 .setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int item) {
                         hint.setText(context.getResources().getString(R.string.two_subsequent_strings,
-                                hint.getText(), String.valueOf(items[item])));
+                                hint.getText(), String.valueOf(items[item]).substring(1, items[item].length() - 1)));
                         dialog.cancel();
                     }
                 }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -233,7 +236,7 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
         dpd.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                hint.setText(context.getResources().getString(R.string.every_month_of_space_string,
+                hint.setText(context.getResources().getString(R.string.every_month_on_space_string,
                         String.valueOf(i2)));
             }
         });
