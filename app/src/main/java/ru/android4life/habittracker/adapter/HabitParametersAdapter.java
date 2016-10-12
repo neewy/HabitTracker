@@ -39,27 +39,21 @@ import ru.android4life.habittracker.views.RippleView;
 public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParametersAdapter.ViewHolder> {
 
     private List<HabitParameter> parameters;
-    private TimePickerDialog.OnTimeSetListener timePickerListener;
     private Activity activity;
     private HabitScheduleDAO habitScheduleDAO;
     private HabitDAO habitDAO;
     private HabitCategoryDAO habitCategoryDAO;
     private Context context;
+    private HabitSettings habitSettings;
 
     public HabitParametersAdapter(Activity activity, List<HabitParameter> parameters) {
         this.parameters = parameters;
         this.activity = activity;
+        this.habitSettings = new HabitSettings();
         context = MainActivity.getContext();
         habitCategoryDAO = new HabitCategoryDAO(context);
         habitDAO = new HabitDAO(context);
         habitScheduleDAO = new HabitScheduleDAO(context);
-        timePickerListener = new TimePickerDialog.OnTimeSetListener() {
-            @RequiresApi(api = Build.VERSION_CODES.M)
-            @Override
-            public void onTimeSet(TimePicker timePicker, int i, int i1) {
-                System.out.println(timePicker.getHour() + " " + timePicker.getMinute());
-            }
-        };
     }
 
     @Override
@@ -79,7 +73,8 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
                         .setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int item) {
                                 //TODO save selected value
-                                hint.setText(habitCategories.get(item).getName());
+                                habitSettings.setCategoryName(habitCategories.get(item).getName());
+                                hint.setText(habitSettings.getCategoryName());
                                 dialog.cancel();
                             }
                         }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -95,6 +90,25 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
 
             @Override
             public void onReminder(View caller, final TextView hint) {
+                TimePickerDialog.OnTimeSetListener timePickerListener;
+                timePickerListener = new TimePickerDialog.OnTimeSetListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.M)
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int i, int i1) {
+                        System.out.println(timePicker.getHour() + " " + timePicker.getMinute());
+                        habitSettings.setNotificationMinute(timePicker.getMinute());
+                        habitSettings.setNotificationHour(timePicker.getHour());
+                        if (String.valueOf(habitSettings.getNotificationMinute()).length() < 2)
+                            hint.setText(context.getResources().getString(R.string.string_colon_space_string_string,
+                                    String.valueOf(habitSettings.getNotificationHour()),
+                                    context.getResources().getString(R.string.zero),
+                                    String.valueOf(habitSettings.getNotificationMinute())));
+                        else
+                            hint.setText(context.getResources().getString(R.string.string_colon_space_string,
+                                    String.valueOf(habitSettings.getNotificationHour()),
+                                    String.valueOf(habitSettings.getNotificationMinute())));
+                    }
+                };
                 TimePickerDialog timePickerDialog = new TimePickerDialog(
                         parent.getContext(), timePickerListener, 0, 0, true);
                 timePickerDialog.show();
@@ -210,8 +224,8 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
         alertDialogBuilder
                 .setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int item) {
-                        hint.setText(context.getResources().getString(R.string.two_subsequent_strings,
-                                hint.getText(), String.valueOf(items[item]).substring(1, items[item].length() - 1)));
+                        hint.setText(context.getResources().getString(R.string.on_every,
+                                String.valueOf(items[item]).substring(1, items[item].length() - 1)));
                         dialog.cancel();
                     }
                 }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -344,6 +358,70 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
             this.notificationFrequencySpecifiedDays = notificationFrequencySpecifiedDays;
             this.notificationSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
             this.minutesBeforeConfirmation = 60;
+        }
+
+        public String getCategoryName() {
+            return categoryName;
+        }
+
+        public void setCategoryName(String categoryName) {
+            this.categoryName = categoryName;
+        }
+
+        public int getNotificationHour() {
+            return notificationHour;
+        }
+
+        public void setNotificationHour(int notificationHour) {
+            this.notificationHour = notificationHour;
+        }
+
+        public int getNotificationMinute() {
+            return notificationMinute;
+        }
+
+        public void setNotificationMinute(int notificationMinute) {
+            this.notificationMinute = notificationMinute;
+        }
+
+        public NotificationFrequencyType getNotificationFrequencyType() {
+            return notificationFrequencyType;
+        }
+
+        public void setNotificationFrequencyType(NotificationFrequencyType notificationFrequencyType) {
+            this.notificationFrequencyType = notificationFrequencyType;
+        }
+
+        public int getNotificationFrequencyWeekNumberOrDate() {
+            return notificationFrequencyWeekNumberOrDate;
+        }
+
+        public void setNotificationFrequencyWeekNumberOrDate(int notificationFrequencyWeekNumberOrDate) {
+            this.notificationFrequencyWeekNumberOrDate = notificationFrequencyWeekNumberOrDate;
+        }
+
+        public boolean[] getNotificationFrequencySpecifiedDays() {
+            return notificationFrequencySpecifiedDays;
+        }
+
+        public void setNotificationFrequencySpecifiedDays(boolean[] notificationFrequencySpecifiedDays) {
+            this.notificationFrequencySpecifiedDays = notificationFrequencySpecifiedDays;
+        }
+
+        public Uri getNotificationSoundUri() {
+            return notificationSoundUri;
+        }
+
+        public void setNotificationSoundUri(Uri notificationSoundUri) {
+            this.notificationSoundUri = notificationSoundUri;
+        }
+
+        public int getMinutesBeforeConfirmation() {
+            return minutesBeforeConfirmation;
+        }
+
+        public void setMinutesBeforeConfirmation(int minutesBeforeConfirmation) {
+            this.minutesBeforeConfirmation = minutesBeforeConfirmation;
         }
     }
 }

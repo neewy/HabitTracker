@@ -94,4 +94,7 @@
     <string name="every_month_on_space_string">Every month on %1$s</string>
     <string name="on_every">On every %1$s</string>
     <string name="every_day">Every day</string>
+    <string name="zero">0</string>
+    <string name="string_colon_space_string">%1$s:%2$s</string>
+    <string name="string_colon_space_string_string">%1$s:%2$s%3$s</string>
 </resources>
