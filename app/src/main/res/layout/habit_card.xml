@@ -65,7 +65,7 @@
                     android:layout_width="80dp"
                     android:layout_height="40dp"
                     style="@style/Widget.AppCompat.Button.Colored"
-                    android:background="@color/colorPrimaryDark"
+                    android:background="?colorPrimaryDark"
                     android:text="DONE" />
 
 

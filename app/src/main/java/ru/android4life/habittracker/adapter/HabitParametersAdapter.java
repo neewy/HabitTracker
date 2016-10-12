@@ -1,6 +1,7 @@
 package ru.android4life.habittracker.adapter;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -14,10 +15,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
-
+import java.util.Calendar;
 import java.util.List;
 
 import ru.android4life.habittracker.HabitParameter;
@@ -105,11 +107,20 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
                 alertDialogBuilder.setTitle("Select a frequency");
                 alertDialogBuilder
                         .setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
+                            @RequiresApi(api = Build.VERSION_CODES.N)
                             public void onClick(DialogInterface dialog, int item) {
                                 //TODO save selected value
                                 hint.setText(items[item]);
-                                if (item == 3) {
-                                    createFrequencySpecifiedDaysDialog(parent);
+                                switch (item) {
+                                    case 1:
+                                        createFrequencyWeeklyDialog(parent);
+                                        break;
+                                    case 2:
+                                        createFrequencyMonthlyDialog(parent);
+                                        break;
+                                    case 3:
+                                        createFrequencySpecifiedDaysDialog(parent);
+                                        break;
                                 }
                                 dialog.cancel();
                             }
@@ -144,7 +155,7 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
         final CharSequence[] items = {" Monday ", " Tuesday ", " Wednesday ", " Thursday ", " Friday ", " Saturday ", " Sunday "};
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 parent.getContext());
-        alertDialogBuilder.setTitle("Select category");
+        alertDialogBuilder.setTitle("Select days");
         alertDialogBuilder
                 .setMultiChoiceItems(items, mCheckedItems,
                         new DialogInterface.OnMultiChoiceClickListener() {
@@ -177,6 +188,45 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
         AlertDialog alertDialog = alertDialogBuilder.create();
         // show it
         alertDialog.show();
+    }
+
+    private void createFrequencyWeeklyDialog(ViewGroup parent) {
+        final CharSequence[] items = {" Monday ", " Tuesday ", " Wednesday ", " Thursday ", " Friday ", " Saturday ", " Sunday "};
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                parent.getContext());
+        alertDialogBuilder.setTitle("Select day");
+        alertDialogBuilder
+                .setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int item) {
+                        System.out.println(items[item]);
+                        dialog.cancel();
+                    }
+                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+            }
+        });
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        // show it
+        alertDialog.show();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void createFrequencyMonthlyDialog(ViewGroup parent) {
+        Calendar calendar = Calendar.getInstance();
+        DatePickerDialog dpd = new DatePickerDialog(parent.getContext(), null, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_WEEK));
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        dpd.getDatePicker().setMinDate(calendar.getTimeInMillis());
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+        dpd.getDatePicker().setMaxDate(calendar.getTimeInMillis());
+        dpd.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                System.out.println("Every month of " + i2);
+            }
+        });
+        dpd.show();
     }
 
     @Override

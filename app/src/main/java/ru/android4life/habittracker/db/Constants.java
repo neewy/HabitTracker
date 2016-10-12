@@ -37,6 +37,9 @@ public final class Constants {
     // For habits list
     public static final PrettyTime prettyTime = new PrettyTime(new Locale("en"));
 
+    // Other
+    public static final long DAY_IN_MS = 1000 * 60 * 60 * 24;
+
     // Utility classes, which are a collection of static members, are not meant to be instantiated
     private Constants() {
         // Even abstract utility classes, which can be extended,

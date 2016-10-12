@@ -128,6 +128,7 @@ public class ViewPagerAdapterProgress extends PagerAdapter {
     }
 
     private void loadChart(View view, int question) {
+/*
         int[] colors = new int[]{context.getResources().getColor(R.color.positive)};
         String[] titles = new String[]{"Yes"};
 
@@ -197,7 +198,7 @@ public class ViewPagerAdapterProgress extends PagerAdapter {
             numberOfWeeksOverSeven = numberOfWeeks - 7;
         }
 
-        LinearLayout layout = (LinearLayout) view.findViewById(R.id.chart);
+        /inearLayout layout = (LinearLayout) view.findViewById(R.id.chart);
         XYMultipleSeriesRenderer renderer = buildBarRenderer(colors);
         setChartSettings(renderer,
                 "Week",
@@ -212,6 +213,7 @@ public class ViewPagerAdapterProgress extends PagerAdapter {
                 Type.DEFAULT);
 
         layout.addView(mChartView);
+*/
 
     }
 

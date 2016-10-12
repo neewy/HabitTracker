@@ -57,7 +57,7 @@
     <string name="personal_settings">Personal Settings</string>
     <string name="first_name">Fisrt name</string>
     <string name="username">Username</string>
-    <string name="favorite_color">Favorite color</string>
+    <string name="primary_color">Primary color</string>
     <string name="sky_blue">Sky Blue</string>
     <string name="language">Language</string>
     <string name="english">English</string>
@@ -74,4 +74,18 @@
     <!--Main Activity-->
     <string name="drawerSelectionMode">drawerSelectionMode</string>
     <string name="done_to_skipped_ratio">Done to skipped ratio</string>
+    <string name="accent_color">Accent color</string>
+
+    <!-- Material Design colors names -->
+    <string name="color_setting_name_blue">Blue</string>
+    <string name="color_setting_name_purple">Purple</string>
+    <string name="color_setting_name_red">Red</string>
+    <string name="color_setting_name_teal">Teal</string>
+
+    <!-- Material Design colors ids  -->
+    <string translatable="false" name="color_setting_name_blue_id">blue</string>
+    <string translatable="false" name="color_setting_name_purple_id">purple</string>
+    <string translatable="false" name="color_setting_name_red_id">red</string>
+    <string translatable="false" name="color_setting_name_teal_id">teal</string>
+    <string name="color_select">Select the color</string>
 </resources>
