@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.android4life.habittracker.R;
-import ru.android4life.habittracker.activity.MainActivity;
+import ru.android4life.habittracker.activity.BaseActivity;
 import ru.android4life.habittracker.db.Constants;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitDAO;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitScheduleDAO;
@@ -37,7 +37,7 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitListAdapter.View
 
     public HabitListAdapter(FragmentManager fragmentManager, DrawerSelectionMode drawerSelectionMode) {
         this.fragmentManager = fragmentManager;
-        context = MainActivity.getContext();
+        context = BaseActivity.getContext();
         habitDAO = new HabitDAO(context);
         habitScheduleDAO = new HabitScheduleDAO(context);
         this.drawerSelectionMode = drawerSelectionMode;

@@ -81,7 +81,7 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
                             public void onClick(DialogInterface dialog, int item) {
                                 //TODO save selected value
                                 habitSettings.setCategoryId(habitCategories.get(item).getId());
-                                hint.setText(habitSettings.getCategoryId());
+                                hint.setText(items[item]);
                                 prefs.edit().putInt("categoryId", habitSettings.getCategoryId()).apply();
                                 dialog.cancel();
                             }
@@ -252,7 +252,7 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
                     public void onClick(DialogInterface dialog, int item) {
                         hint.setText(context.getResources().getString(R.string.on_every,
                                 String.valueOf(items[item]).substring(1, items[item].length() - 1)));
-                        prefs.edit().putInt("notificationFrequencyWeekNumberOrDate", item).apply();
+                        prefs.edit().putInt("notificationFrequencyWeekNumberOrDate", item + 1).apply();
                         dialog.cancel();
                     }
                 }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

@@ -7,7 +7,6 @@ import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,6 +25,7 @@ import ru.android4life.habittracker.db.dataaccessobjects.HabitCategoryDAO;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitDAO;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitScheduleDAO;
 import ru.android4life.habittracker.db.tablesrepresentations.Habit;
+import ru.android4life.habittracker.db.tablesrepresentations.HabitSchedule;
 import ru.android4life.habittracker.views.RippleView;
 
 /**
@@ -83,6 +83,9 @@ public class AddHabitActivity extends BaseActivity {
                 // TODO: Get data from HabitParametersAdapter, create Habits according to it
                 getHabitSettingsFromPreferences();
 
+                createHabitAccordingToHabitPreferences();
+
+                mAdapter.notifyDataSetChanged();
 
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -194,23 +197,85 @@ public class AddHabitActivity extends BaseActivity {
         }
     }
 
-    private void createHabitsAccordingToHabitPreferences() {
+    private void createHabitAccordingToHabitPreferences() {
         Calendar c = new GregorianCalendar();
         c.set(Calendar.HOUR_OF_DAY, habitSettings.getNotificationHour());
         c.set(Calendar.MINUTE, habitSettings.getNotificationMinute());
         c.set(Calendar.SECOND, 0);
         Date habitDay = c.getTime();
         c.add(Calendar.DATE, 1);
-        Date habitDayPlusDay = c.getTime();
 
         TextInputLayout habitNameTextInputLayout = (TextInputLayout) findViewById(R.id.add_habit_title_edit_text);
-        String habitName = (String) habitNameTextInputLayout.getHint();
+        String habitName = habitNameTextInputLayout.getEditText().getText().toString();
         TextInputLayout habitQuestionTextInputLayout = (TextInputLayout) findViewById(R.id.add_habit_question_edit_text);
-        String habitQuestion = (String) habitNameTextInputLayout.getHint();
+        String habitQuestion = (String) habitQuestionTextInputLayout.getEditText().getText().toString();
 
-        int result = habitDAO.create(new Habit(1, habitName, habitQuestion, habitDay, 55.75417935,
-                48.7440855, 9, Environment.getExternalStorageDirectory().getPath()
-                + "/meouing_kittten.mp3", true, 60, 1));
+        int habitsCreationResult = habitDAO.create(new Habit(1, habitName, habitQuestion, habitDay, 55.75417935,
+                48.7440855, 9, habitSettings.getNotificationSoundUri().toString(), true, 60, habitSettings.getCategoryId()));
+        if (habitsCreationResult >= 0) {
+            createSchedulesForTheHabitByItsId(habitsCreationResult);
+        }
+    }
+
+    private void createSchedulesForTheHabitByItsId(int habitId) {
+        Calendar c = new GregorianCalendar();
+        // Get how many days in current month
+        int monthMaxDays = c.getActualMaximum(Calendar.DAY_OF_MONTH);
+        c.set(Calendar.HOUR_OF_DAY, habitSettings.getNotificationHour());
+        c.set(Calendar.MINUTE, habitSettings.getNotificationMinute());
+        c.set(Calendar.SECOND, 0);
+        Date habitDay = c.getTime();
+        Date newHabitDay;
+        c.add(Calendar.DAY_OF_YEAR, monthMaxDays);
+        Date afterAMonth = c.getTime();
+        boolean habitDayBeforeAfterAMonth = habitDay.before(afterAMonth) || habitDay.equals(afterAMonth);
+        switch (habitSettings.getNotificationFrequencyType()) {
+            case DAILY:
+                while (habitDayBeforeAfterAMonth) {
+                    habitScheduleDAO.create(new HabitSchedule(1, habitDay, false, false, habitId));
+                    c.add(Calendar.DATE, 1);
+                    habitDay = c.getTime();
+                }
+                break;
+            case WEEKLY:
+                c.set(Calendar.DAY_OF_WEEK, habitSettings.getNotificationFrequencyWeekNumberOrDate());
+                newHabitDay = c.getTime();
+                while ((newHabitDay.after(habitDay) || newHabitDay.equals(habitDay)) && habitDayBeforeAfterAMonth) {
+                    habitScheduleDAO.create(new HabitSchedule(1, habitDay, false, false, habitId));
+                    c.add(Calendar.DAY_OF_YEAR, 7);
+                    habitDay = c.getTime();
+                }
+                break;
+            case MONTHLY:
+                c.set(Calendar.DAY_OF_MONTH, habitSettings.getNotificationFrequencyWeekNumberOrDate());
+                newHabitDay = c.getTime();
+                while ((newHabitDay.after(habitDay) || newHabitDay.equals(habitDay)) && habitDayBeforeAfterAMonth) {
+                    habitScheduleDAO.create(new HabitSchedule(1, habitDay, false, false, habitId));
+                    c.add(Calendar.DAY_OF_YEAR, 7);
+                    habitDay = c.getTime();
+                }
+                break;
+            case SPECIFIED_DAYS:
+                for (int i = 0; i < 7; i++) {
+                    if (habitSettings.getNotificationFrequencySpecifiedDays()[i]) {
+                        c.set(Calendar.DAY_OF_WEEK, i + 1);
+                        newHabitDay = c.getTime();
+                        while ((newHabitDay.after(habitDay) || newHabitDay.equals(habitDay)) && habitDayBeforeAfterAMonth) {
+                            habitScheduleDAO.create(new HabitSchedule(1, habitDay, false, false, habitId));
+                            c.add(Calendar.DAY_OF_YEAR, 7);
+                            habitDay = c.getTime();
+                        }
+                    }
+                }
+                break;
+            default:
+                while (habitDayBeforeAfterAMonth) {
+                    habitScheduleDAO.create(new HabitSchedule(1, habitDay, false, false, habitId));
+                    c.add(Calendar.DATE, 1);
+                    habitDay = c.getTime();
+                }
+                break;
+        }
     }
 
 }
