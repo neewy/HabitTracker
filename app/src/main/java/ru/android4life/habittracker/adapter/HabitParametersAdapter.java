@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -387,8 +386,7 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
             boolean[] notificationFrequencySpecifiedDays = {false, false, false, false, false, false, false};
             this.notificationFrequencySpecifiedDays = notificationFrequencySpecifiedDays;
             this.notificationSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-            Ringtone r = RingtoneManager.getRingtone(MainActivity.getContext(), notificationSoundUri);
-            this.notificationSoundName = r.getTitle(MainActivity.getContext());
+            this.notificationSoundName = BaseActivity.getContext().getString(R.string.standard_from_capital_letter);
             this.minutesBeforeConfirmation = 60;
         }
 

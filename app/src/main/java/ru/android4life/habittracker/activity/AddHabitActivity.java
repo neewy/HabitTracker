@@ -21,7 +21,6 @@ import java.util.GregorianCalendar;
 import ru.android4life.habittracker.HabitParameter;
 import ru.android4life.habittracker.R;
 import ru.android4life.habittracker.adapter.HabitParametersAdapter;
-import ru.android4life.habittracker.db.dataaccessobjects.HabitCategoryDAO;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitDAO;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitScheduleDAO;
 import ru.android4life.habittracker.db.tablesrepresentations.Habit;
@@ -38,7 +37,6 @@ public class AddHabitActivity extends BaseActivity {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private HabitParametersAdapter.HabitSettings habitSettings;
-    private HabitCategoryDAO habitCategoryDAO;
     private HabitScheduleDAO habitScheduleDAO;
     private HabitDAO habitDAO;
     private SharedPreferences habitSettingsPrefs = null;
@@ -54,7 +52,6 @@ public class AddHabitActivity extends BaseActivity {
         habitSettingsPrefs = getApplicationContext().getSharedPreferences(getApplicationContext()
                 .getString(R.string.creating_habit_settings), MODE_PRIVATE);
 
-        habitCategoryDAO = new HabitCategoryDAO(getApplicationContext());
         habitDAO = new HabitDAO(getApplicationContext());
         habitScheduleDAO = new HabitScheduleDAO(getApplicationContext());
 
@@ -86,6 +83,8 @@ public class AddHabitActivity extends BaseActivity {
                 createHabitAccordingToHabitPreferences();
 
                 mAdapter.notifyDataSetChanged();
+
+                removeValuesForHabitSettingsFromPreferences();
 
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -141,6 +140,9 @@ public class AddHabitActivity extends BaseActivity {
                     .getString(R.string.notification_frequency_specified_day_string,
                             String.valueOf(i))).apply();
         habitSettingsPrefs.edit().remove("notificationFrequencyWeekNumberOrDate").apply();
+        habitSettingsPrefs.edit().remove(getContext().getResources()
+                .getString(R.string.notification_sound_name)).apply();
+        habitSettingsPrefs.edit().remove("minutesBeforeConfirmation").apply();
     }
 
     private void getHabitSettingsFromPreferences() {
@@ -208,7 +210,7 @@ public class AddHabitActivity extends BaseActivity {
         TextInputLayout habitNameTextInputLayout = (TextInputLayout) findViewById(R.id.add_habit_title_edit_text);
         String habitName = habitNameTextInputLayout.getEditText().getText().toString();
         TextInputLayout habitQuestionTextInputLayout = (TextInputLayout) findViewById(R.id.add_habit_question_edit_text);
-        String habitQuestion = (String) habitQuestionTextInputLayout.getEditText().getText().toString();
+        String habitQuestion = habitQuestionTextInputLayout.getEditText().getText().toString();
 
         int habitsCreationResult = habitDAO.create(new Habit(1, habitName, habitQuestion, habitDay, 55.75417935,
                 48.7440855, 9, habitSettings.getNotificationSoundUri().toString(), true, 60, habitSettings.getCategoryId()));
