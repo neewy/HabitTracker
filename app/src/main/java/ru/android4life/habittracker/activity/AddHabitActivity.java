@@ -48,8 +48,9 @@ public class AddHabitActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_habit);
+        setContext(this.getApplicationContext());
 
-        // Initialise DAOs, prefs & notificationSoundUri with default notification uri
+        // Initialise DAOs, habitSettingsPrefs & notificationSoundUri with default notification uri
         habitSettingsPrefs = getApplicationContext().getSharedPreferences(getApplicationContext()
                 .getString(R.string.creating_habit_settings), MODE_PRIVATE);
 
@@ -116,12 +117,12 @@ public class AddHabitActivity extends BaseActivity {
                 uri = resultData.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
                 habitSettings.setNotificationSoundUri(uri);
                 Log.i("AUDIO", "Uri: " + habitSettings.getNotificationSoundUri().toString());
-                Ringtone r = RingtoneManager.getRingtone(MainActivity.getContext(),
+                Ringtone r = RingtoneManager.getRingtone(getContext(),
                         habitSettings.getNotificationSoundUri());
-                habitSettings.setNotificationSoundName(r.getTitle(MainActivity.getContext()));
+                habitSettings.setNotificationSoundName(r.getTitle(getContext()));
                 Log.i("AUDIO", "Name: " + habitSettings.getNotificationSoundName());
 
-                habitSettingsPrefs.edit().putString(MainActivity.getContext().getResources()
+                habitSettingsPrefs.edit().putString(getContext().getResources()
                         .getString(R.string.notification_sound_name), habitSettings.getNotificationSoundName()).apply();
             }
         }
@@ -141,39 +142,39 @@ public class AddHabitActivity extends BaseActivity {
 
     private void getHabitSettingsFromPreferences() {
         HabitParametersAdapter.HabitSettings result = new HabitParametersAdapter.HabitSettings();
-        if (prefs.contains("categoryId"))
-            result.setCategoryId(prefs.getInt("categoryId", habitSettings.getCategoryId()));
-        if (prefs.contains("notificationHour"))
-            result.setNotificationHour(prefs.getInt("notificationHour", habitSettings.getNotificationHour()));
-        if (prefs.contains("notificationMinute"))
-            result.setNotificationMinute(prefs.getInt("notificationMinute", habitSettings.getNotificationMinute()));
-        if (prefs.contains("notificationFrequencyType"))
-            result.setNotificationFrequencyType(parseStringToNotificationFrequencyType(prefs
+        if (habitSettingsPrefs.contains("categoryId"))
+            result.setCategoryId(habitSettingsPrefs.getInt("categoryId", habitSettings.getCategoryId()));
+        if (habitSettingsPrefs.contains("notificationHour"))
+            result.setNotificationHour(habitSettingsPrefs.getInt("notificationHour", habitSettings.getNotificationHour()));
+        if (habitSettingsPrefs.contains("notificationMinute"))
+            result.setNotificationMinute(habitSettingsPrefs.getInt("notificationMinute", habitSettings.getNotificationMinute()));
+        if (habitSettingsPrefs.contains("notificationFrequencyType"))
+            result.setNotificationFrequencyType(parseStringToNotificationFrequencyType(habitSettingsPrefs
                     .getString("notificationFrequencyType", habitSettings.getNotificationFrequencyType().toString())));
         boolean[] notificationFrequencySpecifiedDays = {false, false, false, false, false, false, false};
 
-        if (prefs.contains("notificationFrequencySpecifiedDay1"))
-            notificationFrequencySpecifiedDays[0] = prefs.getBoolean("notificationFrequencySpecifiedDay1", habitSettings.getNotificationFrequencySpecifiedDays()[0]);
-        if (prefs.contains("notificationFrequencySpecifiedDay2"))
-            notificationFrequencySpecifiedDays[1] = prefs.getBoolean("notificationFrequencySpecifiedDay2", habitSettings.getNotificationFrequencySpecifiedDays()[1]);
-        if (prefs.contains("notificationFrequencySpecifiedDay3"))
-            notificationFrequencySpecifiedDays[2] = prefs.getBoolean("notificationFrequencySpecifiedDay3", habitSettings.getNotificationFrequencySpecifiedDays()[2]);
-        if (prefs.contains("notificationFrequencySpecifiedDay4"))
-            notificationFrequencySpecifiedDays[3] = prefs.getBoolean("notificationFrequencySpecifiedDay4", habitSettings.getNotificationFrequencySpecifiedDays()[3]);
-        if (prefs.contains("notificationFrequencySpecifiedDay5"))
-            notificationFrequencySpecifiedDays[4] = prefs.getBoolean("notificationFrequencySpecifiedDay5", habitSettings.getNotificationFrequencySpecifiedDays()[4]);
-        if (prefs.contains("notificationFrequencySpecifiedDay6"))
-            notificationFrequencySpecifiedDays[5] = prefs.getBoolean("notificationFrequencySpecifiedDay6", habitSettings.getNotificationFrequencySpecifiedDays()[5]);
-        if (prefs.contains("notificationFrequencySpecifiedDay7"))
-            notificationFrequencySpecifiedDays[6] = prefs.getBoolean("notificationFrequencySpecifiedDay7", habitSettings.getNotificationFrequencySpecifiedDays()[6]);
+        if (habitSettingsPrefs.contains("notificationFrequencySpecifiedDay1"))
+            notificationFrequencySpecifiedDays[0] = habitSettingsPrefs.getBoolean("notificationFrequencySpecifiedDay1", habitSettings.getNotificationFrequencySpecifiedDays()[0]);
+        if (habitSettingsPrefs.contains("notificationFrequencySpecifiedDay2"))
+            notificationFrequencySpecifiedDays[1] = habitSettingsPrefs.getBoolean("notificationFrequencySpecifiedDay2", habitSettings.getNotificationFrequencySpecifiedDays()[1]);
+        if (habitSettingsPrefs.contains("notificationFrequencySpecifiedDay3"))
+            notificationFrequencySpecifiedDays[2] = habitSettingsPrefs.getBoolean("notificationFrequencySpecifiedDay3", habitSettings.getNotificationFrequencySpecifiedDays()[2]);
+        if (habitSettingsPrefs.contains("notificationFrequencySpecifiedDay4"))
+            notificationFrequencySpecifiedDays[3] = habitSettingsPrefs.getBoolean("notificationFrequencySpecifiedDay4", habitSettings.getNotificationFrequencySpecifiedDays()[3]);
+        if (habitSettingsPrefs.contains("notificationFrequencySpecifiedDay5"))
+            notificationFrequencySpecifiedDays[4] = habitSettingsPrefs.getBoolean("notificationFrequencySpecifiedDay5", habitSettings.getNotificationFrequencySpecifiedDays()[4]);
+        if (habitSettingsPrefs.contains("notificationFrequencySpecifiedDay6"))
+            notificationFrequencySpecifiedDays[5] = habitSettingsPrefs.getBoolean("notificationFrequencySpecifiedDay6", habitSettings.getNotificationFrequencySpecifiedDays()[5]);
+        if (habitSettingsPrefs.contains("notificationFrequencySpecifiedDay7"))
+            notificationFrequencySpecifiedDays[6] = habitSettingsPrefs.getBoolean("notificationFrequencySpecifiedDay7", habitSettings.getNotificationFrequencySpecifiedDays()[6]);
 
         result.setNotificationFrequencySpecifiedDays(notificationFrequencySpecifiedDays);
 
-        if (prefs.contains("notificationFrequencyWeekNumberOrDate"))
-            result.setNotificationFrequencyWeekNumberOrDate(prefs.getInt("notificationFrequencyWeekNumberOrDate",
+        if (habitSettingsPrefs.contains("notificationFrequencyWeekNumberOrDate"))
+            result.setNotificationFrequencyWeekNumberOrDate(habitSettingsPrefs.getInt("notificationFrequencyWeekNumberOrDate",
                     habitSettings.getNotificationFrequencyWeekNumberOrDate()));
-        if (prefs.contains("minutesBeforeConfirmation"))
-            result.setMinutesBeforeConfirmation(prefs.getInt("minutesBeforeConfirmation", habitSettings.getMinutesBeforeConfirmation()));
+        if (habitSettingsPrefs.contains("minutesBeforeConfirmation"))
+            result.setMinutesBeforeConfirmation(habitSettingsPrefs.getInt("minutesBeforeConfirmation", habitSettings.getMinutesBeforeConfirmation()));
 
         habitSettings = result;
     }
@@ -202,9 +203,12 @@ public class AddHabitActivity extends BaseActivity {
         c.add(Calendar.DATE, 1);
         Date habitDayPlusDay = c.getTime();
 
-        TextInputLayout textInputLayout = (TextInputLayout) findViewById(R.id.add_habit_title_edit_text);
+        TextInputLayout habitNameTextInputLayout = (TextInputLayout) findViewById(R.id.add_habit_title_edit_text);
+        String habitName = (String) habitNameTextInputLayout.getHint();
+        TextInputLayout habitQuestionTextInputLayout = (TextInputLayout) findViewById(R.id.add_habit_question_edit_text);
+        String habitQuestion = (String) habitNameTextInputLayout.getHint();
 
-        int result = habitDAO.create(new Habit(1, "privuichkaaa 1", "do privuichka 1", habitDay, 55.75417935,
+        int result = habitDAO.create(new Habit(1, habitName, habitQuestion, habitDay, 55.75417935,
                 48.7440855, 9, Environment.getExternalStorageDirectory().getPath()
                 + "/meouing_kittten.mp3", true, 60, 1));
     }

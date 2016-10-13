@@ -28,6 +28,7 @@ import java.util.List;
 import ru.android4life.habittracker.HabitParameter;
 import ru.android4life.habittracker.R;
 import ru.android4life.habittracker.activity.AddHabitActivity;
+import ru.android4life.habittracker.activity.BaseActivity;
 import ru.android4life.habittracker.activity.MainActivity;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitCategoryDAO;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitDAO;
@@ -42,7 +43,7 @@ import static android.content.Context.MODE_PRIVATE;
  */
 public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParametersAdapter.ViewHolder> {
 
-    private static HabitCategoryDAO habitCategoryDAO;
+    private HabitCategoryDAO habitCategoryDAO;
     private List<HabitParameter> parameters;
     private Activity activity;
     private HabitScheduleDAO habitScheduleDAO;
@@ -376,6 +377,7 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
         }
 
         public HabitSettings() {
+            HabitCategoryDAO habitCategoryDAO = new HabitCategoryDAO(BaseActivity.getContext());
             final List<HabitCategory> habitCategories = (List<HabitCategory>) habitCategoryDAO.findAll();
             this.categoryId = habitCategories.get(0).getId();
             this.notificationHour = 0;

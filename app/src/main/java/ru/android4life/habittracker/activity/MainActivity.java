@@ -1,6 +1,5 @@
 package ru.android4life.habittracker.activity;
 
-import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Environment;
@@ -34,16 +33,11 @@ import ru.android4life.habittracker.fragment.StatisticsFragment;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static Context context;
     private static DrawerSelectionMode drawerSelectionMode;
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
     private FragmentManager fragmentManager;
     private DatabaseHelper database;
-
-    public static Context getContext() {
-        return context;
-    }
 
     public static DrawerSelectionMode getDrawerSelectionMode() {
         return drawerSelectionMode;
@@ -82,9 +76,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             forFirstRun();
         }
 
-        context = this.getApplicationContext();
+        setContext(this.getApplicationContext());
         // Initiate db
-        DatabaseManager.setHelper(context);
+        DatabaseManager.setHelper(getContext());
         database = DatabaseManager.getHelper();
         drawerSelectionMode = DrawerSelectionMode.TODAY;
         fragmentManager.beginTransaction().replace(R.id.container,
