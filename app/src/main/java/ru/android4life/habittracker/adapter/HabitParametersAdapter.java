@@ -6,6 +6,8 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -33,33 +35,37 @@ import ru.android4life.habittracker.db.dataaccessobjects.HabitScheduleDAO;
 import ru.android4life.habittracker.db.tablesrepresentations.HabitCategory;
 import ru.android4life.habittracker.views.RippleView;
 
+import static android.content.Context.MODE_PRIVATE;
+
 /**
  * Created by Bulat Mukhutdinov on 28.09.2016.
  */
 public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParametersAdapter.ViewHolder> {
 
+    private static HabitCategoryDAO habitCategoryDAO;
     private List<HabitParameter> parameters;
     private Activity activity;
     private HabitScheduleDAO habitScheduleDAO;
     private HabitDAO habitDAO;
-    private HabitCategoryDAO habitCategoryDAO;
     private Context context;
     private HabitSettings habitSettings;
+    private SharedPreferences prefs = null;
 
     public HabitParametersAdapter(Activity activity, List<HabitParameter> parameters) {
         this.parameters = parameters;
         this.activity = activity;
         this.habitSettings = new HabitSettings();
-        context = MainActivity.getContext();
-        habitCategoryDAO = new HabitCategoryDAO(context);
-        habitDAO = new HabitDAO(context);
-        habitScheduleDAO = new HabitScheduleDAO(context);
+        this.context = MainActivity.getContext();
+        this.habitCategoryDAO = new HabitCategoryDAO(context);
+        this.habitDAO = new HabitDAO(context);
+        this.habitScheduleDAO = new HabitScheduleDAO(context);
+        this.prefs = context.getSharedPreferences(context.getString(R.string.creating_habit_settings), MODE_PRIVATE);
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.habit_parameter, parent, false);
-        HabitParametersAdapter.ViewHolder vh = new ViewHolder(v, new ViewHolder.AddHabitParameterListener() {
+        final HabitParametersAdapter.ViewHolder vh = new ViewHolder(v, new ViewHolder.AddHabitParameterListener() {
             @Override
             public void onCategory(View caller, final TextView hint) {
                 //TODO replace items with values from db
@@ -73,8 +79,9 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
                         .setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int item) {
                                 //TODO save selected value
-                                habitSettings.setCategoryName(habitCategories.get(item).getName());
-                                hint.setText(habitSettings.getCategoryName());
+                                habitSettings.setCategoryId(habitCategories.get(item).getId());
+                                hint.setText(habitSettings.getCategoryId());
+                                prefs.edit().putInt("categoryId", habitSettings.getCategoryId()).apply();
                                 dialog.cancel();
                             }
                         }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -98,15 +105,19 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
                         System.out.println(timePicker.getHour() + " " + timePicker.getMinute());
                         habitSettings.setNotificationMinute(timePicker.getMinute());
                         habitSettings.setNotificationHour(timePicker.getHour());
-                        if (String.valueOf(habitSettings.getNotificationMinute()).length() < 2)
-                            hint.setText(context.getResources().getString(R.string.string_colon_space_string_string,
+                        if (String.valueOf(habitSettings.getNotificationMinute()).length() < 2) {
+                            hint.setText(context.getResources().getString(R.string.string_colon_space_string_zero,
                                     String.valueOf(habitSettings.getNotificationHour()),
-                                    context.getResources().getString(R.string.zero),
                                     String.valueOf(habitSettings.getNotificationMinute())));
-                        else
+                            prefs.edit().putInt("notificationHour", habitSettings.getNotificationHour()).apply();
+                            prefs.edit().putInt("notificationMinute", habitSettings.getNotificationMinute()).apply();
+                        } else {
                             hint.setText(context.getResources().getString(R.string.string_colon_space_string,
                                     String.valueOf(habitSettings.getNotificationHour()),
                                     String.valueOf(habitSettings.getNotificationMinute())));
+                            prefs.edit().putInt("notificationHour", habitSettings.getNotificationHour()).apply();
+                            prefs.edit().putInt("notificationMinute", habitSettings.getNotificationMinute()).apply();
+                        }
                     }
                 };
                 TimePickerDialog timePickerDialog = new TimePickerDialog(
@@ -125,19 +136,27 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
                             @RequiresApi(api = Build.VERSION_CODES.N)
                             public void onClick(DialogInterface dialog, int item) {
                                 //TODO save selected value
-                                if (item == 0)
+                                if (item == 0) {
+                                    habitSettings.setNotificationFrequencyType(NotificationFrequencyType.DAILY);
                                     hint.setText(context.getResources().getString(R.string.every_day));
-                                else
+                                    prefs.edit().putString("notificationFrequencyType", NotificationFrequencyType.DAILY.toString()).apply();
+                                } else
                                     hint.setText("");
                                 switch (item) {
                                     case 1:
+                                        habitSettings.setNotificationFrequencyType(NotificationFrequencyType.WEEKLY);
                                         createFrequencyWeeklyDialog(parent, hint);
+                                        prefs.edit().putString("notificationFrequencyType", NotificationFrequencyType.WEEKLY.toString()).apply();
                                         break;
                                     case 2:
+                                        habitSettings.setNotificationFrequencyType(NotificationFrequencyType.MONTHLY);
                                         createFrequencyMonthlyDialog(parent, hint);
+                                        prefs.edit().putString("notificationFrequencyType", NotificationFrequencyType.MONTHLY.toString()).apply();
                                         break;
                                     case 3:
+                                        habitSettings.setNotificationFrequencyType(NotificationFrequencyType.SPECIFIED_DAYS);
                                         createFrequencySpecifiedDaysDialog(parent, hint);
+                                        prefs.edit().putString("notificationFrequencyType", NotificationFrequencyType.SPECIFIED_DAYS.toString()).apply();
                                         break;
                                 }
                                 dialog.cancel();
@@ -158,6 +177,9 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
                 Intent tmpIntent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
                 tmpIntent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
                 activity.startActivityForResult(tmpIntent, AddHabitActivity.PICK_AUDIO_REQUEST);
+
+                hint.setText(prefs.getString(caller.getResources().getString(R.string.notification_sound_name),
+                        caller.getResources().getString(R.string.standard_from_capital_letter)));
             }
 
             @Override
@@ -197,6 +219,9 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
                                         stringBuilder.append(items[i]).append(" ");
                                         selectedDaysInTwoLetters.append(shortenDaysOfWeek[i]).append(", ");
                                     }
+                                    prefs.edit().putBoolean(context.getResources()
+                                            .getString(R.string.notification_frequency_specified_day_string,
+                                                    String.valueOf(i)), mCheckedItems[i]).apply();
                                 }
                                 System.out.println(stringBuilder);
                                 if (selectedDaysInTwoLetters.length() > 1)
@@ -226,6 +251,7 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
                     public void onClick(DialogInterface dialog, int item) {
                         hint.setText(context.getResources().getString(R.string.on_every,
                                 String.valueOf(items[item]).substring(1, items[item].length() - 1)));
+                        prefs.edit().putInt("notificationFrequencyWeekNumberOrDate", item).apply();
                         dialog.cancel();
                     }
                 }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -252,6 +278,7 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
             public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
                 hint.setText(context.getResources().getString(R.string.every_month_on_space_string,
                         String.valueOf(i2)));
+                prefs.edit().putInt("notificationFrequencyWeekNumberOrDate", i2).apply();
             }
         });
         dpd.show();
@@ -322,50 +349,53 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
     }
 
     public static class HabitSettings {
-        private String categoryName;
+        private int categoryId;
         private int notificationHour;
         private int notificationMinute;
         private NotificationFrequencyType notificationFrequencyType;
         private int notificationFrequencyWeekNumberOrDate;
         private boolean[] notificationFrequencySpecifiedDays;
         private Uri notificationSoundUri;
+        private String notificationSoundName;
         private int minutesBeforeConfirmation;
 
-        public HabitSettings(String categoryName, int notificationHour, int notificationMinute,
+        public HabitSettings(int categoryId, int notificationHour, int notificationMinute,
                              NotificationFrequencyType notificationFrequencyType,
                              int notificationFrequencyWeekNumberOrDate, boolean[] notificationFrequencySpecifiedDays,
-                             Uri notificationSoundUri, int minutesBeforeConfirmation) {
-            this.categoryName = categoryName;
+                             Uri notificationSoundUri, String notificationSoundName,
+                             int minutesBeforeConfirmation) {
+            this.categoryId = categoryId;
             this.notificationHour = notificationHour;
             this.notificationMinute = notificationMinute;
             this.notificationFrequencyType = notificationFrequencyType;
             this.notificationFrequencyWeekNumberOrDate = notificationFrequencyWeekNumberOrDate;
             this.notificationFrequencySpecifiedDays = notificationFrequencySpecifiedDays;
             this.notificationSoundUri = notificationSoundUri;
+            this.notificationSoundName = notificationSoundName;
             this.minutesBeforeConfirmation = minutesBeforeConfirmation;
         }
 
         public HabitSettings() {
-            Context context = MainActivity.getContext();
-            HabitCategoryDAO habitCategoryDAO = new HabitCategoryDAO(context);
-            CharSequence[] categoryNames = habitCategoryDAO.getArrayOfAllNames();
-            this.categoryName = (String) categoryNames[0];
+            final List<HabitCategory> habitCategories = (List<HabitCategory>) habitCategoryDAO.findAll();
+            this.categoryId = habitCategories.get(0).getId();
             this.notificationHour = 0;
             this.notificationMinute = 0;
             this.notificationFrequencyType = NotificationFrequencyType.DAILY;
             this.notificationFrequencyWeekNumberOrDate = 1;
-            boolean[] notificationFrequencySpecifiedDays = new boolean[7];
+            boolean[] notificationFrequencySpecifiedDays = {false, false, false, false, false, false, false};
             this.notificationFrequencySpecifiedDays = notificationFrequencySpecifiedDays;
             this.notificationSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            Ringtone r = RingtoneManager.getRingtone(MainActivity.getContext(), notificationSoundUri);
+            this.notificationSoundName = r.getTitle(MainActivity.getContext());
             this.minutesBeforeConfirmation = 60;
         }
 
-        public String getCategoryName() {
-            return categoryName;
+        public int getCategoryId() {
+            return categoryId;
         }
 
-        public void setCategoryName(String categoryName) {
-            this.categoryName = categoryName;
+        public void setCategoryId(int categoryId) {
+            this.categoryId = categoryId;
         }
 
         public int getNotificationHour() {
@@ -414,6 +444,14 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
 
         public void setNotificationSoundUri(Uri notificationSoundUri) {
             this.notificationSoundUri = notificationSoundUri;
+        }
+
+        public String getNotificationSoundName() {
+            return notificationSoundName;
+        }
+
+        public void setNotificationSoundName(String notificationSoundName) {
+            this.notificationSoundName = notificationSoundName;
         }
 
         public int getMinutesBeforeConfirmation() {

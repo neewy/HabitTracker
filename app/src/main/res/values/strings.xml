@@ -96,5 +96,11 @@
     <string name="every_day">Every day</string>
     <string name="zero">0</string>
     <string name="string_colon_space_string">%1$s:%2$s</string>
-    <string name="string_colon_space_string_string">%1$s:%2$s%3$s</string>
+    <string name="string_colon_space_string_zero">%1$s:0%2$s</string>
+    <string name="shared_pref_upper_case">SHARED_PREF</string>
+    <string name="position">position</string>
+    <string name="notification_sound_name">notificationSoundName</string>
+    <string name="standard_from_capital_letter">Standard</string>
+    <string name="creating_habit_settings">creating_habit_settings</string>
+    <string name="notification_frequency_specified_day_string">notificationFrequencySpecifiedDay%1$s</string>
 </resources>
