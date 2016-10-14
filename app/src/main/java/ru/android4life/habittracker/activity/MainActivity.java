@@ -19,6 +19,7 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import ru.android4life.habittracker.R;
+import ru.android4life.habittracker.db.Constants;
 import ru.android4life.habittracker.db.DatabaseHelper;
 import ru.android4life.habittracker.db.DatabaseManager;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitCategoryDAO;
@@ -54,6 +55,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         super.onCreate(savedInstanceState);
         setContext(this.getApplicationContext());
         locale = new Locale(getSharedPreferences(SHARED_PREF, MODE_PRIVATE).getString("locale", getResources().getString(R.string.locale_en)));
+        Constants.updatePrettyTime();
         Locale.setDefault(locale);
         Configuration config = new Configuration();
         config.locale = locale;

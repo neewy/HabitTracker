@@ -149,5 +149,10 @@
     <string name="productivity">Productivity</string>
     <string name="days">Days</string>
 
+    <string name="habit_done">Done</string>
+
+    <string name="select_category">Select a category</string>
+
+
 
 </resources>

@@ -115,4 +115,7 @@
     <!--Statistics-->
     <string name="productivity">Продуктивность</string>
     <string name="days">Дни</string>
+
+    <string name="habit_done">Готово</string>
+    <string name="select_category">Выберите категорию</string>
 </resources>

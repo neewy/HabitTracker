@@ -75,7 +75,7 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
 
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                         parent.getContext());
-                alertDialogBuilder.setTitle("Select category");
+                alertDialogBuilder.setTitle(context.getResources().getString(R.string.select_category));
                 alertDialogBuilder
                         .setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int item) {
@@ -85,7 +85,7 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
                                 prefs.edit().putInt("categoryId", habitSettings.getCategoryId()).apply();
                                 dialog.cancel();
                             }
-                        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        }).setNegativeButton(context.getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
                     }
@@ -162,7 +162,7 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
                                 }
                                 dialog.cancel();
                             }
-                        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        }).setNegativeButton(context.getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
                     }
@@ -178,7 +178,6 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
                 Intent tmpIntent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
                 tmpIntent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
                 activity.startActivityForResult(tmpIntent, AddHabitActivity.PICK_AUDIO_REQUEST);
-
                 hint.setText(prefs.getString(caller.getResources().getString(R.string.notification_sound_name),
                         caller.getResources().getString(R.string.standard_from_capital_letter)));
             }
@@ -211,7 +210,7 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
                                 mCheckedItems[which] = isChecked;
                             }
                         })
-                .setPositiveButton("Done",
+                .setPositiveButton(context.getResources().getString(R.string.habit_done),
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog,
@@ -234,7 +233,7 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
                                         selectedDaysInTwoLetters));
                             }
                         })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton(context.getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
                     }
@@ -262,7 +261,7 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
                         prefs.edit().putInt("notificationFrequencyWeekNumberOrDate", item + 1).apply();
                         dialog.cancel();
                     }
-                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                }).setNegativeButton(context.getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 dialog.cancel();
             }

@@ -41,8 +41,6 @@ public class SettingsFragment extends Fragment {
     private SettingsListAdapter personalAdapter;
     private SettingsListAdapter inAppAdapter;
 
-    private List<Setting> personalSettingsList;
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,17 +90,12 @@ public class SettingsFragment extends Fragment {
      */
     private List<Setting> createListOfPersonalSettings() {
         SharedPreferences prefs = getActivity().getSharedPreferences(SHARED_PREF, MODE_PRIVATE);
-        personalSettingsList = new ArrayList<>();
+        List<Setting> personalSettingsList = new ArrayList<>();
         String locale = MainActivity.getContext().getResources().getConfiguration().locale.getDisplayName();
         personalSettingsList.add(new Setting(getString(R.string.first_name), getString(R.string.username)));
         personalSettingsList.add(new Setting(getString(R.string.primary_color), prefs.getString("color", "")));
         personalSettingsList.add(new Setting(getString(R.string.language), locale));
         return personalSettingsList;
-    }
-
-    public void updateLocaleHint() {
-        personalSettingsList.get(2).selection = MainActivity.getContext().getResources().getConfiguration().locale.getDisplayName();
-        personalAdapter.notifyDataSetChanged();
     }
 
     /**

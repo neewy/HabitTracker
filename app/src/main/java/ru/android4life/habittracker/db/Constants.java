@@ -50,4 +50,8 @@ public final class Constants {
         // which does not define at least one explicitly.
         // Hence, at least one non-public constructor should be defined
     }
+
+    public static void updatePrettyTime() {
+        prettyTime.setLocale(MainActivity.locale);
+    }
 }
