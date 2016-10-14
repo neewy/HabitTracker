@@ -13,10 +13,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import ru.android4life.habittracker.HabitParameter;
 import ru.android4life.habittracker.R;
@@ -79,20 +81,27 @@ public class AddHabitActivity extends BaseActivity {
 
                 // TODO: Get data from HabitParametersAdapter, create Habits according to it
                 getHabitSettingsFromPreferences();
+                String violation = validate();
+                if (violation != null) {
+                    CharSequence text = violation;
+                    int duration = Toast.LENGTH_LONG;
+                    Toast toast = Toast.makeText(getContext(), text, duration);
+                    toast.show();
+                } else {
+                    createHabitAccordingToHabitPreferences();
 
-                createHabitAccordingToHabitPreferences();
+                    mAdapter.notifyDataSetChanged();
 
-                mAdapter.notifyDataSetChanged();
+                    removeValuesForHabitSettingsFromPreferences();
 
-                removeValuesForHabitSettingsFromPreferences();
-
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        startActivity(intent);
-                    }
-                }, (int) (textView.getRippleDuration() * 1.1d));
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(intent);
+                        }
+                    }, (int) (textView.getRippleDuration() * 1.1d));
+                }
             }
         });
 
@@ -109,6 +118,24 @@ public class AddHabitActivity extends BaseActivity {
         // specify an adapter (see also next example)
         mAdapter = new HabitParametersAdapter(this, HabitParameter.createParameters(getApplicationContext()));
         mRecyclerView.setAdapter(mAdapter);
+    }
+
+    private String validate() {
+        TextInputLayout habitNameTextInputLayout = (TextInputLayout) findViewById(R.id.add_habit_title_edit_text);
+        String habitName = habitNameTextInputLayout.getEditText().getText().toString();
+        TextInputLayout habitQuestionTextInputLayout = (TextInputLayout) findViewById(R.id.add_habit_question_edit_text);
+        String habitQuestion = habitQuestionTextInputLayout.getEditText().getText().toString();
+
+        if (habitName.length() == 0 || habitQuestion.length() == 0) {
+            return "Habit name and question should be filled";
+        }
+        List habits = habitDAO.findAll();
+        for (Object habit : habits) {
+            if (((Habit) habit).getName().equals(habitName) || ((Habit) habit).getQuestion().equals(habitQuestion)) {
+                return "Habit name and question should be unique";
+            }
+        }
+        return null;
     }
 
     @Override
