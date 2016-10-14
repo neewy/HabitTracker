@@ -5,6 +5,8 @@ import org.ocpsoft.prettytime.PrettyTime;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
+import ru.android4life.habittracker.activity.MainActivity;
+
 /**
  * Created by alnedorezov on 9/27/16.
  */
@@ -35,7 +37,7 @@ public final class Constants {
     public static final String CANNOT_DROP_DATABASES = "Can't drop databases";
 
     // For habits list
-    public static final PrettyTime prettyTime = new PrettyTime(new Locale("en"));
+    public static final PrettyTime prettyTime = new PrettyTime(MainActivity.locale);
 
     // Other
     public static final long DAY_IN_MS = 1000 * 60 * 60 * 24;

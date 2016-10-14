@@ -1,7 +1,11 @@
 package ru.android4life.habittracker.adapter;
 
+import android.content.DialogInterface;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.os.OperationCanceledException;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -39,6 +43,7 @@ public class SettingsListAdapter extends RecyclerView.Adapter<SettingsListAdapte
     // for access to shared prefs and in order to change the style
     private AppCompatActivity mainActivity;
 
+    private Integer selectedLanguage;
 
     public SettingsListAdapter(List<SettingsFragment.Setting> applicationSettings, SettingsFragment.SettingsType type) {
         this.applicationSettings = applicationSettings;
@@ -72,6 +77,11 @@ public class SettingsListAdapter extends RecyclerView.Adapter<SettingsListAdapte
             @Override
             public void onPrimaryColor(View caller) {
                 createPrimaryColorPickerDialog();
+            }
+
+            @Override
+            public void onLanguage(View caller) {
+                createLanguageDialog(parent);
             }
         });
         return vh;
@@ -116,6 +126,51 @@ public class SettingsListAdapter extends RecyclerView.Adapter<SettingsListAdapte
         }
     }
 
+    public void createLanguageDialog(final ViewGroup parent) {
+        final CharSequence[] items = {parent.getResources().getString(R.string.english), parent.getResources().getString(R.string.russian)};
+        if (selectedLanguage == null) {
+            selectedLanguage = getSelectedLocale(mainActivity.getSharedPreferences(SHARED_PREF, MODE_PRIVATE).getString("locale", parent.getResources().getString(R.string.locale_en)), parent);
+        }
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                parent.getContext());
+        alertDialogBuilder.setTitle(parent.getResources().getString(R.string.select_language));
+        alertDialogBuilder
+                .setSingleChoiceItems(items, selectedLanguage, new DialogInterface.OnClickListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+                    public void onClick(DialogInterface dialog, int item) {
+                        switch (item) {
+                            case 0:
+                                mainActivity.getSharedPreferences(SHARED_PREF, MODE_PRIVATE).edit().putString("locale", parent.getResources().getString(R.string.locale_en)).apply();
+                                break;
+                            case 1:
+                                mainActivity.getSharedPreferences(SHARED_PREF, MODE_PRIVATE).edit().putString("locale", parent.getResources().getString(R.string.locale_ru)).apply();
+                                break;
+                        }
+                        if (selectedLanguage != item) {
+                            selectedLanguage = item;
+                            mainActivity.recreate();
+                        }
+                        dialog.cancel();
+                    }
+                }).setNegativeButton(parent.getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+            }
+        });
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        // show it
+        alertDialog.show();
+    }
+
+    private int getSelectedLocale(String locale, ViewGroup parent) {
+        if (parent.getResources().getString(R.string.locale_en).equals(locale)) {
+            return 0;
+        } else {
+            return 1;
+        }
+    }
+
     static class SettingsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         SettingsListener mListener;
@@ -137,11 +192,15 @@ public class SettingsListAdapter extends RecyclerView.Adapter<SettingsListAdapte
         public void onClick(View v) {
             if (settingTitle.getText().toString().equals(v.getResources().getString(R.string.primary_color))) {
                 mListener.onPrimaryColor(v);
+            } else if (settingTitle.getText().toString().equals(v.getResources().getString(R.string.language))) {
+                mListener.onLanguage(v);
             }
         }
 
         interface SettingsListener {
             void onPrimaryColor(View caller);
+
+            void onLanguage(View caller);
         }
     }
 }

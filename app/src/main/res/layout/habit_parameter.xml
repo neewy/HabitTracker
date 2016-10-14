@@ -1,6 +1,5 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:ripple="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content">
 
@@ -50,7 +49,6 @@
                 android:layout_below="@+id/add_habit_category"
                 android:layout_marginBottom="0dp"
                 android:layout_marginTop="-5dp"
-                android:text="Fitness"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/colorHint" />
 

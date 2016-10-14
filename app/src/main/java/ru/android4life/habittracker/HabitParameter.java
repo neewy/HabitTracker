@@ -33,11 +33,11 @@ public class HabitParameter {
         List<HabitCategory> habitCategories = (List<HabitCategory>) habitCategoryDAO.findAll();
         List<HabitParameter> habitParameters = new ArrayList<>();
         HabitParameter parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_category),
-                habitCategories.get(0).getName(), ContextCompat.getDrawable(context, R.drawable.ic_add_habit_category));
+                Translator.translate(habitCategories.get(0).getName()), ContextCompat.getDrawable(context, R.drawable.ic_add_habit_category));
         habitParameters.add(parameter);
         parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_reminder), "0:00", ContextCompat.getDrawable(context, R.drawable.ic_add_habit_reminder));
         habitParameters.add(parameter);
-        parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_frequency), "Daily", ContextCompat.getDrawable(context, R.drawable.ic_add_habit_frequency));
+        parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_frequency), context.getResources().getString(R.string.daily), ContextCompat.getDrawable(context, R.drawable.ic_add_habit_frequency));
         habitParameters.add(parameter);
         parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_tune), "Standard", ContextCompat.getDrawable(context, R.drawable.ic_add_habit_tune));
         habitParameters.add(parameter);

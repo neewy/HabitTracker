@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 
 import ru.android4life.habittracker.R;
 import ru.android4life.habittracker.db.DatabaseHelper;
@@ -32,7 +33,7 @@ import ru.android4life.habittracker.fragment.SettingsFragment;
 import ru.android4life.habittracker.fragment.StatisticsFragment;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
-
+    public static Locale locale;
     private static DrawerSelectionMode drawerSelectionMode;
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
@@ -51,7 +52,13 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setContext(this.getApplicationContext());
+        locale = new Locale(getSharedPreferences(SHARED_PREF, MODE_PRIVATE).getString("locale", getResources().getString(R.string.locale_en)));
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getContext().getResources().updateConfiguration(config,
+                getContext().getResources().getDisplayMetrics());
         setContentView(R.layout.activity_main);
 
         fragmentManager = getSupportFragmentManager();
@@ -70,13 +77,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         //Init the database manager
         DatabaseManager.setHelper(this);
-
         // run method forFirstRun only if the application wasn't run after installation
         if (prefs.getBoolean("firstrun", true)) {
             forFirstRun();
         }
-
-        setContext(this.getApplicationContext());
         // Initiate db
         DatabaseManager.setHelper(getContext());
         database = DatabaseManager.getHelper();
@@ -155,13 +159,13 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         HabitCategoryDAO habitCategoryDAO = new HabitCategoryDAO(this.getApplicationContext());
         HabitDAO habitDAO = new HabitDAO(this.getApplicationContext());
         HabitScheduleDAO habitScheduleDAO = new HabitScheduleDAO(this.getApplicationContext());
-        habitCategoryDAO.create(new HabitCategory(1, "Sport"));
-        habitCategoryDAO.create(new HabitCategory(2, "Reading"));
-        habitCategoryDAO.create(new HabitCategory(3, "Cooking"));
-        habitCategoryDAO.create(new HabitCategory(4, "Cleaning"));
-        habitCategoryDAO.create(new HabitCategory(5, "Studying"));
-        habitCategoryDAO.create(new HabitCategory(6, "Health"));
-        habitCategoryDAO.create(new HabitCategory(1, "Other"));
+        habitCategoryDAO.create(new HabitCategory(1, getResources().getString(R.string.sport)));
+        habitCategoryDAO.create(new HabitCategory(2, getResources().getString(R.string.reading)));
+        habitCategoryDAO.create(new HabitCategory(3, getResources().getString(R.string.cooking)));
+        habitCategoryDAO.create(new HabitCategory(4, getResources().getString(R.string.cleaning)));
+        habitCategoryDAO.create(new HabitCategory(5, getResources().getString(R.string.studying)));
+        habitCategoryDAO.create(new HabitCategory(6, getResources().getString(R.string.health)));
+        habitCategoryDAO.create(new HabitCategory(1, getResources().getString(R.string.other)));
 
 
         Calendar c = new GregorianCalendar();

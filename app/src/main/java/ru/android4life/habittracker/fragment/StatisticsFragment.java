@@ -111,10 +111,10 @@ public class StatisticsFragment extends Fragment {
 
         data = new LineChartData(lines);
         Axis axisX = new Axis();
-        axisX.setName("Days");
+        axisX.setName(MainActivity.getContext().getResources().getString(R.string.days));
         data.setAxisXBottom(axisX);
         Axis axisY = new Axis();
-        axisY.setName("Productivity");
+        axisY.setName(MainActivity.getContext().getResources().getString(R.string.productivity));
         axisY.setHasLines(true);
 
         data.setAxisXBottom(axisX);
