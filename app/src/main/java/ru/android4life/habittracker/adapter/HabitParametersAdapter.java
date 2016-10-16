@@ -26,6 +26,7 @@ import java.util.List;
 
 import ru.android4life.habittracker.HabitParameter;
 import ru.android4life.habittracker.R;
+import ru.android4life.habittracker.Translator;
 import ru.android4life.habittracker.activity.AddHabitActivity;
 import ru.android4life.habittracker.activity.BaseActivity;
 import ru.android4life.habittracker.activity.MainActivity;
@@ -69,12 +70,12 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
             @Override
             public void onCategory(View caller, final TextView hint) {
                 //TODO replace items with values from db
-                final CharSequence[] items = habitCategoryDAO.getArrayOfAllNames();
+                final CharSequence[] items = Translator.translate(habitCategoryDAO.getArrayOfAllNames());
                 final List<HabitCategory> habitCategories = (List<HabitCategory>) habitCategoryDAO.findAll();
 
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                         parent.getContext());
-                alertDialogBuilder.setTitle("Select category");
+                alertDialogBuilder.setTitle(context.getResources().getString(R.string.select_category));
                 alertDialogBuilder
                         .setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int item) {
@@ -84,7 +85,7 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
                                 prefs.edit().putInt("categoryId", habitSettings.getCategoryId()).apply();
                                 dialog.cancel();
                             }
-                        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        }).setNegativeButton(context.getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
                     }
@@ -127,10 +128,10 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
 
             @Override
             public void onFrequency(View caller, final TextView hint) {
-                final CharSequence[] items = {" Daily ", " Weekly ", " Monthly ", " Specified days "};
+                final CharSequence[] items = {context.getResources().getString(R.string.daily), context.getResources().getString(R.string.weekly), context.getResources().getString(R.string.monthly), context.getResources().getString(R.string.specified_days)};
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                         parent.getContext());
-                alertDialogBuilder.setTitle("Select a frequency");
+                alertDialogBuilder.setTitle(context.getResources().getString(R.string.select_frequency));
                 alertDialogBuilder
                         .setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
                             @RequiresApi(api = Build.VERSION_CODES.N)
@@ -161,7 +162,7 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
                                 }
                                 dialog.cancel();
                             }
-                        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        }).setNegativeButton(context.getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
                     }
@@ -177,7 +178,6 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
                 Intent tmpIntent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
                 tmpIntent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
                 activity.startActivityForResult(tmpIntent, AddHabitActivity.PICK_AUDIO_REQUEST);
-
                 hint.setText(prefs.getString(caller.getResources().getString(R.string.notification_sound_name),
                         caller.getResources().getString(R.string.standard_from_capital_letter)));
             }
@@ -190,14 +190,17 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
         return vh;
     }
 
+
     private void createFrequencySpecifiedDaysDialog(ViewGroup parent, final TextView hint) {
         final boolean[] mCheckedItems = {false, false, false, false, false, false, false};
-        final CharSequence[] items = {" Monday ", " Tuesday ", " Wednesday ", " Thursday ",
-                " Friday ", " Saturday ", " Sunday "};
+        final CharSequence[] items = {context.getResources().getString(R.string.monday), context.getResources().getString(R.string.tuesday),
+                context.getResources().getString(R.string.wednesday), context.getResources().getString(R.string.thursday),
+                context.getResources().getString(R.string.friday), context.getResources().getString(R.string.saturday),
+                context.getResources().getString(R.string.sunday)};
         final CharSequence[] shortenDaysOfWeek = context.getResources().getStringArray(R.array.shorten_days_of_week);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 parent.getContext());
-        alertDialogBuilder.setTitle("Select days");
+        alertDialogBuilder.setTitle(context.getResources().getString(R.string.select_days));
         alertDialogBuilder
                 .setMultiChoiceItems(items, mCheckedItems,
                         new DialogInterface.OnMultiChoiceClickListener() {
@@ -207,7 +210,7 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
                                 mCheckedItems[which] = isChecked;
                             }
                         })
-                .setPositiveButton("Done",
+                .setPositiveButton(context.getResources().getString(R.string.habit_done),
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog,
@@ -230,7 +233,7 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
                                         selectedDaysInTwoLetters));
                             }
                         })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton(context.getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
                     }
@@ -242,19 +245,23 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
     }
 
     private void createFrequencyWeeklyDialog(ViewGroup parent, final TextView hint) {
-        final CharSequence[] items = {" Monday ", " Tuesday ", " Wednesday ", " Thursday ", " Friday ", " Saturday ", " Sunday "};
+        final CharSequence[] items = {context.getResources().getString(R.string.monday), context.getResources().getString(R.string.tuesday),
+                context.getResources().getString(R.string.wednesday), context.getResources().getString(R.string.thursday),
+                context.getResources().getString(R.string.friday), context.getResources().getString(R.string.saturday),
+                context.getResources().getString(R.string.sunday)};
+        final CharSequence[] shortenDaysOfWeek = context.getResources().getStringArray(R.array.shorten_days_of_week);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 parent.getContext());
-        alertDialogBuilder.setTitle("Select day");
+        alertDialogBuilder.setTitle(context.getResources().getString(R.string.select_days));
         alertDialogBuilder
                 .setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int item) {
                         hint.setText(context.getResources().getString(R.string.on_every,
-                                String.valueOf(items[item]).substring(1, items[item].length() - 1)));
+                                shortenDaysOfWeek[item]));
                         prefs.edit().putInt("notificationFrequencyWeekNumberOrDate", item + 1).apply();
                         dialog.cancel();
                     }
-                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                }).setNegativeButton(context.getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 dialog.cancel();
             }

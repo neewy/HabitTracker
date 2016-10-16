@@ -52,6 +52,8 @@
     <string name="add_habit_name_frequency">Frequency</string>
     <string name="add_habit_name_tune">Tune</string>
     <string name="add_habit_name_confirmation">Confirmation</string>
+    <string name="done">DONE</string>
+    <string name="skip">SKIP</string>
 
     <!--Settings-->
     <string name="personal_settings">Personal Settings</string>
@@ -61,9 +63,14 @@
     <string name="sky_blue">Sky Blue</string>
     <string name="language">Language</string>
     <string name="english">English</string>
+    <string name="locale_en">en</string>
+    <string name="locale_ru">ru</string>
+    <string name="russian">Russian</string>
+    <string name="select_language">Select language</string>
     <string name="about">About</string>
     <string name="contributors">Contributors</string>
-    <string name="notifications">Notifcations</string>
+    <string name="notifications">Notifications</string>
+    <string name="show_notifications">Show notifications</string>
 
     <!--Habits List-->
     <string name="did_i_question">Did I %1$s?</string>
@@ -83,10 +90,10 @@
     <string name="color_setting_name_teal">Teal</string>
 
     <!-- Material Design colors ids  -->
-    <string translatable="false" name="color_setting_name_blue_id">blue</string>
-    <string translatable="false" name="color_setting_name_purple_id">purple</string>
-    <string translatable="false" name="color_setting_name_red_id">red</string>
-    <string translatable="false" name="color_setting_name_teal_id">teal</string>
+    <string name="color_setting_name_blue_id" translatable="false">blue</string>
+    <string name="color_setting_name_purple_id" translatable="false">purple</string>
+    <string name="color_setting_name_red_id" translatable="false">red</string>
+    <string name="color_setting_name_teal_id" translatable="false">teal</string>
     <string name="color_select">Select the color</string>
 
     <!--Habits Parameters Adapter-->
@@ -103,4 +110,49 @@
     <string name="standard_from_capital_letter">Standard</string>
     <string name="creating_habit_settings">creating_habit_settings</string>
     <string name="notification_frequency_specified_day_string">notificationFrequencySpecifiedDay%1$s</string>
+
+    <!--Category names-->
+    <string name="sport">Sport</string>
+    <string name="reading">Reading</string>
+    <string name="cooking">Cooking</string>
+    <string name="cleaning">Cleaning</string>
+    <string name="studying">Studying</string>
+    <string name="health">Health</string>
+    <string name="other">Other</string>
+
+    <!--Navigation menu-->
+    <string name="today">Today</string>
+    <string name="tomorrow">Tomorrow</string>
+    <string name="next_month">Next month</string>
+    <string name="all_tasks">All tasks</string>
+    <string name="statistics">Statistics</string>
+    <string name="settings">Settings</string>
+
+    <!--Frequency-->
+    <string name="daily">Daily</string>
+    <string name="weekly">Weekly</string>
+    <string name="monthly">Monthly</string>
+    <string name="specified_days">Specified days</string>
+    <string name="select_frequency">Select a frequency</string>
+
+    <!--Days of week-->
+    <string name="monday">Monday</string>
+    <string name="tuesday">Tuesday</string>
+    <string name="wednesday">Wednesday</string>
+    <string name="thursday">Thursday</string>
+    <string name="friday">Friday</string>
+    <string name="saturday">Saturday</string>
+    <string name="sunday">Sunday</string>
+    <string name="select_days">Select days</string>
+
+    <!--Statistics-->
+    <string name="productivity">Productivity</string>
+    <string name="days">Days</string>
+
+    <string name="habit_done">Done</string>
+
+    <string name="select_category">Select a category</string>
+
+
+
 </resources>

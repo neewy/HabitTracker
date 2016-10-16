@@ -1,0 +1,121 @@
+<resources>
+
+    <string name="title_habits">Привычки</string>
+    <string name="title_progress">Прогресс</string>
+    <string name="menu_settings">Настройки</string>
+    <string name="title_activity_main">Сделал ли я?</string>
+
+    <!-- Habits and progress screen -->
+
+    <string name="did_i">Сделал ли я</string>
+    <string name="did_i_2">Сделал ли я…</string>
+    <string name="add_a_habit">добавить привычку</string>
+    <string name="question_mark">\?</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="no_habits">Ваш список првычек пуст. Нажмите на иконку карандаша в правом верхнем углу чтобы начать редактировать привычки!</string>
+
+    <!-- Edit screen -->
+    <string name="edit_habits">Редактироать</string>
+    <string name="enter_habit">Введите новую привычку</string>
+    <string name="menu_delete">Удалить</string>
+    <string name="menu_edit">Редактировать</string>
+    <string name="menu_new">Новая</string>
+    <string name="selected_items">Выбранные элементы</string>
+    <string name="dialog_edit_habit_title">Сделал ли я…</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Отмена</string>
+    <string name="daily_report">Ежедневный отчет в</string>
+    <string name="edit_no_habits">Добавьте привычку нажав иконку "+" в правом верхнем углу экрана</string>
+
+    <!--Add habit-->
+    <string name="add_habit_name">Название привычки*</string>
+    <string name="add_habit_question">Вопрос*</string>
+    <string name="add_habit_name_category">Категория</string>
+    <string name="add_habit_name_reminder">Напомнить в</string>
+    <string name="add_habit_name_frequency">Частота</string>
+    <string name="add_habit_name_tune">Мелодия</string>
+    <string name="add_habit_name_confirmation">Подтверждение</string>
+    <string name="done">ВЫПОЛНЕНО</string>
+    <string name="skip">ПРОПУСТИТЬ</string>
+    <!--Settings-->
+    <string name="personal_settings">Личные настройки</string>
+    <string name="first_name">Имя</string>
+    <string name="username">имя пользователя</string>
+    <string name="primary_color">Цветовая схема</string>
+    <string name="sky_blue">Небесно голубой</string>
+    <string name="language">Язык</string>
+    <string name="english">Английский</string>
+    <string name="locale_en">en</string>
+    <string name="locale_ru">ru</string>
+    <string name="russian">Русский</string>
+    <string name="select_language">Выберите язык</string>
+    <string name="about">О нас</string>
+    <string name="contributors">Разработчики</string>
+    <string name="notifications">Оповещения</string>
+    <string name="show_notifications">Показывать оповещения</string>
+    <!--Habits List-->
+    <string name="did_i_question">Сделал ли я %1$s?</string>
+
+    <!--HabitListFragment-->
+    <string name="today_capital_case">Сегодня</string>
+
+    <!--Main Activity-->
+    <string name="done_to_skipped_ratio">Процент выполенения</string>
+    <string name="accent_color">Цвет акцента</string>
+
+    <!-- Material Design colors names -->
+    <string name="color_setting_name_blue">Синий</string>
+    <string name="color_setting_name_purple">Фиолетовый</string>
+    <string name="color_setting_name_red">Красный</string>
+    <string name="color_setting_name_teal">Бирюзовый</string>
+
+    <!--Habits Parameters Adapter-->
+    <string name="every_month_on_space_string">Каждый месяц %1$s числа</string>
+    <string name="on_every">Каждую неделю в %1$s</string>
+    <string name="every_day">Каждый день</string>
+    <string name="position">местоположение</string>
+
+
+    <!--Category names-->
+    <string name="sport">Спорт</string>
+    <string name="reading">Чтение</string>
+    <string name="cooking">Готовка</string>
+    <string name="cleaning">Уборка</string>
+    <string name="studying">Учеба</string>
+    <string name="health">Здоровье</string>
+    <string name="other">Другое</string>
+
+    <!--Navigation menu-->
+    <string name="today">Сегодня</string>
+    <string name="tomorrow">Завтра</string>
+    <string name="next_month">Следующий месяц</string>
+    <string name="all_tasks">Все привычки</string>
+    <string name="statistics">Статистика</string>
+    <string name="settings">Настройки</string>
+
+    <!--Frequency-->
+    <string name="daily">Ежедневно</string>
+    <string name="weekly">Еженедельно</string>
+    <string name="monthly">Ежемесячно</string>
+    <string name="specified_days">В выбранные дни</string>
+    <string name="select_frequency">Выберите частоту</string>
+
+    <!--Days of week-->
+    <string name="monday">Понедельник</string>
+    <string name="tuesday">Вторник</string>
+    <string name="wednesday">Среда</string>
+    <string name="thursday">Четверг</string>
+    <string name="friday">Пятница</string>
+    <string name="saturday">Суббота</string>
+    <string name="sunday">Воскресенье</string>
+    <string name="select_days">Выберите дни</string>
+
+
+    <!--Statistics-->
+    <string name="productivity">Продуктивность</string>
+    <string name="days">Дни</string>
+
+    <string name="habit_done">Готово</string>
+    <string name="select_category">Выберите категорию</string>
+</resources>

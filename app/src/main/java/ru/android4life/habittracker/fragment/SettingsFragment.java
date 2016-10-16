@@ -91,9 +91,10 @@ public class SettingsFragment extends Fragment {
     private List<Setting> createListOfPersonalSettings() {
         SharedPreferences prefs = getActivity().getSharedPreferences(SHARED_PREF, MODE_PRIVATE);
         List<Setting> personalSettingsList = new ArrayList<>();
+        String locale = MainActivity.getContext().getResources().getConfiguration().locale.getDisplayName();
         personalSettingsList.add(new Setting(getString(R.string.first_name), getString(R.string.username)));
         personalSettingsList.add(new Setting(getString(R.string.primary_color), prefs.getString("color", "")));
-        personalSettingsList.add(new Setting(getString(R.string.language), getString(R.string.english)));
+        personalSettingsList.add(new Setting(getString(R.string.language), locale));
         return personalSettingsList;
     }
 
