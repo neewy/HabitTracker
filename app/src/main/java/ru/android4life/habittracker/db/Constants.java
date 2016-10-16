@@ -10,7 +10,7 @@ import java.util.Locale;
  */
 
 public final class Constants {
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
     public static final String DATABASE_NAME = "habitsTracker" + DATABASE_VERSION + ".db";
     public static final SimpleDateFormat dateFormat =
             new SimpleDateFormat("yyyy-MM-dd H:mm:ss.S", Locale.ENGLISH);
@@ -22,8 +22,7 @@ public final class Constants {
     public static final char UNDERSCORE = '_';
     public static final String ID = "id";
     public static final String DATETIME = "datetime";
-    public static final String IS_PERFORMED = "isPerformed";
-    public static final String IS_SKIPPED = "isSkipped";
+    public static final String IS_DONE = "isDone";
     public static final String NAME = "name";
 
     // For DatabaseHelper

@@ -70,12 +70,12 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitListAdapter.View
                 habit.getQuestion()));
         holder.time.setText(Constants.prettyTime.format(habitSchedule.getDatetime()));
 
-        if (habitSchedule.isPerformed()) {
+        if (habitSchedule.isDone() != null && habitSchedule.isDone()) {
             holder.done.setEnabled(false);
             holder.skip.setEnabled(false);
             holder.skip.setTextColor(Color.LTGRAY);
         }
-        if (habitSchedule.isSkipped()) {
+        if (habitSchedule.isDone() != null && !habitSchedule.isDone()) {
             holder.skip.setEnabled(false);
             holder.skip.setTextColor(Color.LTGRAY);
         }
@@ -84,8 +84,7 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitListAdapter.View
             @Override
             public void onClick(View v) {
                 HabitSchedule updatedHabitSchedule = new HabitSchedule(habitSchedule.getId(),
-                        habitSchedule.getDatetime(), habitSchedule.isPerformed(), true,
-                        habitSchedule.getHabitId());
+                        habitSchedule.getDatetime(), false, habitSchedule.getHabitId());
                 habitScheduleDAO.update(updatedHabitSchedule);
                 habitSchedules = getHabitSchedulesDependOnDrawerSelectionMode(drawerSelectionMode);
                 if (drawerSelectionMode != DrawerSelectionMode.ALL_TASKS)
@@ -99,8 +98,7 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitListAdapter.View
             @Override
             public void onClick(View v) {
                 HabitSchedule updatedHabitSchedule = new HabitSchedule(habitSchedule.getId(),
-                        habitSchedule.getDatetime(), true, habitSchedule.isSkipped(),
-                        habitSchedule.getHabitId());
+                        habitSchedule.getDatetime(), true, habitSchedule.getHabitId());
                 habitScheduleDAO.update(updatedHabitSchedule);
                 habitSchedules = getHabitSchedulesDependOnDrawerSelectionMode(drawerSelectionMode);
                 if (drawerSelectionMode != DrawerSelectionMode.ALL_TASKS)

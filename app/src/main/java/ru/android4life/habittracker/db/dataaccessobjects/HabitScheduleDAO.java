@@ -158,7 +158,7 @@ public class HabitScheduleDAO implements ExtendedCrud {
         try {
             QueryBuilder<HabitSchedule, Integer> qBuilder = helper.getHabitScheduleDao().queryBuilder();
             qBuilder.where().ge(Constants.DATETIME, today).and().lt(Constants.DATETIME, tomorrow)
-                    .and().eq(Constants.IS_PERFORMED, false).and().eq(Constants.IS_SKIPPED, false);
+                    .and().isNull(Constants.IS_DONE);
             items = qBuilder.query();
         } catch (SQLException e) {
             Log.d(Constants.DAO_ERROR, Constants.SQL_EXCEPTION_IN + Constants.SPACE +
@@ -183,7 +183,7 @@ public class HabitScheduleDAO implements ExtendedCrud {
         try {
             QueryBuilder<HabitSchedule, Integer> qBuilder = helper.getHabitScheduleDao().queryBuilder();
             qBuilder.where().ge(Constants.DATETIME, tomorrow).and().lt(Constants.DATETIME, twoDaysAfterToday)
-                    .and().eq(Constants.IS_PERFORMED, false).and().eq(Constants.IS_SKIPPED, false);
+                    .and().isNull(Constants.IS_DONE);
             ;
             items = qBuilder.query();
         } catch (SQLException e) {
@@ -208,7 +208,7 @@ public class HabitScheduleDAO implements ExtendedCrud {
         try {
             QueryBuilder<HabitSchedule, Integer> qBuilder = helper.getHabitScheduleDao().queryBuilder();
             qBuilder.where().ge(Constants.DATETIME, today).and().lt(Constants.DATETIME, monthAfterToday)
-                    .and().eq(Constants.IS_PERFORMED, false).and().eq(Constants.IS_SKIPPED, false);
+                    .and().isNull(Constants.IS_DONE);
             items = qBuilder.query();
         } catch (SQLException e) {
             Log.d(Constants.DAO_ERROR, Constants.SQL_EXCEPTION_IN + Constants.SPACE +

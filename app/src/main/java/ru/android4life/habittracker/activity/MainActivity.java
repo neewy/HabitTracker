@@ -182,15 +182,15 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         habitDAO.create(new Habit(3, "Privuichka 3", "do privuichka 3", twoDaysAfterToday,
                 55.75417935, 48.7440855, 9, Environment.getExternalStorageDirectory().getPath()
                 + "/meouing_kittten.mp3", true, 60, 1));
-        habitScheduleDAO.create(new HabitSchedule(1, today, false, false, 1));
-        habitScheduleDAO.create(new HabitSchedule(2, today, true, false, 2));
-        habitScheduleDAO.create(new HabitSchedule(3, today, false, false, 3));
-        habitScheduleDAO.create(new HabitSchedule(4, tomorrow, false, false, 1));
-        habitScheduleDAO.create(new HabitSchedule(5, tomorrow, false, false, 2));
-        habitScheduleDAO.create(new HabitSchedule(6, tomorrow, false, false, 3));
-        habitScheduleDAO.create(new HabitSchedule(7, twoDaysAfterToday, false, false, 1));
-        habitScheduleDAO.create(new HabitSchedule(8, twoDaysAfterToday, false, false, 2));
-        habitScheduleDAO.create(new HabitSchedule(9, twoDaysAfterToday, true, false, 3));
+        habitScheduleDAO.create(new HabitSchedule(1, today, null, 1));
+        habitScheduleDAO.create(new HabitSchedule(2, today, true, 2));
+        habitScheduleDAO.create(new HabitSchedule(3, today, null, 3));
+        habitScheduleDAO.create(new HabitSchedule(4, tomorrow, null, 1));
+        habitScheduleDAO.create(new HabitSchedule(5, tomorrow, false, 2));
+        habitScheduleDAO.create(new HabitSchedule(6, tomorrow, null, 3));
+        habitScheduleDAO.create(new HabitSchedule(7, twoDaysAfterToday, null, 1));
+        habitScheduleDAO.create(new HabitSchedule(8, twoDaysAfterToday, false, 2));
+        habitScheduleDAO.create(new HabitSchedule(9, twoDaysAfterToday, true, 3));
 
         // using the following line to edit/commit prefs
         prefs.edit().putBoolean("firstrun", false).apply();
