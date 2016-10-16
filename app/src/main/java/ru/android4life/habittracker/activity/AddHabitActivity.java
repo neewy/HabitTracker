@@ -18,7 +18,6 @@ import android.widget.Toast;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.List;
 
 import ru.android4life.habittracker.HabitParameter;
 import ru.android4life.habittracker.R;
@@ -81,15 +80,7 @@ public class AddHabitActivity extends BaseActivity {
 
                 // TODO: Get data from HabitParametersAdapter, create Habits according to it
                 getHabitSettingsFromPreferences();
-                String violation = validate();
-                if (violation != null) {
-                    CharSequence text = violation;
-                    int duration = Toast.LENGTH_LONG;
-                    Toast toast = Toast.makeText(getContext(), text, duration);
-                    toast.show();
-                } else {
-                    createHabitAccordingToHabitPreferences();
-
+                if (createHabitAccordingToHabitPreferencesIfDataIsCorrect()) {
                     mAdapter.notifyDataSetChanged();
 
                     removeValuesForHabitSettingsFromPreferences();
@@ -120,22 +111,13 @@ public class AddHabitActivity extends BaseActivity {
         mRecyclerView.setAdapter(mAdapter);
     }
 
-    private String validate() {
+    private boolean areHabitNameAndQuestionEntered() {
         TextInputLayout habitNameTextInputLayout = (TextInputLayout) findViewById(R.id.add_habit_title_edit_text);
         String habitName = habitNameTextInputLayout.getEditText().getText().toString();
         TextInputLayout habitQuestionTextInputLayout = (TextInputLayout) findViewById(R.id.add_habit_question_edit_text);
         String habitQuestion = habitQuestionTextInputLayout.getEditText().getText().toString();
 
-        if (habitName.length() == 0 || habitQuestion.length() == 0) {
-            return "Habit name and question should be filled";
-        }
-        List habits = habitDAO.findAll();
-        for (Object habit : habits) {
-            if (((Habit) habit).getName().equals(habitName) || ((Habit) habit).getQuestion().equals(habitQuestion)) {
-                return "Habit name and question should be unique";
-            }
-        }
-        return null;
+        return !(habitName.length() == 0 || habitQuestion.length() == 0);
     }
 
     @Override
@@ -226,7 +208,12 @@ public class AddHabitActivity extends BaseActivity {
         }
     }
 
-    private void createHabitAccordingToHabitPreferences() {
+    private boolean createHabitAccordingToHabitPreferencesIfDataIsCorrect() {
+        if (!areHabitNameAndQuestionEntered()) {
+            toastMessage(getContext().getString(R.string.habit_name_and_question_should_be_filled));
+            return false;
+        }
+
         Calendar c = new GregorianCalendar();
         c.set(Calendar.HOUR_OF_DAY, habitSettings.getNotificationHour());
         c.set(Calendar.MINUTE, habitSettings.getNotificationMinute());
@@ -243,6 +230,10 @@ public class AddHabitActivity extends BaseActivity {
                 48.7440855, 9, habitSettings.getNotificationSoundUri().toString(), true, 60, habitSettings.getCategoryId()));
         if (habitsCreationResult >= 0) {
             createSchedulesForTheHabitByItsId(habitsCreationResult);
+            return true;
+        } else {
+            toastMessage(getContext().getString(R.string.habit_name_and_question_should_be_unique));
+            return false;
         }
     }
 
@@ -305,6 +296,12 @@ public class AddHabitActivity extends BaseActivity {
                 }
                 break;
         }
+    }
+
+    private void toastMessage(String message) {
+        int duration = Toast.LENGTH_LONG;
+        Toast toast = Toast.makeText(getContext(), message, duration);
+        toast.show();
     }
 
 }

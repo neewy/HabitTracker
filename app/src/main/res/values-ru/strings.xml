@@ -38,6 +38,9 @@
     <string name="add_habit_name_confirmation">Подтверждение</string>
     <string name="done">ВЫПОЛНЕНО</string>
     <string name="skip">ПРОПУСТИТЬ</string>
+    <string name="habit_name_and_question_should_be_filled">Название привычки и вопрос должны быть введены</string>
+    <string name="habit_name_and_question_should_be_unique">Привычка с введённым названием или вопросом уже существует</string>
+
     <!--Settings-->
     <string name="personal_settings">Личные настройки</string>
     <string name="first_name">Имя</string>

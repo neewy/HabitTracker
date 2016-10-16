@@ -54,6 +54,8 @@
     <string name="add_habit_name_confirmation">Confirmation</string>
     <string name="done">DONE</string>
     <string name="skip">SKIP</string>
+    <string name="habit_name_and_question_should_be_filled">Habit name and question should be filled</string>
+    <string name="habit_name_and_question_should_be_unique">Habit name and question should be unique</string>
 
     <!--Settings-->
     <string name="personal_settings">Personal Settings</string>
