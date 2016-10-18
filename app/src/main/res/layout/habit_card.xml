@@ -51,22 +51,22 @@
                 <android.support.v7.widget.AppCompatButton
                     android:id="@+id/habit_card_skip"
                     app:backgroundTint="@color/neutral"
-                    android:layout_width="80dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="50dp"
                     android:theme="@style/HabitCardButtonSkip"
                     android:textColor="@color/transparent"
-                    android:text="SKIP"
+                    android:text="@string/skip"
                     />
 
                 <!-- Done -->
                 <android.support.v7.widget.AppCompatButton
                     android:id="@+id/habit_card_done"
                     app:backgroundTint="?colorPrimaryDark"
-                    android:layout_width="80dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:theme="@style/HabitCardButtonDone"
-                    android:text="DONE" />
+                    android:text="@string/done" />
 
 
             </LinearLayout>

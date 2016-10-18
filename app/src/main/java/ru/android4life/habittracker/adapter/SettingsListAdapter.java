@@ -1,8 +1,6 @@
 package ru.android4life.habittracker.adapter;
 
 import android.content.DialogInterface;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.os.OperationCanceledException;
 import android.support.v7.app.AlertDialog;
@@ -136,7 +134,6 @@ public class SettingsListAdapter extends RecyclerView.Adapter<SettingsListAdapte
         alertDialogBuilder.setTitle(parent.getResources().getString(R.string.select_language));
         alertDialogBuilder
                 .setSingleChoiceItems(items, selectedLanguage, new DialogInterface.OnClickListener() {
-                    @RequiresApi(api = Build.VERSION_CODES.N)
                     public void onClick(DialogInterface dialog, int item) {
                         switch (item) {
                             case 0:

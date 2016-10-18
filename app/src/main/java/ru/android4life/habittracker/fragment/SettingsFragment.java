@@ -107,7 +107,7 @@ public class SettingsFragment extends Fragment {
         List<Setting> inAppSettingsList = new ArrayList<>();
         inAppSettingsList.add(new Setting(getString(R.string.about)));
         inAppSettingsList.add(new Setting(getString(R.string.contributors)));
-        inAppSettingsList.add(new Setting(getString(R.string.language)));
+        inAppSettingsList.add(new Setting(getString(R.string.version)));
         return inAppSettingsList;
     }
 
