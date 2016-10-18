@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import ru.android4life.habittracker.R;
+import ru.android4life.habittracker.activity.BaseActivity;
 
 /**
  * Tabs controller class.
@@ -44,11 +45,8 @@ public class HabitTabsFragment extends Fragment {
 
         // Assigns the ViewPager to TabLayout
         tabLayout.setupWithViewPager(viewPager);
-        if (tabLayout.getTabCount() >= 2) {
-            // Setting the names of tabs
-            tabLayout.getTabAt(0).setText(R.string.habit_tabs_general);
-            tabLayout.getTabAt(1).setText(R.string.habit_tabs_statistics);
-        }
+        tabLayout.getTabAt(0).setText(R.string.habit_tabs_general);
+        tabLayout.getTabAt(1).setText(R.string.habit_tabs_statistics);
 
         // Now when a user swipes ViewPager, TabLayout will update its indicator and selected tab;
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
@@ -71,6 +69,9 @@ public class HabitTabsFragment extends Fragment {
             }
         });
 
+
+        //TODO: Add habit name here
+        getActivity().setTitle("Habit");
 
         return tabsView;
     }
@@ -95,7 +96,6 @@ public class HabitTabsFragment extends Fragment {
                     Fragment tab1 = new HabitCardFragment();
                     return tab1;
                 case 1:
-                    //TODO: Add statistics fragment
                     Fragment tab2 = new HabitStatisticsFragment();
                     return tab2;
                 default:

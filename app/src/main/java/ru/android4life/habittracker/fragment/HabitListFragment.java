@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 
 import ru.android4life.habittracker.R;
 import ru.android4life.habittracker.activity.AddHabitActivity;
+import ru.android4life.habittracker.activity.BaseActivity;
 import ru.android4life.habittracker.activity.MainActivity;
 import ru.android4life.habittracker.adapter.HabitListAdapter;
 
@@ -56,9 +57,9 @@ public class HabitListFragment extends Fragment {
         listView.setHasFixedSize(true);
         listView.setLayoutManager(mLinearLayoutManager);
         listView.setAdapter(mAdapter);
+
         return view;
     }
-
 
     @Override
     public void onResume() {

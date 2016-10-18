@@ -3,6 +3,7 @@ package ru.android4life.habittracker.activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -16,6 +17,7 @@ import android.view.MenuItem;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Locale;
 
 import ru.android4life.habittracker.R;
@@ -32,6 +34,9 @@ import ru.android4life.habittracker.fragment.DrawerSelectionMode;
 import ru.android4life.habittracker.fragment.HabitListFragment;
 import ru.android4life.habittracker.fragment.SettingsFragment;
 import ru.android4life.habittracker.fragment.StatisticsFragment;
+
+import static ru.android4life.habittracker.fragment.DrawerSelectionMode.TODAY;
+import static ru.android4life.habittracker.fragment.DrawerSelectionMode.findDrawerSelectionMode;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
     public static Locale locale;
@@ -54,7 +59,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContext(this.getApplicationContext());
-        locale = new Locale(getSharedPreferences(SHARED_PREF, MODE_PRIVATE).getString("locale", getResources().getString(R.string.locale_en)));
+        locale = new Locale(prefs.getString("locale", getResources().getString(R.string.locale_en)));
         Constants.updatePrettyTime();
         Locale.setDefault(locale);
         Configuration config = new Configuration();
@@ -86,15 +91,15 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         // Initiate db
         DatabaseManager.setHelper(getContext());
         database = DatabaseManager.getHelper();
-        drawerSelectionMode = DrawerSelectionMode.TODAY;
+        drawerSelectionMode = TODAY;
         fragmentManager.beginTransaction().replace(R.id.container,
                 new HabitListFragment()).commit();
+        setTitle(getString(R.string.today));
+        navigationView.getMenu().getItem(0).setChecked(true);
     }
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-
-        //TODO: check if this item was selected before
 
         // Create a new fragment and specify the fragment to show based on nav item clicked
         Fragment fragment = null;
@@ -121,14 +126,15 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             case R.id.nav_settings:
                 fragment = new SettingsFragment();
                 break;
-            default:
-                Log.d("Drawer", "Any other was clicked");
-                break;
         }
 
+        // Emptying fragments in the backstack
+        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+        // Replacing activity content with the content of fragment
         fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
 
-        //Set the item as checked in drawer menu
+        // Set the item as checked in drawer menu
         item.setChecked(true);
 
         // Set action bar title
@@ -152,6 +158,40 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         super.onConfigurationChanged(newConfig);
         // Pass any configuration change to the drawer toggles
         toggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public void onBackPressed() {
+        String fragmentName, title = "";
+        if (fragmentManager.getBackStackEntryCount() > 0) {
+            fragmentName = fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount() - 1).getName();
+
+            switch (findDrawerSelectionMode(fragmentName)) {
+                case TODAY:
+                    title = getString(R.string.today);
+                    break;
+                case TOMORROW:
+                    title = getString(R.string.tomorrow);
+                    break;
+                case NEXT_MONTH:
+                    title = getString(R.string.next_month);
+                    break;
+                case ALL_TASKS:
+                    title = getString(R.string.all_tasks);
+                    break;
+                case STATISTICS:
+                    title = getString(R.string.statistics);
+                    break;
+                case SETTINGS:
+                    title = getString(R.string.settings);
+                    break;
+            }
+            setTitle(title);
+            fragmentManager.popBackStack();
+
+        } else {
+            super.onBackPressed();
+        }
     }
 
     void forFirstRun() {

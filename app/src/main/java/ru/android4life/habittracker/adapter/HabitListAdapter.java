@@ -55,7 +55,7 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitListAdapter.View
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragmentManager.beginTransaction().replace(R.id.container, new HabitTabsFragment()).commit();
+                fragmentManager.beginTransaction().replace(R.id.container, new HabitTabsFragment()).addToBackStack(drawerSelectionMode.stringValue).commit();
             }
         });
         return new ViewHolder(v);
