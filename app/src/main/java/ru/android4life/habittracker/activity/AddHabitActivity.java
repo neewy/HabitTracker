@@ -107,7 +107,7 @@ public class AddHabitActivity extends BaseActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        mAdapter = new HabitParametersAdapter(this, HabitParameter.createParameters(getApplicationContext()));
+        mAdapter = new HabitParametersAdapter(this, HabitParameter.createParameters(getApplicationContext()), true);
         mRecyclerView.setAdapter(mAdapter);
     }
 

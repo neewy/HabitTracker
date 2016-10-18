@@ -39,12 +39,13 @@ import static ru.android4life.habittracker.fragment.DrawerSelectionMode.TODAY;
 import static ru.android4life.habittracker.fragment.DrawerSelectionMode.findDrawerSelectionMode;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
+
     public static Locale locale;
     private static DrawerSelectionMode drawerSelectionMode;
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
     private FragmentManager fragmentManager;
-    private DatabaseHelper database;
+    private DatabaseHelper database; //TODO: resolve why do we need this?
 
     public static DrawerSelectionMode getDrawerSelectionMode() {
         return drawerSelectionMode;
@@ -91,11 +92,19 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         // Initiate db
         DatabaseManager.setHelper(getContext());
         database = DatabaseManager.getHelper();
+
+        setUpFirstFragment(navigationView);
+    }
+
+    // Sets up initial fragment and drawer menu
+    private void setUpFirstFragment(NavigationView nv) {
         drawerSelectionMode = TODAY;
         fragmentManager.beginTransaction().replace(R.id.container,
                 new HabitListFragment()).commit();
+        // set title in actionbar
         setTitle(getString(R.string.today));
-        navigationView.getMenu().getItem(0).setChecked(true);
+        // select first element (today) in drawer's list
+        nv.getMenu().getItem(0).setChecked(true);
     }
 
     @Override
@@ -121,9 +130,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 fragment = new HabitListFragment();
                 break;
             case R.id.nav_statistics:
+                drawerSelectionMode = DrawerSelectionMode.STATISTICS;
                 fragment = new StatisticsFragment();
                 break;
             case R.id.nav_settings:
+                drawerSelectionMode = DrawerSelectionMode.SETTINGS;
                 fragment = new SettingsFragment();
                 break;
         }
@@ -142,22 +153,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    // `onPostCreate` called when activity start-up is complete after `onStart()`
-    // NOTE! Make sure to override the method with only a single `Bundle` argument
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
-        toggle.syncState();
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        // Pass any configuration change to the drawer toggles
-        toggle.onConfigurationChanged(newConfig);
     }
 
     @Override
@@ -240,5 +235,22 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         // using the following line to edit/commit prefs
         prefs.edit().putBoolean("firstrun", false).apply();
+    }
+
+
+    // `onPostCreate` called when activity start-up is complete after `onStart()`
+    // NOTE! Make sure to override the method with only a single `Bundle` argument
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        toggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // Pass any configuration change to the drawer toggles
+        toggle.onConfigurationChanged(newConfig);
     }
 }

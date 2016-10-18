@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="HabitCardButtonDone" parent="ThemeOverlay.AppCompat.Dark">
+        <item name="android:colorButtonNormal">?colorPrimaryDark</item>
+        <item name="colorAccent">?colorPrimaryDark</item>
+        <item name="android:minHeight">60dp</item>
+    </style>
+
+    <style name="HabitCardButtonSkip" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:colorButtonNormal">@color/neutral</item>
+        <item name="colorAccent">@color/neutral</item>
+        <item name="android:minHeight">60dp</item>
+    </style>
+</resources>

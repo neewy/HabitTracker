@@ -51,8 +51,9 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
     private Context context;
     private HabitSettings habitSettings;
     private SharedPreferences prefs = null;
+    private boolean isForCreation;
 
-    public HabitParametersAdapter(Activity activity, List<HabitParameter> parameters) {
+    public HabitParametersAdapter(Activity activity, List<HabitParameter> parameters, boolean isForCreation) {
         this.parameters = parameters;
         this.activity = activity;
         this.habitSettings = new HabitSettings();
@@ -61,12 +62,23 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
         this.habitDAO = new HabitDAO(context);
         this.habitScheduleDAO = new HabitScheduleDAO(context);
         this.prefs = context.getSharedPreferences(context.getString(R.string.creating_habit_settings), MODE_PRIVATE);
+        this.isForCreation = isForCreation;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.habit_parameter, parent, false);
-        final HabitParametersAdapter.ViewHolder vh = new ViewHolder(v, new ViewHolder.AddHabitParameterListener() {
+        final HabitParametersAdapter.ViewHolder vh = new ViewHolder(v);
+        if (isForCreation) {
+            vh.mListener = createOnClickListener(parent);
+        } else {
+            vh.disableRippleEffect();
+        }
+        return vh;
+    }
+
+    private ViewHolder.AddHabitParameterListener createOnClickListener(final ViewGroup parent){
+        return new ViewHolder.AddHabitParameterListener() {
             @Override
             public void onCategory(View caller, final TextView hint) {
                 //TODO replace items with values from db
@@ -186,8 +198,7 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
             public void onConfirmation(View caller, final TextView hint) {
 
             }
-        });
-        return vh;
+        };
     }
 
 
@@ -316,9 +327,8 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
         private ImageView icon;
         private RippleView block;
 
-        public ViewHolder(View itemView, AddHabitParameterListener listener) {
+        public ViewHolder(View itemView) {
             super(itemView);
-            mListener = listener;
             title = (TextView) itemView.findViewById(R.id.add_habit_category);
             hint = (TextView) itemView.findViewById(R.id.add_habit_category_hint);
             icon = (ImageView) itemView.findViewById(R.id.add_habit_category_icon);
@@ -326,18 +336,24 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
             block.setOnClickListener(this);
         }
 
+        public void disableRippleEffect() {
+            block.setRippleAlpha(0);
+        }
+
         @Override
         public void onClick(View view) {
-            if (title.getText().toString().equals(view.getResources().getString(R.string.add_habit_name_category))) {
-                mListener.onCategory(view, hint);
-            } else if (title.getText().toString().equals(view.getResources().getString(R.string.add_habit_name_reminder))) {
-                mListener.onReminder(view, hint);
-            } else if (title.getText().toString().equals(view.getResources().getString(R.string.add_habit_name_frequency))) {
-                mListener.onFrequency(view, hint);
-            } else if (title.getText().toString().equals(view.getResources().getString(R.string.add_habit_name_tune))) {
-                mListener.onTune(view, hint);
-            } else {
-                mListener.onConfirmation(view, hint);
+            if (mListener != null) {
+                if (title.getText().toString().equals(view.getResources().getString(R.string.add_habit_name_category))) {
+                    mListener.onCategory(view, hint);
+                } else if (title.getText().toString().equals(view.getResources().getString(R.string.add_habit_name_reminder))) {
+                    mListener.onReminder(view, hint);
+                } else if (title.getText().toString().equals(view.getResources().getString(R.string.add_habit_name_frequency))) {
+                    mListener.onFrequency(view, hint);
+                } else if (title.getText().toString().equals(view.getResources().getString(R.string.add_habit_name_tune))) {
+                    mListener.onTune(view, hint);
+                } else {
+                    mListener.onConfirmation(view, hint);
+                }
             }
         }
 

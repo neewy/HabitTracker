@@ -10,7 +10,7 @@
     <android.support.v7.widget.CardView
         android:id="@+id/habit_confirmation"
         android:layout_width="match_parent"
-        android:layout_height="200dp">
+        android:layout_height="190dp">
 
 
         <RelativeLayout
@@ -50,11 +50,11 @@
                 <!-- Skip -->
                 <android.support.v7.widget.AppCompatButton
                     android:id="@+id/habit_card_skip"
+                    app:backgroundTint="@color/neutral"
                     android:layout_width="80dp"
-                    android:layout_height="40dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginRight="50dp"
-                    style="@style/Widget.AppCompat.Button.Colored"
-                    android:background="@color/neutral"
+                    android:theme="@style/HabitCardButtonSkip"
                     android:textColor="@color/transparent"
                     android:text="SKIP"
                     />
@@ -62,10 +62,10 @@
                 <!-- Done -->
                 <android.support.v7.widget.AppCompatButton
                     android:id="@+id/habit_card_done"
+                    app:backgroundTint="?colorPrimaryDark"
                     android:layout_width="80dp"
-                    android:layout_height="40dp"
-                    style="@style/Widget.AppCompat.Button.Colored"
-                    android:background="?colorPrimaryDark"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/HabitCardButtonDone"
                     android:text="DONE" />
 
 
