@@ -17,6 +17,8 @@ import java.util.List;
 import ru.android4life.habittracker.R;
 import ru.android4life.habittracker.activity.MainActivity;
 import ru.android4life.habittracker.adapter.SettingsListAdapter;
+import ru.android4life.habittracker.enumeration.SettingsType;
+import ru.android4life.habittracker.models.Setting;
 
 import static android.content.Context.MODE_PRIVATE;
 import static ru.android4life.habittracker.activity.BaseActivity.SHARED_PREF;
@@ -110,23 +112,4 @@ public class SettingsFragment extends Fragment {
         inAppSettingsList.add(new Setting(getString(R.string.version)));
         return inAppSettingsList;
     }
-
-    public enum SettingsType {
-        INAPP, PERSONAL
-    }
-
-    public class Setting {
-        public String title;
-        public String selection;
-
-        public Setting(String title, String selection) {
-            this.title = title;
-            this.selection = selection;
-        }
-
-        public Setting(String title) {
-            this.title = title;
-        }
-    }
-
 }

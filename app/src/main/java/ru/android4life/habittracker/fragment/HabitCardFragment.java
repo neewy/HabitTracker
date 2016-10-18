@@ -11,10 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import ru.android4life.habittracker.HabitParameter;
 import ru.android4life.habittracker.R;
 import ru.android4life.habittracker.activity.AddHabitActivity;
 import ru.android4life.habittracker.adapter.HabitParametersAdapter;
+import ru.android4life.habittracker.models.HabitParameter;
 
 /**
  * This class represents a fragment of left tab,

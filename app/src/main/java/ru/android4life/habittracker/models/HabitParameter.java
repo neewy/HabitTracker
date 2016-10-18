@@ -1,4 +1,4 @@
-package ru.android4life.habittracker;
+package ru.android4life.habittracker.models;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -7,8 +7,10 @@ import android.support.v4.content.ContextCompat;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.android4life.habittracker.R;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitCategoryDAO;
 import ru.android4life.habittracker.db.tablesrepresentations.HabitCategory;
+import ru.android4life.habittracker.utils.Translator;
 
 /**
  * Dummy class, which is to be replaced by habit DAO

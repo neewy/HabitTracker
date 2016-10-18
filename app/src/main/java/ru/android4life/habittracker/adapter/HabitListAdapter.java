@@ -3,12 +3,10 @@ package ru.android4life.habittracker.adapter;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,13 +18,14 @@ import ru.android4life.habittracker.db.dataaccessobjects.HabitDAO;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitScheduleDAO;
 import ru.android4life.habittracker.db.tablesrepresentations.Habit;
 import ru.android4life.habittracker.db.tablesrepresentations.HabitSchedule;
-import ru.android4life.habittracker.fragment.DrawerSelectionMode;
+import ru.android4life.habittracker.enumeration.DrawerSelectionMode;
 import ru.android4life.habittracker.fragment.HabitTabsFragment;
+import ru.android4life.habittracker.viewholder.HabitCardViewHolder;
 
 /**
  * Created by Nikolay Yushkevich on 21.09.16.
  */
-public class HabitListAdapter extends RecyclerView.Adapter<HabitListAdapter.ViewHolder> {
+public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> {
 
     private HabitScheduleDAO habitScheduleDAO;
     private HabitDAO habitDAO;
@@ -45,12 +44,8 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitListAdapter.View
                 getHabitSchedulesDependOnDrawerSelectionMode(drawerSelectionMode);
     }
 
-    /*public HabitListAdapter(List<Habit> habits) {
-        this.habits = habits;
-    }*/
-
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public HabitCardViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.habit_list_card, parent, false);
         v.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,11 +53,11 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitListAdapter.View
                 fragmentManager.beginTransaction().replace(R.id.container, new HabitTabsFragment()).addToBackStack(drawerSelectionMode.stringValue).commit();
             }
         });
-        return new ViewHolder(v);
+        return new HabitCardViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final HabitCardViewHolder holder, int position) {
         final HabitSchedule habitSchedule = habitSchedules.get(position);
         final Habit habit = (Habit) habitDAO.findById(habitSchedule.getHabitId());
         holder.title.setText(habit.getName());
@@ -80,33 +75,7 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitListAdapter.View
             holder.skip.setTextColor(Color.LTGRAY);
         }
 
-        holder.skip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                HabitSchedule updatedHabitSchedule = new HabitSchedule(habitSchedule.getId(),
-                        habitSchedule.getDatetime(), false, habitSchedule.getHabitId());
-                habitScheduleDAO.update(updatedHabitSchedule);
-                habitSchedules = getHabitSchedulesDependOnDrawerSelectionMode(drawerSelectionMode);
-                if (drawerSelectionMode != DrawerSelectionMode.ALL_TASKS)
-                    notifyItemRemoved(holder.getAdapterPosition());
-                else
-                    notifyItemChanged(holder.getAdapterPosition());
-            }
-        });
-
-        holder.done.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                HabitSchedule updatedHabitSchedule = new HabitSchedule(habitSchedule.getId(),
-                        habitSchedule.getDatetime(), true, habitSchedule.getHabitId());
-                habitScheduleDAO.update(updatedHabitSchedule);
-                habitSchedules = getHabitSchedulesDependOnDrawerSelectionMode(drawerSelectionMode);
-                if (drawerSelectionMode != DrawerSelectionMode.ALL_TASKS)
-                    notifyItemRemoved(holder.getAdapterPosition());
-                else
-                    notifyItemChanged(holder.getAdapterPosition());
-            }
-        });
+        setSkipAndDoneListeners(holder, habitSchedule);
     }
 
     @Override
@@ -140,20 +109,33 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitListAdapter.View
         return result;
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView title;
-        private TextView question;
-        private TextView time;
-        private AppCompatButton skip;
-        private AppCompatButton done;
+    private void setSkipAndDoneListeners(final HabitCardViewHolder holder, final HabitSchedule habitSchedule ) {
+        holder.skip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HabitSchedule updatedHabitSchedule = new HabitSchedule(habitSchedule.getId(),
+                        habitSchedule.getDatetime(), false, habitSchedule.getHabitId());
+                habitScheduleDAO.update(updatedHabitSchedule);
+                habitSchedules = getHabitSchedulesDependOnDrawerSelectionMode(drawerSelectionMode);
+                if (drawerSelectionMode != DrawerSelectionMode.ALL_TASKS)
+                    notifyItemRemoved(holder.getAdapterPosition());
+                else
+                    notifyItemChanged(holder.getAdapterPosition());
+            }
+        });
 
-        public ViewHolder(View itemView) {
-            super(itemView);
-            title = (TextView) itemView.findViewById(R.id.habit_name);
-            question = (TextView) itemView.findViewById(R.id.habit_question);
-            time = (TextView) itemView.findViewById(R.id.habit_time);
-            skip = (AppCompatButton) itemView.findViewById(R.id.habit_skip);
-            done = (AppCompatButton) itemView.findViewById(R.id.habit_done);
-        }
+        holder.done.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HabitSchedule updatedHabitSchedule = new HabitSchedule(habitSchedule.getId(),
+                        habitSchedule.getDatetime(), true, habitSchedule.getHabitId());
+                habitScheduleDAO.update(updatedHabitSchedule);
+                habitSchedules = getHabitSchedulesDependOnDrawerSelectionMode(drawerSelectionMode);
+                if (drawerSelectionMode != DrawerSelectionMode.ALL_TASKS)
+                    notifyItemRemoved(holder.getAdapterPosition());
+                else
+                    notifyItemChanged(holder.getAdapterPosition());
+            }
+        });
     }
 }

@@ -19,13 +19,15 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import ru.android4life.habittracker.HabitParameter;
 import ru.android4life.habittracker.R;
 import ru.android4life.habittracker.adapter.HabitParametersAdapter;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitDAO;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitScheduleDAO;
 import ru.android4life.habittracker.db.tablesrepresentations.Habit;
 import ru.android4life.habittracker.db.tablesrepresentations.HabitSchedule;
+import ru.android4life.habittracker.enumeration.NotificationFrequencyType;
+import ru.android4life.habittracker.models.HabitParameter;
+import ru.android4life.habittracker.models.HabitSettings;
 import ru.android4life.habittracker.views.RippleView;
 
 /**
@@ -37,7 +39,7 @@ public class AddHabitActivity extends BaseActivity {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private HabitParametersAdapter.HabitSettings habitSettings;
+    private HabitSettings habitSettings;
     private HabitScheduleDAO habitScheduleDAO;
     private HabitDAO habitDAO;
     private SharedPreferences habitSettingsPrefs = null;
@@ -56,7 +58,7 @@ public class AddHabitActivity extends BaseActivity {
         habitDAO = new HabitDAO(getApplicationContext());
         habitScheduleDAO = new HabitScheduleDAO(getApplicationContext());
 
-        habitSettings = new HabitParametersAdapter.HabitSettings();
+        habitSettings = new HabitSettings();
 
         final RippleView textView = (RippleView) findViewById(R.id.add_habit_back_button);
         textView.setOnClickListener(new View.OnClickListener() {
@@ -155,7 +157,7 @@ public class AddHabitActivity extends BaseActivity {
     }
 
     private void getHabitSettingsFromPreferences() {
-        HabitParametersAdapter.HabitSettings result = new HabitParametersAdapter.HabitSettings();
+        HabitSettings result = new HabitSettings();
         if (habitSettingsPrefs.contains("categoryId"))
             result.setCategoryId(habitSettingsPrefs.getInt("categoryId", habitSettings.getCategoryId()));
         if (habitSettingsPrefs.contains("notificationHour"))
@@ -193,18 +195,18 @@ public class AddHabitActivity extends BaseActivity {
         habitSettings = result;
     }
 
-    private HabitParametersAdapter.NotificationFrequencyType parseStringToNotificationFrequencyType(String s) {
+    private NotificationFrequencyType parseStringToNotificationFrequencyType(String s) {
         switch (s) {
             case "DAILY":
-                return HabitParametersAdapter.NotificationFrequencyType.DAILY;
+                return NotificationFrequencyType.DAILY;
             case "WEEKLY":
-                return HabitParametersAdapter.NotificationFrequencyType.WEEKLY;
+                return NotificationFrequencyType.WEEKLY;
             case "MONTHLY":
-                return HabitParametersAdapter.NotificationFrequencyType.MONTHLY;
+                return NotificationFrequencyType.MONTHLY;
             case "SPECIFIED_DAYS":
-                return HabitParametersAdapter.NotificationFrequencyType.SPECIFIED_DAYS;
+                return NotificationFrequencyType.SPECIFIED_DAYS;
             default:
-                return HabitParametersAdapter.NotificationFrequencyType.DAILY;
+                return NotificationFrequencyType.DAILY;
         }
     }
 

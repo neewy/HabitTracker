@@ -10,14 +10,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import java.util.List;
 
 import pl.coreorb.selectiondialogs.data.SelectableColor;
 import pl.coreorb.selectiondialogs.dialogs.ColorSelectDialog;
 import ru.android4life.habittracker.R;
-import ru.android4life.habittracker.fragment.SettingsFragment;
+import ru.android4life.habittracker.enumeration.SettingsType;
+import ru.android4life.habittracker.models.Setting;
+import ru.android4life.habittracker.viewholder.SettingsViewHolder;
 
 import static android.content.Context.MODE_PRIVATE;
 import static ru.android4life.habittracker.activity.MainActivity.SHARED_PREF;
@@ -30,20 +31,20 @@ import static ru.android4life.habittracker.activity.MainActivity.getContext;
  * Created by Nikolay Yushkevich on 09.10.16.
  */
 
-public class SettingsListAdapter extends RecyclerView.Adapter<SettingsListAdapter.SettingsViewHolder> {
+public class SettingsListAdapter extends RecyclerView.Adapter<SettingsViewHolder> {
 
     // in order to create dialogs of settings
     public static FragmentManager fragmentManager;
     // list of settings
-    private List<SettingsFragment.Setting> applicationSettings;
+    private List<Setting> applicationSettings;
     // what is their type (are they personal or global/in-app settings)
-    private SettingsFragment.SettingsType type;
+    private SettingsType type;
     // for access to shared prefs and in order to change the style
     private AppCompatActivity mainActivity;
 
     private Integer selectedLanguage;
 
-    public SettingsListAdapter(List<SettingsFragment.Setting> applicationSettings, SettingsFragment.SettingsType type) {
+    public SettingsListAdapter(List<Setting> applicationSettings, SettingsType type) {
         this.applicationSettings = applicationSettings;
         this.type = type;
     }
@@ -87,11 +88,11 @@ public class SettingsListAdapter extends RecyclerView.Adapter<SettingsListAdapte
 
     @Override
     public void onBindViewHolder(SettingsViewHolder holder, int position) {
-        SettingsFragment.Setting setting = applicationSettings.get(position);
+        Setting setting = applicationSettings.get(position);
         holder.settingTitle.setText(setting.title);
 
         // set the text for second line, if the type of elements are personal settings
-        if (type == SettingsFragment.SettingsType.PERSONAL) {
+        if (type == SettingsType.PERSONAL) {
             holder.settingSelection.setText(setting.selection);
         }
     }
@@ -165,39 +166,6 @@ public class SettingsListAdapter extends RecyclerView.Adapter<SettingsListAdapte
             return 0;
         } else {
             return 1;
-        }
-    }
-
-    static class SettingsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
-        SettingsListener mListener;
-        private TextView settingTitle;
-        private TextView settingSelection;
-
-        SettingsViewHolder(View itemView) {
-            super(itemView);
-            settingTitle = (TextView) itemView.findViewById(android.R.id.text1);
-            settingSelection = (TextView) itemView.findViewById(android.R.id.text2);
-            itemView.setOnClickListener(this);
-        }
-
-        public void setListener(SettingsListener mListener) {
-            this.mListener = mListener;
-        }
-
-        @Override
-        public void onClick(View v) {
-            if (settingTitle.getText().toString().equals(v.getResources().getString(R.string.primary_color))) {
-                mListener.onPrimaryColor(v);
-            } else if (settingTitle.getText().toString().equals(v.getResources().getString(R.string.language))) {
-                mListener.onLanguage(v);
-            }
-        }
-
-        interface SettingsListener {
-            void onPrimaryColor(View caller);
-
-            void onLanguage(View caller);
         }
     }
 }

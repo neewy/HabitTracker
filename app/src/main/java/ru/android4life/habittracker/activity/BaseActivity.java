@@ -15,7 +15,7 @@ import ru.android4life.habittracker.R;
  * Created by Nikolay Yushkevich on 12.10.16.
  */
 
-public class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity {
 
     public final static String SHARED_PREF = "SHARED_PREF";
     private static Context context;

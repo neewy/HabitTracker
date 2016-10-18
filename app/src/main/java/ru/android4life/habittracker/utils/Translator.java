@@ -1,5 +1,6 @@
-package ru.android4life.habittracker;
+package ru.android4life.habittracker.utils;
 
+import ru.android4life.habittracker.R;
 import ru.android4life.habittracker.activity.MainActivity;
 
 /**

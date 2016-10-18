@@ -4,15 +4,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import ru.android4life.habittracker.R;
-import ru.android4life.habittracker.activity.BaseActivity;
+import ru.android4life.habittracker.adapter.PagerAdapter;
 
 /**
  * Tabs controller class.
@@ -69,43 +67,9 @@ public class HabitTabsFragment extends Fragment {
             }
         });
 
-
-        //TODO: Add habit name here
+        //FIXME: Add habit name here
         getActivity().setTitle("Habit");
 
         return tabsView;
-    }
-
-
-    /**
-     * Adapter for tabs (basically, the habit card and statistics)
-     */
-    public class PagerAdapter extends FragmentStatePagerAdapter {
-        int mNumOfTabs;
-
-        public PagerAdapter(FragmentManager fm, int NumOfTabs) {
-            super(fm);
-            this.mNumOfTabs = NumOfTabs;
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-
-            switch (position) {
-                case 0:
-                    Fragment tab1 = new HabitCardFragment();
-                    return tab1;
-                case 1:
-                    Fragment tab2 = new HabitStatisticsFragment();
-                    return tab2;
-                default:
-                    return null;
-            }
-        }
-
-        @Override
-        public int getCount() {
-            return mNumOfTabs;
-        }
     }
 }

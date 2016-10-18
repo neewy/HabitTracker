@@ -8,7 +8,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
@@ -17,37 +16,33 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
 import java.util.List;
 
-import ru.android4life.habittracker.HabitParameter;
 import ru.android4life.habittracker.R;
-import ru.android4life.habittracker.Translator;
 import ru.android4life.habittracker.activity.AddHabitActivity;
-import ru.android4life.habittracker.activity.BaseActivity;
 import ru.android4life.habittracker.activity.MainActivity;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitCategoryDAO;
-import ru.android4life.habittracker.db.dataaccessobjects.HabitDAO;
-import ru.android4life.habittracker.db.dataaccessobjects.HabitScheduleDAO;
 import ru.android4life.habittracker.db.tablesrepresentations.HabitCategory;
-import ru.android4life.habittracker.views.RippleView;
+import ru.android4life.habittracker.enumeration.NotificationFrequencyType;
+import ru.android4life.habittracker.models.HabitParameter;
+import ru.android4life.habittracker.models.HabitSettings;
+import ru.android4life.habittracker.utils.Translator;
+import ru.android4life.habittracker.viewholder.HabitParameterViewHolder;
 
 import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by Bulat Mukhutdinov on 28.09.2016.
  */
-public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParametersAdapter.ViewHolder> {
+public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameterViewHolder> {
 
     private HabitCategoryDAO habitCategoryDAO;
     private List<HabitParameter> parameters;
     private Activity activity;
-    private HabitScheduleDAO habitScheduleDAO;
-    private HabitDAO habitDAO;
     private Context context;
     private HabitSettings habitSettings;
     private SharedPreferences prefs = null;
@@ -59,16 +54,14 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
         this.habitSettings = new HabitSettings();
         this.context = MainActivity.getContext();
         this.habitCategoryDAO = new HabitCategoryDAO(context);
-        this.habitDAO = new HabitDAO(context);
-        this.habitScheduleDAO = new HabitScheduleDAO(context);
         this.prefs = context.getSharedPreferences(context.getString(R.string.creating_habit_settings), MODE_PRIVATE);
         this.isForCreation = isForCreation;
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
+    public HabitParameterViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.habit_parameter, parent, false);
-        final HabitParametersAdapter.ViewHolder vh = new ViewHolder(v);
+        final HabitParameterViewHolder vh = new HabitParameterViewHolder(v);
         if (isForCreation) {
             vh.mListener = createOnClickListener(parent);
         } else {
@@ -77,8 +70,8 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
         return vh;
     }
 
-    private ViewHolder.AddHabitParameterListener createOnClickListener(final ViewGroup parent){
-        return new ViewHolder.AddHabitParameterListener() {
+    private HabitParameterViewHolder.AddHabitParameterListener createOnClickListener(final ViewGroup parent){
+        return new HabitParameterViewHolder.AddHabitParameterListener() {
             @Override
             public void onCategory(View caller, final TextView hint) {
                 //TODO replace items with values from db
@@ -303,7 +296,7 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(HabitParameterViewHolder holder, int position) {
         HabitParameter parameter = parameters.get(position);
         holder.title.setText(parameter.getTitle());
         holder.icon.setBackground(parameter.getIcon());
@@ -313,176 +306,5 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameters
     @Override
     public int getItemCount() {
         return parameters.size();
-    }
-
-
-    public enum NotificationFrequencyType {
-        DAILY, WEEKLY, MONTHLY, SPECIFIED_DAYS
-    }
-
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public AddHabitParameterListener mListener;
-        private TextView title;
-        private TextView hint;
-        private ImageView icon;
-        private RippleView block;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-            title = (TextView) itemView.findViewById(R.id.add_habit_category);
-            hint = (TextView) itemView.findViewById(R.id.add_habit_category_hint);
-            icon = (ImageView) itemView.findViewById(R.id.add_habit_category_icon);
-            block = (RippleView) itemView.findViewById(R.id.add_habit_category_block);
-            block.setOnClickListener(this);
-        }
-
-        public void disableRippleEffect() {
-            block.setRippleAlpha(0);
-        }
-
-        @Override
-        public void onClick(View view) {
-            if (mListener != null) {
-                if (title.getText().toString().equals(view.getResources().getString(R.string.add_habit_name_category))) {
-                    mListener.onCategory(view, hint);
-                } else if (title.getText().toString().equals(view.getResources().getString(R.string.add_habit_name_reminder))) {
-                    mListener.onReminder(view, hint);
-                } else if (title.getText().toString().equals(view.getResources().getString(R.string.add_habit_name_frequency))) {
-                    mListener.onFrequency(view, hint);
-                } else if (title.getText().toString().equals(view.getResources().getString(R.string.add_habit_name_tune))) {
-                    mListener.onTune(view, hint);
-                } else {
-                    mListener.onConfirmation(view, hint);
-                }
-            }
-        }
-
-        public interface AddHabitParameterListener {
-            void onCategory(View caller, final TextView hint);
-
-            void onReminder(View caller, final TextView hint);
-
-            void onFrequency(View caller, final TextView hint);
-
-            void onTune(View caller, final TextView hint);
-
-            void onConfirmation(View caller, final TextView hint);
-
-        }
-    }
-
-    public static class HabitSettings {
-        private int categoryId;
-        private int notificationHour;
-        private int notificationMinute;
-        private NotificationFrequencyType notificationFrequencyType;
-        private int notificationFrequencyWeekNumberOrDate;
-        private boolean[] notificationFrequencySpecifiedDays;
-        private Uri notificationSoundUri;
-        private String notificationSoundName;
-        private int minutesBeforeConfirmation;
-
-        public HabitSettings(int categoryId, int notificationHour, int notificationMinute,
-                             NotificationFrequencyType notificationFrequencyType,
-                             int notificationFrequencyWeekNumberOrDate, boolean[] notificationFrequencySpecifiedDays,
-                             Uri notificationSoundUri, String notificationSoundName,
-                             int minutesBeforeConfirmation) {
-            this.categoryId = categoryId;
-            this.notificationHour = notificationHour;
-            this.notificationMinute = notificationMinute;
-            this.notificationFrequencyType = notificationFrequencyType;
-            this.notificationFrequencyWeekNumberOrDate = notificationFrequencyWeekNumberOrDate;
-            this.notificationFrequencySpecifiedDays = notificationFrequencySpecifiedDays;
-            this.notificationSoundUri = notificationSoundUri;
-            this.notificationSoundName = notificationSoundName;
-            this.minutesBeforeConfirmation = minutesBeforeConfirmation;
-        }
-
-        public HabitSettings() {
-            HabitCategoryDAO habitCategoryDAO = new HabitCategoryDAO(BaseActivity.getContext());
-            final List<HabitCategory> habitCategories = (List<HabitCategory>) habitCategoryDAO.findAll();
-            this.categoryId = habitCategories.get(0).getId();
-            this.notificationHour = 0;
-            this.notificationMinute = 0;
-            this.notificationFrequencyType = NotificationFrequencyType.DAILY;
-            this.notificationFrequencyWeekNumberOrDate = 1;
-            boolean[] notificationFrequencySpecifiedDays = {false, false, false, false, false, false, false};
-            this.notificationFrequencySpecifiedDays = notificationFrequencySpecifiedDays;
-            this.notificationSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-            this.notificationSoundName = BaseActivity.getContext().getString(R.string.standard_from_capital_letter);
-            this.minutesBeforeConfirmation = 60;
-        }
-
-        public int getCategoryId() {
-            return categoryId;
-        }
-
-        public void setCategoryId(int categoryId) {
-            this.categoryId = categoryId;
-        }
-
-        public int getNotificationHour() {
-            return notificationHour;
-        }
-
-        public void setNotificationHour(int notificationHour) {
-            this.notificationHour = notificationHour;
-        }
-
-        public int getNotificationMinute() {
-            return notificationMinute;
-        }
-
-        public void setNotificationMinute(int notificationMinute) {
-            this.notificationMinute = notificationMinute;
-        }
-
-        public NotificationFrequencyType getNotificationFrequencyType() {
-            return notificationFrequencyType;
-        }
-
-        public void setNotificationFrequencyType(NotificationFrequencyType notificationFrequencyType) {
-            this.notificationFrequencyType = notificationFrequencyType;
-        }
-
-        public int getNotificationFrequencyWeekNumberOrDate() {
-            return notificationFrequencyWeekNumberOrDate;
-        }
-
-        public void setNotificationFrequencyWeekNumberOrDate(int notificationFrequencyWeekNumberOrDate) {
-            this.notificationFrequencyWeekNumberOrDate = notificationFrequencyWeekNumberOrDate;
-        }
-
-        public boolean[] getNotificationFrequencySpecifiedDays() {
-            return notificationFrequencySpecifiedDays;
-        }
-
-        public void setNotificationFrequencySpecifiedDays(boolean[] notificationFrequencySpecifiedDays) {
-            this.notificationFrequencySpecifiedDays = notificationFrequencySpecifiedDays;
-        }
-
-        public Uri getNotificationSoundUri() {
-            return notificationSoundUri;
-        }
-
-        public void setNotificationSoundUri(Uri notificationSoundUri) {
-            this.notificationSoundUri = notificationSoundUri;
-        }
-
-        public String getNotificationSoundName() {
-            return notificationSoundName;
-        }
-
-        public void setNotificationSoundName(String notificationSoundName) {
-            this.notificationSoundName = notificationSoundName;
-        }
-
-        public int getMinutesBeforeConfirmation() {
-            return minutesBeforeConfirmation;
-        }
-
-        public void setMinutesBeforeConfirmation(int minutesBeforeConfirmation) {
-            this.minutesBeforeConfirmation = minutesBeforeConfirmation;
-        }
     }
 }

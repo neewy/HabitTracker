@@ -1,4 +1,4 @@
-package ru.android4life.habittracker.fragment;
+package ru.android4life.habittracker.enumeration;
 
 /**
  * Created by alnedorezov on 10/5/16.

@@ -19,7 +19,6 @@ import java.util.Locale;
 
 import ru.android4life.habittracker.R;
 import ru.android4life.habittracker.db.Constants;
-import ru.android4life.habittracker.db.DatabaseHelper;
 import ru.android4life.habittracker.db.DatabaseManager;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitCategoryDAO;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitDAO;
@@ -27,31 +26,25 @@ import ru.android4life.habittracker.db.dataaccessobjects.HabitScheduleDAO;
 import ru.android4life.habittracker.db.tablesrepresentations.Habit;
 import ru.android4life.habittracker.db.tablesrepresentations.HabitCategory;
 import ru.android4life.habittracker.db.tablesrepresentations.HabitSchedule;
-import ru.android4life.habittracker.fragment.DrawerSelectionMode;
+import ru.android4life.habittracker.enumeration.DrawerSelectionMode;
 import ru.android4life.habittracker.fragment.HabitListFragment;
 import ru.android4life.habittracker.fragment.SettingsFragment;
 import ru.android4life.habittracker.fragment.StatisticsFragment;
 
-import static ru.android4life.habittracker.fragment.DrawerSelectionMode.TODAY;
-import static ru.android4life.habittracker.fragment.DrawerSelectionMode.findDrawerSelectionMode;
+import static ru.android4life.habittracker.enumeration.DrawerSelectionMode.TODAY;
+import static ru.android4life.habittracker.enumeration.DrawerSelectionMode.findDrawerSelectionMode;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     public static Locale locale;
-    private static DrawerSelectionMode drawerSelectionMode;
+    public static DrawerSelectionMode drawerSelectionMode;
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
     private FragmentManager fragmentManager;
-    private DatabaseHelper database; //TODO: resolve why do we need this?
-
-    public static DrawerSelectionMode getDrawerSelectionMode() {
-        return drawerSelectionMode;
-    }
 
     /**
      * <b>onCreate</b> is invoked when Activity is first created (and not visible yet to the user)
      *
-     * @param savedInstanceState
      */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -88,7 +81,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
         // Initiate db
         DatabaseManager.setHelper(getContext());
-        database = DatabaseManager.getHelper();
 
         setUpFirstFragment(navigationView);
     }
@@ -155,9 +147,13 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @Override
     public void onBackPressed() {
         String fragmentName, title = "";
+
+        // If there are some fragments it backstack
         if (fragmentManager.getBackStackEntryCount() > 0) {
+            // then get the name of last element
             fragmentName = fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount() - 1).getName();
 
+            // and then assign the string resource of this name to title
             switch (findDrawerSelectionMode(fragmentName)) {
                 case TODAY:
                     title = getString(R.string.today);
@@ -178,10 +174,15 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     title = getString(R.string.settings);
                     break;
             }
+
+            // set the title in actionbar to this title
             setTitle(title);
+
+            // pop the last fragment back on screen
             fragmentManager.popBackStack();
 
         } else {
+            // Finish the Activity
             super.onBackPressed();
         }
     }
