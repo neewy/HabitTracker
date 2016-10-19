@@ -74,20 +74,31 @@ public class HabitParameter {
         parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_reminder), getHabitTimeHint(context, habitSchedule.getDatetime()),
                 ContextCompat.getDrawable(context, R.drawable.ic_add_habit_reminder));
         habitParameters.add(parameter);
-        parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_frequency), context.getResources().getString(R.string.daily), ContextCompat.getDrawable(context, R.drawable.ic_add_habit_frequency));
+
+
+        parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_frequency), getHabitFrequencyHint(context, habit.getId(), habitScheduleDAO),
+                ContextCompat.getDrawable(context, R.drawable.ic_add_habit_frequency));
         habitParameters.add(parameter);
 
         parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_tune), getHabitNotificationRingtoneName(context, habit.getAudioResource()),
                 ContextCompat.getDrawable(context, R.drawable.ic_add_habit_tune));
         habitParameters.add(parameter);
 
-        String habitConfirmAfterMinutesHint = context.getString(R.string.after_string_minutes,
-                String.valueOf(habit.getConfirmAfterMinutes()));
-
-        parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_confirmation),
-                habitConfirmAfterMinutesHint, ContextCompat.getDrawable(context, R.drawable.ic_add_habit_confirmation));
+        parameter = new HabitParameter(context.getString(R.string.add_habit_name_confirmation),
+                context.getString(R.string.after_string_minutes, String.valueOf(habit.getConfirmAfterMinutes())),
+                ContextCompat.getDrawable(context, R.drawable.ic_add_habit_confirmation));
         habitParameters.add(parameter);
         return habitParameters;
+    }
+
+    private static String getHabitFrequencyHint(Context context, int habitId, HabitScheduleDAO habitScheduleDAO) {
+        List<HabitSchedule> habitSchedules = habitScheduleDAO.findByHabitId(habitId);
+        Calendar habitScheduleDateTimeCalendar = new GregorianCalendar();
+        if (habitSchedules.size() == 1) {
+            habitScheduleDateTimeCalendar.setTime(habitSchedules.get(0).getDatetime());
+            return context.getResources().getString(R.string.every_month_on_space_string, String.valueOf(habitScheduleDateTimeCalendar.get(Calendar.DAY_OF_MONTH)));
+        } else
+            return "";
     }
 
     private static String getHabitTimeHint(Context context, Date habitScheduleDateTime) {

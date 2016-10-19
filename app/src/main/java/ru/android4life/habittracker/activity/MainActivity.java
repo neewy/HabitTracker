@@ -44,7 +44,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     /**
      * <b>onCreate</b> is invoked when Activity is first created (and not visible yet to the user)
-     *
      */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -221,6 +220,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         habitDAO.create(new Habit(3, "Privuichka 3", "do privuichka 3", twoDaysAfterToday,
                 55.75417935, 48.7440855, 9, Environment.getExternalStorageDirectory().getPath()
                 + "/meouing_kittten.mp3", true, 60, 1));
+        habitDAO.create(new Habit(4, "Privuichka 4", "do privuichka 4", twoDaysAfterToday,
+                55.75417935, 48.7440855, 9, Environment.getExternalStorageDirectory().getPath()
+                + "/meouing_kittten.mp3", true, 60, 1));
         habitScheduleDAO.create(new HabitSchedule(1, today, null, 1));
         habitScheduleDAO.create(new HabitSchedule(2, today, true, 2));
         habitScheduleDAO.create(new HabitSchedule(3, today, null, 3));
@@ -230,6 +232,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         habitScheduleDAO.create(new HabitSchedule(7, twoDaysAfterToday, null, 1));
         habitScheduleDAO.create(new HabitSchedule(8, twoDaysAfterToday, false, 2));
         habitScheduleDAO.create(new HabitSchedule(9, twoDaysAfterToday, true, 3));
+        habitScheduleDAO.create(new HabitSchedule(10, twoDaysAfterToday, null, 4));
 
         // using the following line to edit/commit prefs
         prefs.edit().putBoolean("firstrun", false).apply();
