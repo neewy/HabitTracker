@@ -9,6 +9,7 @@ import android.support.v4.content.ContextCompat;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -70,10 +71,30 @@ public class HabitParameter {
                 Translator.translate(habitCategory.getName()), ContextCompat.getDrawable(context, R.drawable.ic_add_habit_category));
         habitParameters.add(parameter);
 
-        Calendar habitScheduleDateTime = new GregorianCalendar();
-        habitScheduleDateTime.setTime(habitSchedule.getDatetime());
-        int habitMinute = habitScheduleDateTime.get(Calendar.MINUTE);
-        int habitHour = habitScheduleDateTime.get(Calendar.HOUR_OF_DAY);
+        parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_reminder), getHabitTimeHint(context, habitSchedule.getDatetime()),
+                ContextCompat.getDrawable(context, R.drawable.ic_add_habit_reminder));
+        habitParameters.add(parameter);
+        parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_frequency), context.getResources().getString(R.string.daily), ContextCompat.getDrawable(context, R.drawable.ic_add_habit_frequency));
+        habitParameters.add(parameter);
+
+        parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_tune), getHabitNotificationRingtoneName(context, habit.getAudioResource()),
+                ContextCompat.getDrawable(context, R.drawable.ic_add_habit_tune));
+        habitParameters.add(parameter);
+
+        String habitConfirmAfterMinutesHint = context.getString(R.string.after_string_minutes,
+                String.valueOf(habit.getConfirmAfterMinutes()));
+
+        parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_confirmation),
+                habitConfirmAfterMinutesHint, ContextCompat.getDrawable(context, R.drawable.ic_add_habit_confirmation));
+        habitParameters.add(parameter);
+        return habitParameters;
+    }
+
+    private static String getHabitTimeHint(Context context, Date habitScheduleDateTime) {
+        Calendar habitScheduleDateTimeCalendar = new GregorianCalendar();
+        habitScheduleDateTimeCalendar.setTime(habitScheduleDateTime);
+        int habitMinute = habitScheduleDateTimeCalendar.get(Calendar.MINUTE);
+        int habitHour = habitScheduleDateTimeCalendar.get(Calendar.HOUR_OF_DAY);
         String habitTimeHint;
 
         if (String.valueOf(habitMinute).length() < 2) {
@@ -86,25 +107,13 @@ public class HabitParameter {
                     String.valueOf(habitMinute));
         }
 
-        parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_reminder), habitTimeHint, ContextCompat.getDrawable(context, R.drawable.ic_add_habit_reminder));
-        habitParameters.add(parameter);
-        parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_frequency), context.getResources().getString(R.string.daily), ContextCompat.getDrawable(context, R.drawable.ic_add_habit_frequency));
-        habitParameters.add(parameter);
+        return habitTimeHint;
+    }
 
+    private static String getHabitNotificationRingtoneName(Context context, String habitAudioResource) {
         Ringtone ringtone = RingtoneManager.getRingtone(context,
-                Uri.parse(habit.getAudioResource()));
-        String notificationRingtoneName = ringtone.getTitle(context);
-
-        parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_tune), notificationRingtoneName, ContextCompat.getDrawable(context, R.drawable.ic_add_habit_tune));
-        habitParameters.add(parameter);
-
-        String habitConfirmAfterMinutesHint = context.getString(R.string.after_string_minutes,
-                String.valueOf(habit.getConfirmAfterMinutes()));
-
-        parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_confirmation),
-                habitConfirmAfterMinutesHint, ContextCompat.getDrawable(context, R.drawable.ic_add_habit_confirmation));
-        habitParameters.add(parameter);
-        return habitParameters;
+                Uri.parse(habitAudioResource));
+        return ringtone.getTitle(context);
     }
 
     public String getTitle() {
