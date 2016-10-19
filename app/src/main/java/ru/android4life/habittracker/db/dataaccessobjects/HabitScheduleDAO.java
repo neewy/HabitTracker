@@ -3,6 +3,7 @@ package ru.android4life.habittracker.db.dataaccessobjects;
 import android.content.Context;
 import android.util.Log;
 
+import com.j256.ormlite.stmt.DeleteBuilder;
 import com.j256.ormlite.stmt.QueryBuilder;
 
 import java.sql.SQLException;
@@ -241,5 +242,26 @@ public class HabitScheduleDAO implements ExtendedCrud {
                     HabitScheduleDAO.class.getSimpleName());
         }
         return items;
+    }
+
+    public int deleteHabitSchedulesOlderThanThirtyOneDay() {
+        int index = -1;
+
+        Calendar c = new GregorianCalendar();
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        c.add(Calendar.MONTH, -1);
+        Date monthBeforeToday = c.getTime();
+
+        try {
+            DeleteBuilder<HabitSchedule, Integer> deleteBuilder = helper.getHabitScheduleDao().deleteBuilder();
+            deleteBuilder.where().lt(Constants.DATETIME, monthBeforeToday);
+            index = deleteBuilder.delete();
+        } catch (SQLException e) {
+            Log.d(Constants.DAO_ERROR, Constants.SQL_EXCEPTION_IN + Constants.SPACE +
+                    HabitScheduleDAO.class.getSimpleName());
+        }
+        return index; // The number of rows updated in the database.
     }
 }

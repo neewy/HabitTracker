@@ -223,16 +223,35 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         habitDAO.create(new Habit(4, "Privuichka 4", "do privuichka 4", twoDaysAfterToday,
                 55.75417935, 48.7440855, 9, Environment.getExternalStorageDirectory().getPath()
                 + "/meouing_kittten.mp3", true, 60, 1));
-        habitScheduleDAO.create(new HabitSchedule(1, today, null, 1));
+        habitDAO.create(new Habit(5, "Privuichka 5", "do privuichka 5", twoDaysAfterToday,
+                55.75417935, 48.7440855, 9, Environment.getExternalStorageDirectory().getPath()
+                + "/meouing_kittten.mp3", true, 60, 1));
         habitScheduleDAO.create(new HabitSchedule(2, today, true, 2));
-        habitScheduleDAO.create(new HabitSchedule(3, today, null, 3));
-        habitScheduleDAO.create(new HabitSchedule(4, tomorrow, null, 1));
+        habitScheduleDAO.create(new HabitSchedule(3, today, null, 3)); // to check habits displayed on "today" tab
         habitScheduleDAO.create(new HabitSchedule(5, tomorrow, false, 2));
-        habitScheduleDAO.create(new HabitSchedule(6, tomorrow, null, 3));
-        habitScheduleDAO.create(new HabitSchedule(7, twoDaysAfterToday, null, 1));
+        habitScheduleDAO.create(new HabitSchedule(6, tomorrow, null, 3)); // to check habits displayed on "tomorrow" tab
         habitScheduleDAO.create(new HabitSchedule(8, twoDaysAfterToday, false, 2));
-        habitScheduleDAO.create(new HabitSchedule(9, twoDaysAfterToday, true, 3));
-        habitScheduleDAO.create(new HabitSchedule(10, twoDaysAfterToday, null, 4));
+        habitScheduleDAO.create(new HabitSchedule(10, twoDaysAfterToday, true, 3));
+        habitScheduleDAO.create(new HabitSchedule(11, twoDaysAfterToday, null, 4)); // to check monthly habits
+        habitScheduleDAO.create(new HabitSchedule(12, today, false, 5));
+        habitScheduleDAO.create(new HabitSchedule(13, tomorrow, null, 5));
+        habitScheduleDAO.create(new HabitSchedule(14, twoDaysAfterToday, null, 5));
+
+        // To check hint for daily habits (habitId=5) & weekly habits (habitId=2) &
+        // frequent (several days a week) habits
+        Date date;
+        c.setTime(twoDaysAfterToday);
+        int newHabitScheduleId = 15;
+        for (int i = 0; i < 31; i++) {
+            c.add(Calendar.DATE, 1);
+            date = c.getTime();
+            habitScheduleDAO.create(new HabitSchedule(newHabitScheduleId, date, null, 5)); // daily habits
+            if (i == 0)
+                habitScheduleDAO.create(new HabitSchedule(9, twoDaysAfterToday, null, 2)); // weekly habits
+            if (i % 7 == 0 || (i + 2) % 7 == 0)
+                habitScheduleDAO.create(new HabitSchedule(1, date, null, 1)); // frequent habits
+            newHabitScheduleId++;
+        }
 
         // using the following line to edit/commit prefs
         prefs.edit().putBoolean("firstrun", false).apply();

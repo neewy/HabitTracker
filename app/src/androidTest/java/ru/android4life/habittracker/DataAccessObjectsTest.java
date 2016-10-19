@@ -425,4 +425,67 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         List<HabitSchedule> habitScheduleList = habitScheduleDAO.findInRange(fromDate, toDate);
         assertEquals(habitScheduleList.size(), 5);
     }
+
+    @Test
+    public void testDeletionOfHabitSchedulesOlderThanThirtyOneDay() throws ParseException {
+        HabitScheduleDAO habitScheduleDAO = new HabitScheduleDAO(this.getContext());
+        // Test schedules for next month
+        Calendar c = new GregorianCalendar();
+        c.set(Calendar.HOUR_OF_DAY, 10);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        c.add(Calendar.MONTH, -2);
+        Date date = c.getTime();
+        HabitSchedule newHabitSchedule = new HabitSchedule(id, date, isDone, id);
+        habitScheduleDAO.create(newHabitSchedule);
+        c.add(Calendar.DATE, 1);
+        date = c.getTime();
+        newHabitSchedule = new HabitSchedule(id, date, isDone, id);
+        habitScheduleDAO.create(newHabitSchedule);
+        c.add(Calendar.DATE, 1);
+        date = c.getTime();
+        newHabitSchedule = new HabitSchedule(id, date, isDone, id);
+        habitScheduleDAO.create(newHabitSchedule);
+        c.add(Calendar.DATE, 1);
+        date = c.getTime();
+        newHabitSchedule = new HabitSchedule(id, date, isDone, id);
+        habitScheduleDAO.create(newHabitSchedule);
+        c.add(Calendar.DATE, 1);
+        date = c.getTime();
+        newHabitSchedule = new HabitSchedule(id, date, isDone, id);
+        habitScheduleDAO.create(newHabitSchedule);
+        c.add(Calendar.DATE, 1);
+        date = c.getTime();
+        newHabitSchedule = new HabitSchedule(id, date, isDone, id);
+        habitScheduleDAO.create(newHabitSchedule);
+        c.add(Calendar.DATE, 1);
+        date = c.getTime();
+        newHabitSchedule = new HabitSchedule(id, date, isDone, id);
+        habitScheduleDAO.create(newHabitSchedule);
+        c.add(Calendar.DATE, 1);
+        date = c.getTime();
+        newHabitSchedule = new HabitSchedule(id, date, isDone, id);
+        habitScheduleDAO.create(newHabitSchedule);
+        c.add(Calendar.DATE, 1);
+        date = c.getTime();
+        newHabitSchedule = new HabitSchedule(id, date, isDone, id);
+        habitScheduleDAO.create(newHabitSchedule);
+        c = new GregorianCalendar();
+        c.set(Calendar.HOUR_OF_DAY, 10);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        c.add(Calendar.MONTH, -1);
+        c.add(Calendar.DATE, -1);
+        date = c.getTime();
+        newHabitSchedule = new HabitSchedule(id, date, isDone, id);
+        habitScheduleDAO.create(newHabitSchedule);
+        c.add(Calendar.DATE, 1);
+        date = c.getTime();
+        HabitSchedule notOldHabitSchedule = new HabitSchedule(id, date, isDone, id);
+        habitScheduleDAO.create(notOldHabitSchedule);
+        habitScheduleDAO.deleteHabitSchedulesOlderThanThirtyOneDay();
+        List<HabitSchedule> habitScheduleList = (List<HabitSchedule>) habitScheduleDAO.findAll();
+        assertEquals(habitScheduleList.size(), 1);
+        assertEquals(habitScheduleList.get(0), notOldHabitSchedule);
+    }
 }
