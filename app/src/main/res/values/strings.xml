@@ -77,6 +77,9 @@
     <!--Habits List-->
     <string name="did_i_question">Did I %1$s?</string>
 
+    <!--Habits List Adapter-->
+    <string name="habit_schedule_id">habitScheduleId</string>
+
     <!--HabitListFragment-->
     <string name="today_capital_case">TODAY</string>
 
@@ -112,6 +115,9 @@
     <string name="standard_from_capital_letter">Standard</string>
     <string name="creating_habit_settings">creating_habit_settings</string>
     <string name="notification_frequency_specified_day_string">notificationFrequencySpecifiedDay%1$s</string>
+
+    <!-- Habit Parameter-->
+    <string name="after_string_minutes">"After %1$s minutes"</string>
 
     <!--Category names-->
     <string name="sport">Sport</string>

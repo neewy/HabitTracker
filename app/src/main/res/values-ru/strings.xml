@@ -79,6 +79,8 @@
     <string name="every_day">Каждый день</string>
     <string name="position">местоположение</string>
 
+    <!-- Habit Parameter-->
+    <string name="after_string_minutes">"Через %1$s минут"</string>
 
     <!--Category names-->
     <string name="sport">Спорт</string>

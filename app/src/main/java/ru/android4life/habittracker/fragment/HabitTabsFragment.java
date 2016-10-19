@@ -10,7 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import ru.android4life.habittracker.R;
+import ru.android4life.habittracker.activity.BaseActivity;
 import ru.android4life.habittracker.adapter.PagerAdapter;
+import ru.android4life.habittracker.db.dataaccessobjects.HabitDAO;
+import ru.android4life.habittracker.db.dataaccessobjects.HabitScheduleDAO;
+import ru.android4life.habittracker.db.tablesrepresentations.Habit;
+import ru.android4life.habittracker.db.tablesrepresentations.HabitSchedule;
 
 /**
  * Tabs controller class.
@@ -20,6 +25,37 @@ import ru.android4life.habittracker.adapter.PagerAdapter;
  * Created by Nikolay Yushkevich on 27.09.16.
  */
 public class HabitTabsFragment extends Fragment {
+
+    private int habitScheduleId;
+    private HabitScheduleDAO habitScheduleDAO;
+    private HabitDAO habitDAO;
+
+    /*
+            If Android decides to recreate your Fragment later, it's going to call the no-argument
+        constructor of your fragment. So overloading the constructor is not a solution.
+            With that being said, the way to pass stuff to your Fragment so that they are available
+        after a Fragment is recreated by Android is to pass a bundle to the setArguments method.
+        See https://stackoverflow.com/questions/9245408/best-practice-for-instantiating-a-new-android-fragment
+        for the details.
+     */
+    public static HabitTabsFragment newInstance(int habitScheduleId) {
+
+        Bundle args = new Bundle();
+
+        HabitTabsFragment fragment = new HabitTabsFragment();
+        // Setting an id of the clicked habitSchedule, see HabitListAdapter.onCreateViewHolder()
+        args.putInt(BaseActivity.getContext().getString(R.string.habit_schedule_id), habitScheduleId);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        habitScheduleId = this.getArguments().getInt(BaseActivity.getContext().getString(R.string.habit_schedule_id));
+        habitScheduleDAO = new HabitScheduleDAO(BaseActivity.getContext());
+        habitDAO = new HabitDAO(BaseActivity.getContext());
+    }
 
     @Nullable
     @Override
@@ -38,7 +74,7 @@ public class HabitTabsFragment extends Fragment {
         // View, which handles fragments connected with tabs
         final ViewPager viewPager = (ViewPager) tabsView.findViewById(R.id.viewpager);
         viewPager.setAdapter(new PagerAdapter(
-                getFragmentManager(), tabLayout.getTabCount()
+                getFragmentManager(), tabLayout.getTabCount(), habitScheduleId
         ));
 
         // Assigns the ViewPager to TabLayout
@@ -67,8 +103,9 @@ public class HabitTabsFragment extends Fragment {
             }
         });
 
-        //FIXME: Add habit name here
-        getActivity().setTitle("Habit");
+        HabitSchedule habitSchedule = (HabitSchedule) habitScheduleDAO.findById(habitScheduleId);
+        Habit habit = (Habit) habitDAO.findById(habitSchedule.getHabitId());
+        getActivity().setTitle(habit.getName());
 
         return tabsView;
     }

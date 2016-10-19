@@ -45,15 +45,23 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
     }
 
     @Override
-    public HabitCardViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public HabitCardViewHolder onCreateViewHolder(ViewGroup parent, final int habitScheduleId) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.habit_list_card, parent, false);
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragmentManager.beginTransaction().replace(R.id.container, new HabitTabsFragment()).addToBackStack(drawerSelectionMode.stringValue).commit();
+                fragmentManager.beginTransaction().replace(R.id.container,
+                        HabitTabsFragment.newInstance(habitScheduleId)).addToBackStack(drawerSelectionMode.stringValue).commit();
             }
         });
         return new HabitCardViewHolder(v);
+    }
+
+    // To assure that viewType parameter of onCreateViewHolder method will represent an id of the clicked habitSchedule
+    @Override
+    public int getItemViewType(int position) {
+        final HabitSchedule habitSchedule = habitSchedules.get(position);
+        return habitSchedule.getId();
     }
 
     @Override
@@ -109,7 +117,7 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
         return result;
     }
 
-    private void setSkipAndDoneListeners(final HabitCardViewHolder holder, final HabitSchedule habitSchedule ) {
+    private void setSkipAndDoneListeners(final HabitCardViewHolder holder, final HabitSchedule habitSchedule) {
         holder.skip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

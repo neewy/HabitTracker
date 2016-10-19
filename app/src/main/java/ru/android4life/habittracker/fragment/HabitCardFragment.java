@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import ru.android4life.habittracker.R;
 import ru.android4life.habittracker.activity.AddHabitActivity;
+import ru.android4life.habittracker.activity.BaseActivity;
 import ru.android4life.habittracker.adapter.HabitParametersAdapter;
 import ru.android4life.habittracker.models.HabitParameter;
 
@@ -28,12 +29,32 @@ public class HabitCardFragment extends Fragment {
 
     private HabitParametersAdapter mAdapter;
 
+    /*
+            If Android decides to recreate your Fragment later, it's going to call the no-argument
+        constructor of your fragment. So overloading the constructor is not a solution.
+            With that being said, the way to pass stuff to your Fragment so that they are available
+        after a Fragment is recreated by Android is to pass a bundle to the setArguments method.
+        See https://stackoverflow.com/questions/9245408/best-practice-for-instantiating-a-new-android-fragment
+        for the details.
+     */
+    public static HabitCardFragment newInstance(int habitScheduleId) {
+
+        Bundle args = new Bundle();
+
+        HabitCardFragment fragment = new HabitCardFragment();
+        // Setting an id of the clicked habit, see HabitListAdapter.onCreateViewHolder()
+        args.putInt(BaseActivity.getContext().getString(R.string.habit_schedule_id), habitScheduleId);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        int habitScheduleId = this.getArguments().getInt(BaseActivity.getContext().getString(R.string.habit_schedule_id));
         // adapter for habits parameters (thank you, Bulat)
-        mAdapter = new HabitParametersAdapter(getActivity(), HabitParameter.createParameters(getContext()), false);
+        mAdapter = new HabitParametersAdapter(getActivity(),
+                HabitParameter.createParametersByHabitScheduleId(getContext(), habitScheduleId), false);
     }
 
     @Nullable

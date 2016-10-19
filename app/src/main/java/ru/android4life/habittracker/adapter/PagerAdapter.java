@@ -8,33 +8,35 @@ import ru.android4life.habittracker.fragment.HabitCardFragment;
 import ru.android4life.habittracker.fragment.HabitStatisticsFragment;
 
 /**
-     * Adapter for tabs (basically, the habit card and statistics)
-     */
-    public class PagerAdapter extends FragmentStatePagerAdapter {
-        int mNumOfTabs;
+ * Adapter for tabs (basically, the habit card and statistics)
+ */
+public class PagerAdapter extends FragmentStatePagerAdapter {
+    private int mNumOfTabs;
+    private int habitScheduleId;
 
-        public PagerAdapter(FragmentManager fm, int NumOfTabs) {
-            super(fm);
-            this.mNumOfTabs = NumOfTabs;
-        }
+    public PagerAdapter(FragmentManager fm, int NumOfTabs, int habitScheduleId) {
+        super(fm);
+        this.mNumOfTabs = NumOfTabs;
+        this.habitScheduleId = habitScheduleId;
+    }
 
-        @Override
-        public Fragment getItem(int position) {
+    @Override
+    public Fragment getItem(int position) {
 
-            switch (position) {
-                case 0:
-                    Fragment tab1 = new HabitCardFragment();
-                    return tab1;
-                case 1:
-                    Fragment tab2 = new HabitStatisticsFragment();
-                    return tab2;
-                default:
-                    return null;
-            }
-        }
-
-        @Override
-        public int getCount() {
-            return mNumOfTabs;
+        switch (position) {
+            case 0:
+                Fragment tab1 = HabitCardFragment.newInstance(habitScheduleId);
+                return tab1;
+            case 1:
+                Fragment tab2 = new HabitStatisticsFragment();
+                return tab2;
+            default:
+                return null;
         }
     }
+
+    @Override
+    public int getCount() {
+        return mNumOfTabs;
+    }
+}
