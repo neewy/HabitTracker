@@ -379,4 +379,50 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         assertEquals(habitScheduleList.size(), 1);
         assertEquals(habitScheduleList.get(0).getHabitId(), id);
     }
+
+    @Test
+    public void testFindingHabitSchedulesInRange() throws ParseException {
+        HabitScheduleDAO habitScheduleDAO = new HabitScheduleDAO(this.getContext());
+        Calendar c = new GregorianCalendar();
+        Date date = c.getTime();
+        HabitSchedule newHabitSchedule = new HabitSchedule(id, date, isDone, id);
+        c.add(Calendar.DATE, 1);
+        date = c.getTime();
+        newHabitSchedule = new HabitSchedule(id, date, isDone, id);
+        habitScheduleDAO.create(newHabitSchedule);
+        c.add(Calendar.DATE, 1);
+        date = c.getTime();
+        Date fromDate = date;
+        newHabitSchedule = new HabitSchedule(id, date, isDone, id);
+        habitScheduleDAO.create(newHabitSchedule);
+        c.add(Calendar.DATE, 1);
+        date = c.getTime();
+        newHabitSchedule = new HabitSchedule(id, date, isDone, id);
+        habitScheduleDAO.create(newHabitSchedule);
+        c.add(Calendar.DATE, 1);
+        date = c.getTime();
+        newHabitSchedule = new HabitSchedule(id, date, isDone, id);
+        habitScheduleDAO.create(newHabitSchedule);
+        habitScheduleDAO.create(newHabitSchedule);
+        habitScheduleDAO.create(newHabitSchedule);
+        c.add(Calendar.DATE, 1);
+        date = c.getTime();
+        Date toDate = date; // 5 habitSchedules in between fromDate and toDate were created
+        newHabitSchedule = new HabitSchedule(id, date, isDone, id);
+        habitScheduleDAO.create(newHabitSchedule);
+        c.add(Calendar.DATE, 1);
+        date = c.getTime();
+        newHabitSchedule = new HabitSchedule(id, date, isDone, id);
+        habitScheduleDAO.create(newHabitSchedule);
+        c.add(Calendar.DATE, 1);
+        date = c.getTime();
+        newHabitSchedule = new HabitSchedule(id, date, isDone, id);
+        habitScheduleDAO.create(newHabitSchedule);
+        c.add(Calendar.DATE, 1);
+        date = c.getTime();
+        newHabitSchedule = new HabitSchedule(id, date, isDone, id);
+        habitScheduleDAO.create(newHabitSchedule);
+        List<HabitSchedule> habitScheduleList = habitScheduleDAO.findInRange(fromDate, toDate);
+        assertEquals(habitScheduleList.size(), 5);
+    }
 }
