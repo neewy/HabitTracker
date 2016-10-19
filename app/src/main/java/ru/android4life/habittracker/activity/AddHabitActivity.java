@@ -231,7 +231,8 @@ public class AddHabitActivity extends BaseActivity {
         int habitsCreationResult = habitDAO.create(new Habit(1, habitName, habitQuestion, habitDay, 55.75417935,
                 48.7440855, 9, habitSettings.getNotificationSoundUri().toString(), true, 60, habitSettings.getCategoryId()));
         if (habitsCreationResult >= 0) {
-            createSchedulesForTheHabitByItsId(habitsCreationResult);
+            Habit habitWithMaxId = (Habit) habitDAO.getObjectWithMaxId();
+            createSchedulesForTheHabitByItsId(habitWithMaxId.getId());
             return true;
         } else {
             toastMessage(getContext().getString(R.string.habit_name_and_question_should_be_unique));
@@ -250,6 +251,7 @@ public class AddHabitActivity extends BaseActivity {
         Date newHabitDay;
         c.add(Calendar.DAY_OF_YEAR, monthMaxDays);
         Date afterAMonth = c.getTime();
+        c.add(Calendar.DAY_OF_YEAR, monthMaxDays * (-1));
         boolean habitDayBeforeAfterAMonth = habitDay.before(afterAMonth) || habitDay.equals(afterAMonth);
         switch (habitSettings.getNotificationFrequencyType()) {
             case DAILY:
@@ -257,6 +259,7 @@ public class AddHabitActivity extends BaseActivity {
                     habitScheduleDAO.create(new HabitSchedule(1, habitDay, null, habitId));
                     c.add(Calendar.DATE, 1);
                     habitDay = c.getTime();
+                    habitDayBeforeAfterAMonth = habitDay.before(afterAMonth) || habitDay.equals(afterAMonth);
                 }
                 break;
             case WEEKLY:
@@ -266,6 +269,7 @@ public class AddHabitActivity extends BaseActivity {
                     habitScheduleDAO.create(new HabitSchedule(1, habitDay, null, habitId));
                     c.add(Calendar.DAY_OF_YEAR, 7);
                     habitDay = c.getTime();
+                    habitDayBeforeAfterAMonth = habitDay.before(afterAMonth) || habitDay.equals(afterAMonth);
                 }
                 break;
             case MONTHLY:
@@ -275,6 +279,7 @@ public class AddHabitActivity extends BaseActivity {
                     habitScheduleDAO.create(new HabitSchedule(1, habitDay, null, habitId));
                     c.add(Calendar.DAY_OF_YEAR, 7);
                     habitDay = c.getTime();
+                    habitDayBeforeAfterAMonth = habitDay.before(afterAMonth) || habitDay.equals(afterAMonth);
                 }
                 break;
             case SPECIFIED_DAYS:
@@ -286,6 +291,7 @@ public class AddHabitActivity extends BaseActivity {
                             habitScheduleDAO.create(new HabitSchedule(1, habitDay, null, habitId));
                             c.add(Calendar.DAY_OF_YEAR, 7);
                             habitDay = c.getTime();
+                            habitDayBeforeAfterAMonth = habitDay.before(afterAMonth) || habitDay.equals(afterAMonth);
                         }
                     }
                 }
