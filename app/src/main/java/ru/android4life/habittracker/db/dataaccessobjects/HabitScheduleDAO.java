@@ -230,16 +230,11 @@ public class HabitScheduleDAO implements ExtendedCrud {
         return items;
     }
 
-    public List<HabitSchedule> findForCurrentMonth() {
+    public List<HabitSchedule> findByHabitId(int habitId) {
         List<HabitSchedule> items = new ArrayList<>();
-        Calendar c = Calendar.getInstance();
-        c.set(Calendar.DAY_OF_MONTH, 1);
-        Date firstDay = c.getTime();
-        c.set(Calendar.DATE, c.getActualMaximum(Calendar.DATE));
-        Date lastDay = c.getTime();
         try {
             QueryBuilder<HabitSchedule, Integer> qBuilder = helper.getHabitScheduleDao().queryBuilder();
-            qBuilder.where().ge(Constants.DATETIME, firstDay).and().lt(Constants.DATETIME, lastDay);
+            qBuilder.where().eq(Constants.HABIT_ID, habitId);
             items = qBuilder.query();
         } catch (SQLException e) {
             Log.d(Constants.DAO_ERROR, Constants.SQL_EXCEPTION_IN + Constants.SPACE +

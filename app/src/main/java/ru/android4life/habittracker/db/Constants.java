@@ -25,6 +25,7 @@ public final class Constants {
     public static final String ID = "id";
     public static final String DATETIME = "datetime";
     public static final String IS_DONE = "isDone";
+    public static final String HABIT_ID = "habitId";
     public static final String NAME = "name";
 
     // For DatabaseHelper
