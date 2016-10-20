@@ -8,33 +8,33 @@ import ru.android4life.habittracker.R;
 
 public class SettingsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        SettingsListener mListener;
-        public TextView settingTitle;
-        public TextView settingSelection;
+    public TextView settingTitle;
+    public TextView settingSelection;
+    SettingsListener mListener;
 
-        public SettingsViewHolder(View itemView) {
-            super(itemView);
-            settingTitle = (TextView) itemView.findViewById(android.R.id.text1);
-            settingSelection = (TextView) itemView.findViewById(android.R.id.text2);
-            itemView.setOnClickListener(this);
-        }
+    public SettingsViewHolder(View itemView) {
+        super(itemView);
+        settingTitle = (TextView) itemView.findViewById(android.R.id.text1);
+        settingSelection = (TextView) itemView.findViewById(android.R.id.text2);
+        itemView.setOnClickListener(this);
+    }
 
-        public void setListener(SettingsListener mListener) {
-            this.mListener = mListener;
-        }
+    public void setListener(SettingsListener mListener) {
+        this.mListener = mListener;
+    }
 
-        @Override
-        public void onClick(View v) {
-            if (settingTitle.getText().toString().equals(v.getResources().getString(R.string.primary_color))) {
-                mListener.onPrimaryColor(v);
-            } else if (settingTitle.getText().toString().equals(v.getResources().getString(R.string.language))) {
-                mListener.onLanguage(v);
-            }
-        }
-
-        public interface SettingsListener {
-            void onPrimaryColor(View caller);
-
-            void onLanguage(View caller);
+    @Override
+    public void onClick(View v) {
+        if (settingTitle.getText().toString().equals(v.getResources().getString(R.string.primary_color))) {
+            mListener.onPrimaryColor(v);
+        } else if (settingTitle.getText().toString().equals(v.getResources().getString(R.string.language))) {
+            mListener.onLanguage(v);
         }
     }
+
+    public interface SettingsListener {
+        void onPrimaryColor(View caller);
+
+        void onLanguage(View caller);
+    }
+}

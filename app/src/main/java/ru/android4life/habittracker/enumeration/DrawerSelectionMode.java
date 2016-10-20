@@ -13,14 +13,14 @@ public enum DrawerSelectionMode {
         this.stringValue = s;
     }
 
-    public static DrawerSelectionMode findDrawerSelectionMode (String tag) {
-        switch (tag){
+    public static DrawerSelectionMode findDrawerSelectionMode(String tag) {
+        switch (tag) {
             case "Today":
                 return TODAY;
             case "Tomorrow":
                 return TOMORROW;
             case "Next Month":
-               return NEXT_MONTH;
+                return NEXT_MONTH;
             case "All Tasks":
                 return ALL_TASKS;
             case "Statistics":

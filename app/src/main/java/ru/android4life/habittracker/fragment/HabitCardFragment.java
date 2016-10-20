@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,6 +17,10 @@ import ru.android4life.habittracker.R;
 import ru.android4life.habittracker.activity.AddHabitActivity;
 import ru.android4life.habittracker.activity.BaseActivity;
 import ru.android4life.habittracker.adapter.HabitParametersAdapter;
+import ru.android4life.habittracker.db.dataaccessobjects.HabitDAO;
+import ru.android4life.habittracker.db.dataaccessobjects.HabitScheduleDAO;
+import ru.android4life.habittracker.db.tablesrepresentations.Habit;
+import ru.android4life.habittracker.db.tablesrepresentations.HabitSchedule;
 import ru.android4life.habittracker.models.HabitParameter;
 
 /**
@@ -28,6 +34,9 @@ import ru.android4life.habittracker.models.HabitParameter;
 public class HabitCardFragment extends Fragment {
 
     private HabitParametersAdapter mAdapter;
+    private HabitScheduleDAO habitScheduleDAO;
+    private HabitDAO habitDAO;
+    private int habitScheduleId;
 
     /*
             If Android decides to recreate your Fragment later, it's going to call the no-argument
@@ -51,7 +60,9 @@ public class HabitCardFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        int habitScheduleId = this.getArguments().getInt(BaseActivity.getContext().getString(R.string.habit_schedule_id));
+        habitScheduleId = this.getArguments().getInt(BaseActivity.getContext().getString(R.string.habit_schedule_id));
+        habitScheduleDAO = new HabitScheduleDAO(BaseActivity.getContext());
+        habitDAO = new HabitDAO(BaseActivity.getContext());
         // adapter for habits parameters (thank you, Bulat)
         mAdapter = new HabitParametersAdapter(getActivity(),
                 HabitParameter.createParametersByHabitScheduleId(getContext(), habitScheduleId), false);
@@ -64,6 +75,55 @@ public class HabitCardFragment extends Fragment {
 
         //list of settings
         RecyclerView recyclerView = (RecyclerView) habitCard.findViewById(R.id.habit_settings);
+
+        // Habits name and question
+        AppCompatTextView habitNameTextView = (AppCompatTextView) habitCard.findViewById(R.id.habit_card_name);
+        AppCompatTextView habitQuestionTextView = (AppCompatTextView) habitCard.findViewById(R.id.habit_card_question);
+
+        // Skip and Done Buttons
+        final AppCompatButton skipButton = (AppCompatButton) habitCard.findViewById(R.id.habit_card_skip);
+        final AppCompatButton doneButton = (AppCompatButton) habitCard.findViewById(R.id.habit_card_done);
+
+        HabitSchedule habitSchedule = (HabitSchedule) habitScheduleDAO.findById(habitScheduleId);
+        Habit habit = (Habit) habitDAO.findById(habitSchedule.getHabitId());
+
+        habitNameTextView.setText(habit.getName());
+        habitQuestionTextView.setText(habit.getQuestion());
+
+        if (habitSchedule.isDone() != null) {
+            skipButton.setEnabled(false);
+            skipButton.setVisibility(View.GONE);
+            doneButton.setEnabled(false);
+            doneButton.setVisibility(View.GONE);
+        }
+
+        skipButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                skipButton.setEnabled(false);
+                skipButton.setVisibility(View.GONE);
+                doneButton.setEnabled(false);
+                doneButton.setVisibility(View.GONE);
+                HabitSchedule habitSchedule = (HabitSchedule) habitScheduleDAO.findById(habitScheduleId);
+                HabitSchedule updatedHabitSchedule = new HabitSchedule(habitSchedule.getId(),
+                        habitSchedule.getDatetime(), false, habitSchedule.getHabitId());
+                habitScheduleDAO.update(updatedHabitSchedule);
+            }
+        });
+
+        doneButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                skipButton.setEnabled(false);
+                skipButton.setVisibility(View.GONE);
+                doneButton.setEnabled(false);
+                doneButton.setVisibility(View.GONE);
+                HabitSchedule habitSchedule = (HabitSchedule) habitScheduleDAO.findById(habitScheduleId);
+                HabitSchedule updatedHabitSchedule = new HabitSchedule(habitSchedule.getId(),
+                        habitSchedule.getDatetime(), false, habitSchedule.getHabitId());
+                habitScheduleDAO.update(updatedHabitSchedule);
+            }
+        });
 
         //as we need a vertical list, the layout manager is vertical
         LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity());
