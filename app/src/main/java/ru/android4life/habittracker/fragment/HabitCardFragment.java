@@ -120,7 +120,7 @@ public class HabitCardFragment extends Fragment {
                 doneButton.setVisibility(View.GONE);
                 HabitSchedule habitSchedule = (HabitSchedule) habitScheduleDAO.findById(habitScheduleId);
                 HabitSchedule updatedHabitSchedule = new HabitSchedule(habitSchedule.getId(),
-                        habitSchedule.getDatetime(), false, habitSchedule.getHabitId());
+                        habitSchedule.getDatetime(), true, habitSchedule.getHabitId());
                 habitScheduleDAO.update(updatedHabitSchedule);
             }
         });

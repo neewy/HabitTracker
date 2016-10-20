@@ -96,7 +96,7 @@ public class HabitParameter {
     private static String getHabitFrequencyHint(Context context, int habitId, HabitScheduleDAO habitScheduleDAO) {
         List<HabitSchedule> habitSchedules = habitScheduleDAO.findByHabitId(habitId);
         Calendar habitScheduleDateTimeCalendar = new GregorianCalendar();
-        // TODO: IMPLEMENT DELETION OF HABITS THAT ARE OLDER THEN 31 DAY & CREATION OF NEW HABITS
+
         // As we delete habits that are older than 1 month, and create habits for the following month
         // on every start of the app, we can conceive frequency type by the number of habit
         // schedules that exist for particular habit
