@@ -1,7 +1,6 @@
 package ru.android4life.habittracker.adapter;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -73,14 +72,11 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
                 habit.getQuestion()));
         holder.time.setText(Constants.prettyTime.format(habitSchedule.getDatetime()));
 
-        if (habitSchedule.isDone() != null && habitSchedule.isDone()) {
+        if (habitSchedule.isDone() != null) {
             holder.done.setEnabled(false);
             holder.skip.setEnabled(false);
-            holder.skip.setTextColor(Color.LTGRAY);
-        }
-        if (habitSchedule.isDone() != null && !habitSchedule.isDone()) {
-            holder.skip.setEnabled(false);
-            holder.skip.setTextColor(Color.LTGRAY);
+            holder.done.setVisibility(View.GONE);
+            holder.skip.setVisibility(View.GONE);
         }
 
         setSkipAndDoneListeners(holder, habitSchedule);
