@@ -1,12 +1,11 @@
-Copyright (c) 2012 Blaž Triglav
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+Copyright [2016] [Aleksandr Nedorezov, Bulat Mukhutdinov, Nikolay Yushkevich]
 
 The following dependencies are bundled with HabitTracker, but are under terms of a separate license:
-- AChartEngine, Apache License 2.0
-- ORMLite for Android, public domain
-- Android Support Library, Apache License 2.0
+- ORMLite for Android, Open Source License, http://ormlite.com/javadoc/ormlite-core/doc-files/ormlite_9.html#License
+- Android Support Library, Apache License 2.0, Copyright 2005-2008 The Android Open Source Project et al.
+  https://github.com/android/platform_system_core/blob/master/NOTICE
+- PrettyTime, Apache License 2.0, Copyright 2016 OCPsoft, https://github.com/ocpsoft/prettytime
+- hellocharts-android, Apache License 2.0, Copyright 2014 Leszek Wach, https://github.com/lecho/hellocharts-android
+- Selection Dialogs, Apache Licence 2.0, https://github.com/coreORB/SelectionDialogs
+- Plain Pie Chart, Apache Licence 2.0, Copyright 2016 Alejandro Zürcher, https://github.com/zurche/plain-pie
+- AlarmReceiver & BootReceiver classes, MIT Licence, Copyright (c) 2012 Blaž Triglav
