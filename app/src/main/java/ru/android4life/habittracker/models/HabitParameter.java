@@ -14,6 +14,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import ru.android4life.habittracker.R;
+import ru.android4life.habittracker.activity.MainActivity;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitCategoryDAO;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitDAO;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitScheduleDAO;
@@ -68,7 +69,8 @@ public class HabitParameter {
         HabitCategory habitCategory = (HabitCategory) habitCategoryDAO.findById(habit.getCategoryId());
 
         HabitParameter parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_category),
-                Translator.translate(habitCategory.getName()), ContextCompat.getDrawable(context, R.drawable.ic_add_habit_category));
+                Translator.translate(habitCategory.getName()),
+                ContextCompat.getDrawable(context, R.drawable.ic_add_habit_category));
         habitParameters.add(parameter);
 
         parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_reminder), getHabitTimeHint(context, habitSchedule.getDatetime()),
@@ -94,11 +96,63 @@ public class HabitParameter {
     private static String getHabitFrequencyHint(Context context, int habitId, HabitScheduleDAO habitScheduleDAO) {
         List<HabitSchedule> habitSchedules = habitScheduleDAO.findByHabitId(habitId);
         Calendar habitScheduleDateTimeCalendar = new GregorianCalendar();
-        if (habitSchedules.size() == 1) {
+        // TODO: IMPLEMENT DELETION OF HABITS THAT ARE OLDER THEN 31 DAY & CREATION OF NEW HABITS
+        // As we delete habits that are older than 1 month, and create habits for the following month
+        // on every start of the app, we can conceive frequency type by the number of habit
+        // schedules that exist for particular habit
+        if (habitSchedules.size() <= 2) { // MONTHLY
             habitScheduleDateTimeCalendar.setTime(habitSchedules.get(0).getDatetime());
-            return context.getResources().getString(R.string.every_month_on_space_string, String.valueOf(habitScheduleDateTimeCalendar.get(Calendar.DAY_OF_MONTH)));
-        } else
-            return "";
+            return context.getString(R.string.every_month_on_space_string,
+                    String.valueOf(habitScheduleDateTimeCalendar.get(Calendar.DAY_OF_MONTH)));
+        } else if (habitSchedules.size() >= 28) { // DAILY
+            return context.getString(R.string.every_day);
+        } else if (habitSchedules.size() >= 4 && habitSchedules.size() <= 5) { // WEEKLY
+            habitScheduleDateTimeCalendar.setTime(habitSchedules.get(0).getDatetime());
+            return context.getResources().getString(R.string.on_every,
+                    habitScheduleDateTimeCalendar.getDisplayName(Calendar.DAY_OF_WEEK,
+                            Calendar.LONG, MainActivity.locale));
+        } else { // SPECIFIED DAYS
+            boolean[] mCheckedItems = {false, false, false, false, false, false, false};
+            String[] shortenDaysOfWeek = context.getResources().getStringArray(R.array.shorten_days_of_week);
+            for (HabitSchedule habitSchedule : habitSchedules) {
+                mCheckedItems[getDayOfWeeksNumberFromDate(habitSchedule.getDatetime()) - 1] = true;
+            }
+            StringBuilder selectedDaysInTwoLetters = new StringBuilder();
+            for (int i = 0; i < mCheckedItems.length; i++) {
+                if (mCheckedItems[i]) {
+                    selectedDaysInTwoLetters.append(shortenDaysOfWeek[i]).append(", ");
+                }
+            }
+            if (selectedDaysInTwoLetters.length() > 1)
+                selectedDaysInTwoLetters.deleteCharAt(selectedDaysInTwoLetters.length() - 2);
+            return context.getResources().getString(R.string.on_every,
+                    selectedDaysInTwoLetters);
+        }
+    }
+
+    private static int getDayOfWeeksNumberFromDate(Date dateTime) {
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(dateTime);
+        switch (calendar.get(Calendar.DAY_OF_WEEK)) {
+            case Calendar.MONDAY:
+                return 1;
+            case Calendar.TUESDAY:
+                return 2;
+            case Calendar.WEDNESDAY:
+                return 3;
+            case Calendar.THURSDAY:
+                return 4;
+            case Calendar.FRIDAY:
+                return 5;
+            case Calendar.SATURDAY:
+                return 6;
+            case Calendar.SUNDAY:
+                return 7;
+            default:
+                break;
+        }
+
+        return 1;
     }
 
     private static String getHabitTimeHint(Context context, Date habitScheduleDateTime) {

@@ -80,7 +80,8 @@ public class AddHabitActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
 
-                // TODO: Get data from HabitParametersAdapter, create Habits according to it
+                confirmButton.setEnabled(false); // disable button for the time while habits are created
+
                 getHabitSettingsFromPreferences();
                 if (createHabitAccordingToHabitPreferencesIfDataIsCorrect()) {
                     mAdapter.notifyDataSetChanged();
@@ -95,6 +96,8 @@ public class AddHabitActivity extends BaseActivity {
                         }
                     }, (int) (textView.getRippleDuration() * 1.1d));
                 }
+
+                confirmButton.setEnabled(true); // make the button available again
             }
         });
 
@@ -248,7 +251,6 @@ public class AddHabitActivity extends BaseActivity {
         c.set(Calendar.MINUTE, habitSettings.getNotificationMinute());
         c.set(Calendar.SECOND, 0);
         Date habitDay = c.getTime();
-        Date newHabitDay;
         c.add(Calendar.DAY_OF_YEAR, monthMaxDays);
         Date afterAMonth = c.getTime();
         c.add(Calendar.DAY_OF_YEAR, monthMaxDays * (-1));
@@ -263,9 +265,9 @@ public class AddHabitActivity extends BaseActivity {
                 }
                 break;
             case WEEKLY:
-                c.set(Calendar.DAY_OF_WEEK, habitSettings.getNotificationFrequencyWeekNumberOrDate());
-                newHabitDay = c.getTime();
-                while ((newHabitDay.after(habitDay) || newHabitDay.equals(habitDay)) && habitDayBeforeAfterAMonth) {
+                c = setDayOfWeekByItsNumber(c, habitSettings.getNotificationFrequencyWeekNumberOrDate());
+                habitDay = c.getTime();
+                while (habitDayBeforeAfterAMonth) {
                     habitScheduleDAO.create(new HabitSchedule(1, habitDay, null, habitId));
                     c.add(Calendar.DAY_OF_YEAR, 7);
                     habitDay = c.getTime();
@@ -274,10 +276,10 @@ public class AddHabitActivity extends BaseActivity {
                 break;
             case MONTHLY:
                 c.set(Calendar.DAY_OF_MONTH, habitSettings.getNotificationFrequencyWeekNumberOrDate());
-                newHabitDay = c.getTime();
-                while ((newHabitDay.after(habitDay) || newHabitDay.equals(habitDay)) && habitDayBeforeAfterAMonth) {
+                habitDay = c.getTime();
+                while (habitDayBeforeAfterAMonth) {
                     habitScheduleDAO.create(new HabitSchedule(1, habitDay, null, habitId));
-                    c.add(Calendar.DAY_OF_YEAR, 7);
+                    c.add(Calendar.MONTH, 1);
                     habitDay = c.getTime();
                     habitDayBeforeAfterAMonth = habitDay.before(afterAMonth) || habitDay.equals(afterAMonth);
                 }
@@ -285,14 +287,19 @@ public class AddHabitActivity extends BaseActivity {
             case SPECIFIED_DAYS:
                 for (int i = 0; i < 7; i++) {
                     if (habitSettings.getNotificationFrequencySpecifiedDays()[i]) {
-                        c.set(Calendar.DAY_OF_WEEK, i + 1);
-                        newHabitDay = c.getTime();
-                        while ((newHabitDay.after(habitDay) || newHabitDay.equals(habitDay)) && habitDayBeforeAfterAMonth) {
+                        c = setDayOfWeekByItsNumber(c, i + 1);
+                        habitDay = c.getTime();
+                        habitDayBeforeAfterAMonth = habitDay.before(afterAMonth) || habitDay.equals(afterAMonth);
+                        while (habitDayBeforeAfterAMonth) {
                             habitScheduleDAO.create(new HabitSchedule(1, habitDay, null, habitId));
                             c.add(Calendar.DAY_OF_YEAR, 7);
                             habitDay = c.getTime();
                             habitDayBeforeAfterAMonth = habitDay.before(afterAMonth) || habitDay.equals(afterAMonth);
                         }
+                        c = new GregorianCalendar();
+                        c.set(Calendar.HOUR_OF_DAY, habitSettings.getNotificationHour());
+                        c.set(Calendar.MINUTE, habitSettings.getNotificationMinute());
+                        c.set(Calendar.SECOND, 0);
                     }
                 }
                 break;
@@ -301,9 +308,40 @@ public class AddHabitActivity extends BaseActivity {
                     habitScheduleDAO.create(new HabitSchedule(1, habitDay, null, habitId));
                     c.add(Calendar.DATE, 1);
                     habitDay = c.getTime();
+                    habitDayBeforeAfterAMonth = habitDay.before(afterAMonth) || habitDay.equals(afterAMonth);
                 }
                 break;
         }
+    }
+
+    private Calendar setDayOfWeekByItsNumber(Calendar calendar, int weekNumber) {
+        switch (weekNumber) {
+            case 1:
+                calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+                break;
+            case 2:
+                calendar.set(Calendar.DAY_OF_WEEK, Calendar.TUESDAY);
+                break;
+            case 3:
+                calendar.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY);
+                break;
+            case 4:
+                calendar.set(Calendar.DAY_OF_WEEK, Calendar.THURSDAY);
+                break;
+            case 5:
+                calendar.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
+                break;
+            case 6:
+                calendar.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
+                break;
+            case 7:
+                calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+                break;
+            default:
+                break;
+        }
+
+        return calendar;
     }
 
     private void toastMessage(String message) {

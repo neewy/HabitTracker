@@ -16,11 +16,11 @@ import ru.android4life.habittracker.db.Constants;
 public class HabitSchedule {
     @DatabaseField(generatedId = true, unique = true)
     private int id;
-    @DatabaseField
+    @DatabaseField(uniqueCombo = true)
     private Date datetime = null;
     @DatabaseField
     private Boolean isDone;
-    @DatabaseField
+    @DatabaseField(uniqueCombo = true)
     private int habitId;
 
     public HabitSchedule(int id, Date datetime, Boolean isDone, int habitId) {

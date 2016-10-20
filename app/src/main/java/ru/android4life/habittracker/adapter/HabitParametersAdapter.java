@@ -70,7 +70,7 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameterV
         return vh;
     }
 
-    private HabitParameterViewHolder.AddHabitParameterListener createOnClickListener(final ViewGroup parent){
+    private HabitParameterViewHolder.AddHabitParameterListener createOnClickListener(final ViewGroup parent) {
         return new HabitParameterViewHolder.AddHabitParameterListener() {
             @Override
             public void onCategory(View caller, final TextView hint) {
@@ -228,7 +228,7 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameterV
                                     }
                                     prefs.edit().putBoolean(context.getResources()
                                             .getString(R.string.notification_frequency_specified_day_string,
-                                                    String.valueOf(i)), mCheckedItems[i]).apply();
+                                                    String.valueOf(i + 1)), mCheckedItems[i]).apply();
                                 }
                                 System.out.println(stringBuilder);
                                 if (selectedDaysInTwoLetters.length() > 1)

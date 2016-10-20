@@ -257,7 +257,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         prefs.edit().putBoolean("firstrun", false).apply();
     }
 
-
     // `onPostCreate` called when activity start-up is complete after `onStart()`
     // NOTE! Make sure to override the method with only a single `Bundle` argument
     @Override
