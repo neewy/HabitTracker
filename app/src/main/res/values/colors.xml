@@ -13,6 +13,7 @@
     <color name="blue">#3F51B5</color>
     <color name="darkBlue">#303F9F</color>
     <color name="pink">#FF4081</color>
+    <color name="remove">#E53935</color>
 
     <color name="purple">#9B26AF</color>
     <color name="purpleDark">#691A99</color>
