@@ -3,9 +3,13 @@ package ru.android4life.habittracker.adapter;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.daimajia.swipe.SwipeLayout;
 
 import java.util.List;
 
@@ -20,10 +24,8 @@ import ru.android4life.habittracker.enumeration.DrawerSelectionMode;
 import ru.android4life.habittracker.fragment.HabitTabsFragment;
 import ru.android4life.habittracker.viewholder.HabitCardViewHolder;
 
-/**
- * Created by Nikolay Yushkevich on 21.09.16.
- */
-public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> {
+
+public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> implements  GestureDetector.OnGestureListener{
 
     private HabitScheduleDAO habitScheduleDAO;
     private HabitDAO habitDAO;
@@ -44,14 +46,18 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
     @Override
     public HabitCardViewHolder onCreateViewHolder(ViewGroup parent, final int habitScheduleId) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.habit_list_card, parent, false);
-        v.setOnClickListener(new View.OnClickListener() {
+        SwipeLayout sample = (SwipeLayout) v.findViewById(R.id.interactive_card);
+        sample.getSurfaceView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 fragmentManager.beginTransaction().replace(R.id.container,
                         HabitTabsFragment.newInstance(habitScheduleId)).addToBackStack(drawerSelectionMode.stringValue).commit();
+
             }
         });
-
+        sample.setShowMode(SwipeLayout.ShowMode.PullOut);
+        sample.addDrag(SwipeLayout.DragEdge.Left, sample.findViewById(R.id.bottom_wrapper));
+        sample.addDrag(SwipeLayout.DragEdge.Right, sample.findViewById(R.id.bottom_wrapper_2));
         return new HabitCardViewHolder(v);
     }
 
@@ -134,5 +140,35 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
                     notifyItemChanged(holder.getAdapterPosition());
             }
         });
+    }
+
+    @Override
+    public boolean onDown(MotionEvent motionEvent) {
+        return false;
+    }
+
+    @Override
+    public void onShowPress(MotionEvent motionEvent) {
+
+    }
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent motionEvent) {
+        return false;
+    }
+
+    @Override
+    public boolean onScroll(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
+        return false;
+    }
+
+    @Override
+    public void onLongPress(MotionEvent motionEvent) {
+
+    }
+
+    @Override
+    public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
+        return false;
     }
 }

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -80,51 +79,11 @@ public class HabitCardFragment extends Fragment {
         AppCompatTextView habitNameTextView = (AppCompatTextView) habitCard.findViewById(R.id.habit_card_name);
         AppCompatTextView habitQuestionTextView = (AppCompatTextView) habitCard.findViewById(R.id.habit_card_question);
 
-        // Skip and Done Buttons
-        final AppCompatButton skipButton = (AppCompatButton) habitCard.findViewById(R.id.habit_card_skip);
-        final AppCompatButton doneButton = (AppCompatButton) habitCard.findViewById(R.id.habit_card_done);
-
         HabitSchedule habitSchedule = (HabitSchedule) habitScheduleDAO.findById(habitScheduleId);
         Habit habit = (Habit) habitDAO.findById(habitSchedule.getHabitId());
 
         habitNameTextView.setText(habit.getName());
         habitQuestionTextView.setText(habit.getQuestion());
-
-        if (habitSchedule.isDone() != null) {
-            skipButton.setEnabled(false);
-            skipButton.setVisibility(View.GONE);
-            doneButton.setEnabled(false);
-            doneButton.setVisibility(View.GONE);
-        }
-
-        skipButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                skipButton.setEnabled(false);
-                skipButton.setVisibility(View.GONE);
-                doneButton.setEnabled(false);
-                doneButton.setVisibility(View.GONE);
-                HabitSchedule habitSchedule = (HabitSchedule) habitScheduleDAO.findById(habitScheduleId);
-                HabitSchedule updatedHabitSchedule = new HabitSchedule(habitSchedule.getId(),
-                        habitSchedule.getDatetime(), false, habitSchedule.getHabitId());
-                habitScheduleDAO.update(updatedHabitSchedule);
-            }
-        });
-
-        doneButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                skipButton.setEnabled(false);
-                skipButton.setVisibility(View.GONE);
-                doneButton.setEnabled(false);
-                doneButton.setVisibility(View.GONE);
-                HabitSchedule habitSchedule = (HabitSchedule) habitScheduleDAO.findById(habitScheduleId);
-                HabitSchedule updatedHabitSchedule = new HabitSchedule(habitSchedule.getId(),
-                        habitSchedule.getDatetime(), true, habitSchedule.getHabitId());
-                habitScheduleDAO.update(updatedHabitSchedule);
-            }
-        });
-
         //as we need a vertical list, the layout manager is vertical
         LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity());
         mLinearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -141,8 +100,6 @@ public class HabitCardFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
         return habitCard;
     }
-
 }

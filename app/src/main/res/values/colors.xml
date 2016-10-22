@@ -18,8 +18,9 @@
     <color name="purple">#9B26AF</color>
     <color name="purpleDark">#691A99</color>
     <color name="green">#68EFAD</color>
-
+    <color name="green_press">#2faf31</color>
     <color name="red">#F44336</color>
+    <color name="red_press">#990000</color>
     <color name="redDark">#D32F2F</color>
     <color name="brightBlue">#536DFE</color>
 

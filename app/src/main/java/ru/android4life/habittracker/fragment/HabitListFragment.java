@@ -39,7 +39,6 @@ public class HabitListFragment extends Fragment {
         //creating view from layout, attachToRoot false — so the parent cannot listen to events of inflated view
         view = (RelativeLayout) inflater.inflate(R.layout.habit_list, container, false);
         listView = (RecyclerView) view.findViewById(R.id.habits_list);
-
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
         mLinearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
