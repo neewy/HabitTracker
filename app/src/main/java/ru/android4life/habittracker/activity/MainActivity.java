@@ -28,6 +28,7 @@ import ru.android4life.habittracker.db.tablesrepresentations.HabitCategory;
 import ru.android4life.habittracker.db.tablesrepresentations.HabitSchedule;
 import ru.android4life.habittracker.enumeration.DrawerSelectionMode;
 import ru.android4life.habittracker.fragment.HabitListFragment;
+import ru.android4life.habittracker.fragment.HabitsFragment;
 import ru.android4life.habittracker.fragment.SettingsFragment;
 import ru.android4life.habittracker.fragment.StatisticsFragment;
 
@@ -115,7 +116,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 break;
             case R.id.nav_all_tasks:
                 drawerSelectionMode = DrawerSelectionMode.ALL_TASKS;
-                fragment = new HabitListFragment();
+                fragment = new HabitsFragment();
                 break;
             case R.id.nav_statistics:
                 drawerSelectionMode = DrawerSelectionMode.STATISTICS;

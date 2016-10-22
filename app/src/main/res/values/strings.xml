@@ -133,7 +133,7 @@
     <string name="today">Today</string>
     <string name="tomorrow">Tomorrow</string>
     <string name="next_month">Next month</string>
-    <string name="all_tasks">All tasks</string>
+    <string name="all_tasks">Habits</string>
     <string name="statistics">Statistics</string>
     <string name="settings">Settings</string>
 
@@ -163,5 +163,6 @@
     <string name="select_category">Select a category</string>
     <string name="version">Version</string>
 
-
+    <string name="delete">Delete item?</string>
+    <string name="confirm_delete">Yes, delete</string>
 </resources>

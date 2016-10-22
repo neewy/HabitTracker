@@ -96,7 +96,7 @@
     <string name="today">Сегодня</string>
     <string name="tomorrow">Завтра</string>
     <string name="next_month">Следующий месяц</string>
-    <string name="all_tasks">Все привычки</string>
+    <string name="all_tasks">Привычки</string>
     <string name="statistics">Статистика</string>
     <string name="settings">Настройки</string>
 
@@ -125,4 +125,7 @@
     <string name="habit_done">Готово</string>
     <string name="select_category">Выберите категорию</string>
     <string name="version">Версия</string>
+
+    <string name="delete">Удалить элемент,</string>
+    <string name="confirm_delete">Да, удалить</string>
 </resources>

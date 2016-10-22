@@ -42,7 +42,8 @@ dependencies {
 
     compile 'com.android.support:appcompat-v7:24.2.1' /*Library for support design */
     compile 'com.android.support:design:24.2.1' /*the same as above*/
-    compile 'com.android.support:cardview-v7:24.2.1' /*to display material design card for habit card*/
+    compile 'com.android.support:cardview-v7:24.2.1'
+    /*to display material design card for habit card*/
     compile 'com.android.support:recyclerview-v7:24.2.1' /*to use RecyclerView as a list of habits*/
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'org.ocpsoft.prettytime:prettytime:4.0.1.Final' //human readable date
@@ -61,4 +62,9 @@ dependencies {
         exclude group: 'javax.inject'
         exclude group: 'com.android.support'
     }
+    compile "com.daimajia.swipelayout:library:1.2.0@aar"
+    compile 'com.daimajia.easing:library:1.0.0@aar'
+    compile 'com.daimajia.androidanimations:library:1.1.2@aar'
+    compile 'com.nineoldandroids:library:2.4.0'
+    compile 'jp.wasabeef:recyclerview-animators:1.0.3@aar'
 }

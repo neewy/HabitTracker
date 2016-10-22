@@ -244,6 +244,19 @@ public class HabitScheduleDAO implements ExtendedCrud {
         return items;
     }
 
+    public int deleteByHabitId(int habitId) {
+        int index = -1;
+        try {
+            DeleteBuilder<HabitSchedule, Integer> deleteBuilder = helper.getHabitScheduleDao().deleteBuilder();
+            deleteBuilder.where().eq(Constants.HABIT_ID, habitId);
+            index = deleteBuilder.delete();
+        } catch (SQLException e) {
+            Log.d(Constants.DAO_ERROR, Constants.SQL_EXCEPTION_IN + Constants.SPACE +
+                    HabitScheduleDAO.class.getSimpleName());
+        }
+        return index;
+    }
+
     public int deleteHabitSchedulesOlderThanThirtyOneDay() {
         int index = -1;
 
