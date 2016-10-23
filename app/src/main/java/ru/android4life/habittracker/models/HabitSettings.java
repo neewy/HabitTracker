@@ -1,15 +1,23 @@
 package ru.android4life.habittracker.models;
 
+import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import ru.android4life.habittracker.R;
 import ru.android4life.habittracker.activity.BaseActivity;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitCategoryDAO;
+import ru.android4life.habittracker.db.dataaccessobjects.HabitDAO;
+import ru.android4life.habittracker.db.dataaccessobjects.HabitScheduleDAO;
+import ru.android4life.habittracker.db.tablesrepresentations.Habit;
 import ru.android4life.habittracker.db.tablesrepresentations.HabitCategory;
+import ru.android4life.habittracker.db.tablesrepresentations.HabitSchedule;
 import ru.android4life.habittracker.enumeration.NotificationFrequencyType;
+import ru.android4life.habittracker.utils.CalendarUtils;
 
 public class HabitSettings {
     private int categoryId;
@@ -51,6 +59,55 @@ public class HabitSettings {
         this.notificationSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         this.notificationSoundName = BaseActivity.getContext().getString(R.string.standard_from_capital_letter);
         this.minutesBeforeConfirmation = 60;
+    }
+
+    // Get habit settings for the edited habit, by the habit schedule id
+    public HabitSettings(int editedHabitScheduleId, boolean frequencyChanged) {
+        HabitDAO habitDAO = new HabitDAO(BaseActivity.getContext());
+        HabitScheduleDAO habitScheduleDAO = new HabitScheduleDAO(BaseActivity.getContext());
+        HabitSchedule editedHabitsSchedule = (HabitSchedule) habitScheduleDAO.findById(editedHabitScheduleId);
+        Habit editedHabit = (Habit) habitDAO.findById(editedHabitsSchedule.getHabitId());
+        Calendar habitScheduleDateTimeCalendar = new GregorianCalendar();
+        habitScheduleDateTimeCalendar.setTime(editedHabitsSchedule.getDatetime());
+        this.categoryId = editedHabit.getCategoryId();
+        this.notificationHour = habitScheduleDateTimeCalendar.get(Calendar.HOUR_OF_DAY);
+        this.notificationMinute = habitScheduleDateTimeCalendar.get(Calendar.MINUTE);
+
+        boolean[] notificationFrequencySpecifiedDays = {false, false, false, false, false, false, false};
+
+        if (frequencyChanged) {
+            List<HabitSchedule> habitSchedules = habitScheduleDAO.findByHabitId(editedHabit.getId());
+            // As we delete habits that are older than 1 month, and create habits for the following month
+            // on every start of the app, we can conceive frequency type by the number of habit
+            // schedules that exist for particular habit
+            if (habitSchedules.size() <= 2) { // MONTHLY
+                this.notificationFrequencyType = NotificationFrequencyType.MONTHLY;
+                this.notificationFrequencyWeekNumberOrDate = habitScheduleDateTimeCalendar.get(Calendar.DAY_OF_MONTH);
+            } else if (habitSchedules.size() >= 28) { // DAILY
+                this.notificationFrequencyType = NotificationFrequencyType.DAILY;
+                this.notificationFrequencyWeekNumberOrDate = 1;
+            } else if (habitSchedules.size() >= 4 && habitSchedules.size() <= 5) { // WEEKLY
+                this.notificationFrequencyType = NotificationFrequencyType.WEEKLY;
+                this.notificationFrequencyWeekNumberOrDate =
+                        CalendarUtils.getDayOfWeeksNumberFromDate(editedHabitsSchedule.getDatetime());
+            } else { // SPECIFIED DAYS
+                this.notificationFrequencyType = NotificationFrequencyType.SPECIFIED_DAYS;
+                this.notificationFrequencyWeekNumberOrDate = 1;
+                for (HabitSchedule habitSchedule : habitSchedules) {
+                    notificationFrequencySpecifiedDays[CalendarUtils.getDayOfWeeksNumberFromDate(habitSchedule.getDatetime()) - 1] = true;
+                }
+            }
+        } else {
+            this.notificationFrequencyType = NotificationFrequencyType.DAILY;
+            this.notificationFrequencyWeekNumberOrDate = 1;
+        }
+
+        this.notificationFrequencySpecifiedDays = notificationFrequencySpecifiedDays;
+        this.notificationSoundUri = Uri.parse(editedHabit.getAudioResource());
+        Ringtone ringtone = RingtoneManager.getRingtone(BaseActivity.getContext(),
+                Uri.parse(editedHabit.getAudioResource()));
+        this.notificationSoundName = ringtone.getTitle(BaseActivity.getContext());
+        this.minutesBeforeConfirmation = editedHabit.getConfirmAfterMinutes();
     }
 
     public int getCategoryId() {

@@ -51,7 +51,7 @@ public class HabitDAO implements ExtendedCrud {
         Habit habit = (Habit) item;
 
         try {
-            helper.getHabitDao().update(habit);
+            index = helper.getHabitDao().update(habit);
         } catch (SQLException e) {
             Log.d(Constants.DAO_ERROR, Constants.SQL_EXCEPTION_IN + Constants.SPACE +
                     HabitDAO.class.getSimpleName());
@@ -68,7 +68,7 @@ public class HabitDAO implements ExtendedCrud {
         Habit habit = (Habit) item;
 
         try {
-            helper.getHabitDao().delete(habit);
+            index = helper.getHabitDao().delete(habit);
         } catch (SQLException e) {
             Log.d(Constants.DAO_ERROR, Constants.SQL_EXCEPTION_IN + Constants.SPACE +
                     HabitDAO.class.getSimpleName());

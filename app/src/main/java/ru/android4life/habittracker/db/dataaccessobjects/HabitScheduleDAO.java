@@ -55,7 +55,7 @@ public class HabitScheduleDAO implements ExtendedCrud {
         HabitSchedule habitSchedule = (HabitSchedule) item;
 
         try {
-            helper.getHabitScheduleDao().update(habitSchedule);
+            index = helper.getHabitScheduleDao().update(habitSchedule);
         } catch (SQLException e) {
             Log.d(Constants.DAO_ERROR, Constants.SQL_EXCEPTION_IN + Constants.SPACE +
                     HabitScheduleDAO.class.getSimpleName());
@@ -72,7 +72,7 @@ public class HabitScheduleDAO implements ExtendedCrud {
         HabitSchedule habitSchedule = (HabitSchedule) item;
 
         try {
-            helper.getHabitScheduleDao().delete(habitSchedule);
+            index = helper.getHabitScheduleDao().delete(habitSchedule);
         } catch (SQLException e) {
             Log.d(Constants.DAO_ERROR, Constants.SQL_EXCEPTION_IN + Constants.SPACE +
                     HabitScheduleDAO.class.getSimpleName());
