@@ -2,7 +2,6 @@ package ru.android4life.habittracker.activity;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,20 +11,13 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import ru.android4life.habittracker.R;
 import ru.android4life.habittracker.db.Constants;
 import ru.android4life.habittracker.db.DatabaseManager;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitCategoryDAO;
-import ru.android4life.habittracker.db.dataaccessobjects.HabitDAO;
-import ru.android4life.habittracker.db.dataaccessobjects.HabitScheduleDAO;
-import ru.android4life.habittracker.db.tablesrepresentations.Habit;
 import ru.android4life.habittracker.db.tablesrepresentations.HabitCategory;
-import ru.android4life.habittracker.db.tablesrepresentations.HabitSchedule;
 import ru.android4life.habittracker.enumeration.DrawerSelectionMode;
 import ru.android4life.habittracker.fragment.HabitListFragment;
 import ru.android4life.habittracker.fragment.HabitsFragment;
@@ -190,10 +182,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     void forFirstRun() {
 
         // Do first run stuff here then set 'firstrun' as false
-        /* Creation of demo data while the creation buttons doesn't work */
+        /* Creation of categories */
         HabitCategoryDAO habitCategoryDAO = new HabitCategoryDAO(this.getApplicationContext());
-        HabitDAO habitDAO = new HabitDAO(this.getApplicationContext());
-        HabitScheduleDAO habitScheduleDAO = new HabitScheduleDAO(this.getApplicationContext());
         habitCategoryDAO.create(new HabitCategory(1, getResources().getString(R.string.sport)));
         habitCategoryDAO.create(new HabitCategory(2, getResources().getString(R.string.reading)));
         habitCategoryDAO.create(new HabitCategory(3, getResources().getString(R.string.cooking)));
@@ -201,58 +191,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         habitCategoryDAO.create(new HabitCategory(5, getResources().getString(R.string.studying)));
         habitCategoryDAO.create(new HabitCategory(6, getResources().getString(R.string.health)));
         habitCategoryDAO.create(new HabitCategory(1, getResources().getString(R.string.other)));
-
-
-        Calendar c = new GregorianCalendar();
-        c.set(Calendar.HOUR_OF_DAY, 10);
-        c.set(Calendar.MINUTE, 0);
-        c.set(Calendar.SECOND, 0);
-        Date today = c.getTime();
-        c.add(Calendar.DATE, 1);
-        Date tomorrow = c.getTime();
-        c.add(Calendar.DATE, 1);
-        Date twoDaysAfterToday = c.getTime();
-        habitDAO.create(new Habit(1, "Privuichka 1", "do privuichka 1", today, 55.75417935,
-                48.7440855, 9, Environment.getExternalStorageDirectory().getPath()
-                + "/meouing_kittten.mp3", true, 60, 1));
-        habitDAO.create(new Habit(2, "Privuichka 2", "do privuichka 2", tomorrow, 55.75417935,
-                48.7440855, 9, Environment.getExternalStorageDirectory().getPath()
-                + "/meouing_kittten.mp3", true, 60, 1));
-        habitDAO.create(new Habit(3, "Privuichka 3", "do privuichka 3", twoDaysAfterToday,
-                55.75417935, 48.7440855, 9, Environment.getExternalStorageDirectory().getPath()
-                + "/meouing_kittten.mp3", true, 60, 1));
-        habitDAO.create(new Habit(4, "Privuichka 4", "do privuichka 4", twoDaysAfterToday,
-                55.75417935, 48.7440855, 9, Environment.getExternalStorageDirectory().getPath()
-                + "/meouing_kittten.mp3", true, 60, 1));
-        habitDAO.create(new Habit(5, "Privuichka 5", "do privuichka 5", twoDaysAfterToday,
-                55.75417935, 48.7440855, 9, Environment.getExternalStorageDirectory().getPath()
-                + "/meouing_kittten.mp3", true, 60, 1));
-        habitScheduleDAO.create(new HabitSchedule(2, today, true, 2));
-        habitScheduleDAO.create(new HabitSchedule(3, today, null, 3)); // to check habits displayed on "today" tab
-        habitScheduleDAO.create(new HabitSchedule(5, tomorrow, false, 2));
-        habitScheduleDAO.create(new HabitSchedule(6, tomorrow, null, 3)); // to check habits displayed on "tomorrow" tab
-        habitScheduleDAO.create(new HabitSchedule(8, twoDaysAfterToday, false, 2));
-        habitScheduleDAO.create(new HabitSchedule(10, twoDaysAfterToday, true, 3));
-        habitScheduleDAO.create(new HabitSchedule(11, twoDaysAfterToday, null, 4)); // to check monthly habits
-        habitScheduleDAO.create(new HabitSchedule(12, today, false, 5));
-        habitScheduleDAO.create(new HabitSchedule(13, tomorrow, null, 5));
-        habitScheduleDAO.create(new HabitSchedule(14, twoDaysAfterToday, null, 5));
-
-        // To check hint for daily habits (habitId=5) & weekly habits (habitId=2) &
-        // frequent (several days a week) habits
-        Date date;
-        c.setTime(twoDaysAfterToday);
-        int newHabitScheduleId = 15;
-        for (int i = 0; i < 31; i++) {
-            c.add(Calendar.DATE, 1);
-            date = c.getTime();
-            habitScheduleDAO.create(new HabitSchedule(newHabitScheduleId, date, null, 5)); // daily habits
-            if (i == 0)
-                habitScheduleDAO.create(new HabitSchedule(9, twoDaysAfterToday, null, 2)); // weekly habits
-            if (i % 7 == 0 || (i + 2) % 7 == 0)
-                habitScheduleDAO.create(new HabitSchedule(1, date, null, 1)); // frequent habits
-            newHabitScheduleId++;
-        }
 
         // using the following line to edit/commit prefs
         prefs.edit().putBoolean("firstrun", false).apply();
