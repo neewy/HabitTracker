@@ -33,6 +33,11 @@ public class HabitListFragment extends Fragment {
         mAdapter = new HabitListAdapter(getFragmentManager(), MainActivity.drawerSelectionMode);
     }
 
+    public void invalidateDataSet(){
+        mAdapter.fillDependOnDrawerSelectionMode();
+        mAdapter.notifyDataSetChanged();
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

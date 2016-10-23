@@ -128,4 +128,6 @@
 
     <string name="delete">Удалить элемент,</string>
     <string name="confirm_delete">Да, удалить</string>
+    <string name="habit_tabs_general">Информация</string>
+    <string name="habit_tabs_statistics">Статистика</string>
 </resources>

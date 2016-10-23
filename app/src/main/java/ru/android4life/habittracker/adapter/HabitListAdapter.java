@@ -90,7 +90,7 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
         return context.getResources().getString(resource);
     }
 
-    private void fillDependOnDrawerSelectionMode() {
+    public void fillDependOnDrawerSelectionMode() {
         switch (drawerSelectionMode) {
             case TODAY:
                 habitSchedules = habitScheduleDAO.findHabitSchedulesForToday();

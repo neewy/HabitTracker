@@ -24,7 +24,9 @@ import ru.android4life.habittracker.fragment.HabitsFragment;
 import ru.android4life.habittracker.fragment.SettingsFragment;
 import ru.android4life.habittracker.fragment.StatisticsFragment;
 
+import static ru.android4life.habittracker.enumeration.DrawerSelectionMode.NEXT_MONTH;
 import static ru.android4life.habittracker.enumeration.DrawerSelectionMode.TODAY;
+import static ru.android4life.habittracker.enumeration.DrawerSelectionMode.TOMORROW;
 import static ru.android4life.habittracker.enumeration.DrawerSelectionMode.findDrawerSelectionMode;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -81,7 +83,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private void setUpFirstFragment(NavigationView nv) {
         drawerSelectionMode = TODAY;
         fragmentManager.beginTransaction().replace(R.id.container,
-                new HabitListFragment()).commit();
+                new HabitListFragment(), drawerSelectionMode.stringValue).commit();
         // set title in actionbar
         setTitle(getString(R.string.today));
         // select first element (today) in drawer's list
@@ -124,7 +126,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
         // Replacing activity content with the content of fragment
-        fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+        fragmentManager.beginTransaction().replace(R.id.container, fragment, drawerSelectionMode.stringValue).commit();
 
         // Set the item as checked in drawer menu
         item.setChecked(true);
@@ -210,5 +212,16 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         super.onConfigurationChanged(newConfig);
         // Pass any configuration change to the drawer toggles
         toggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (drawerSelectionMode == TODAY || drawerSelectionMode == TOMORROW || drawerSelectionMode == NEXT_MONTH) {
+            HabitListFragment habitList = (HabitListFragment) fragmentManager.findFragmentByTag(drawerSelectionMode.stringValue);
+            if (habitList != null) {
+                habitList.invalidateDataSet();
+            }
+        }
     }
 }
