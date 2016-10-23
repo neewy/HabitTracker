@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import ru.android4life.habittracker.R;
@@ -135,4 +137,37 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
             }
         });
     }
+
+
+    public void sortByTitle(final boolean isAscending) {
+        Collections.sort(habitSchedules, new Comparator<HabitSchedule>() {
+            @Override
+            public int compare(HabitSchedule o1, HabitSchedule o2) {
+                Habit habit1 = (Habit) habitDAO.findById(o1.getHabitId());
+                Habit habit2 = (Habit) habitDAO.findById(o2.getHabitId());
+                if (isAscending) {
+                    return habit1.getName().compareTo(habit2.getName());
+                } else {
+                    return -habit1.getName().compareTo(habit2.getName());
+                }
+            }
+        });
+        notifyDataSetChanged();
+    }
+
+    public void sortByTime(final boolean isAscending) {
+        Collections.sort(habitSchedules, new Comparator<HabitSchedule>() {
+            @Override
+            public int compare(HabitSchedule o1, HabitSchedule o2) {
+                if (isAscending) {
+                    return o1.getDatetime().compareTo(o2.getDatetime());
+                } else {
+                    return - o1.getDatetime().compareTo(o2.getDatetime());
+                }
+            }
+        });
+        notifyDataSetChanged();
+    }
+
+
 }
