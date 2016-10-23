@@ -133,11 +133,13 @@ public class HabitCardFragment extends Fragment {
         recyclerView.setLayoutManager(mLinearLayoutManager);
         recyclerView.setAdapter(mAdapter);
 
+        // Edit habit floating action button
         FloatingActionButton editHabit = (FloatingActionButton) habitCard.findViewById(R.id.fab_edit);
         editHabit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), AddHabitActivity.class);
+                intent.putExtra(getString(R.string.habit_schedule_id), habitScheduleId);
                 startActivity(intent);
             }
         });

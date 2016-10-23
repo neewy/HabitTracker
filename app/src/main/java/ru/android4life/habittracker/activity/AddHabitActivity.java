@@ -60,6 +60,18 @@ public class AddHabitActivity extends BaseActivity {
 
         habitSettings = new HabitSettings();
 
+        int editedHabitScheduleId = getIntent().getIntExtra(getString(R.string.habit_schedule_id), -1);
+
+        if (editedHabitScheduleId != -1) {
+            HabitSchedule editedHabitsSchedule = (HabitSchedule) habitScheduleDAO.findById(editedHabitScheduleId);
+            Habit editedHabit = (Habit) habitDAO.findById(editedHabitsSchedule.getHabitId());
+
+            TextInputLayout habitNameTextInputLayout = (TextInputLayout) findViewById(R.id.add_habit_title_edit_text);
+            habitNameTextInputLayout.getEditText().setText(editedHabit.getName());
+            TextInputLayout habitQuestionTextInputLayout = (TextInputLayout) findViewById(R.id.add_habit_question_edit_text);
+            habitQuestionTextInputLayout.getEditText().setText(editedHabit.getQuestion());
+        }
+
         final RippleView textView = (RippleView) findViewById(R.id.add_habit_back_button);
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,7 +124,13 @@ public class AddHabitActivity extends BaseActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        mAdapter = new HabitParametersAdapter(this, HabitParameter.createParameters(getApplicationContext()), true);
+        if (editedHabitScheduleId == -1) // habits creation
+            mAdapter = new HabitParametersAdapter(this, HabitParameter.createParameters(getApplicationContext()), true);
+        else { // habits edition
+            mAdapter = new HabitParametersAdapter(this,
+                    HabitParameter.createParametersByHabitScheduleId(getApplicationContext(),
+                            editedHabitScheduleId), true);
+        }
         mRecyclerView.setAdapter(mAdapter);
     }
 
