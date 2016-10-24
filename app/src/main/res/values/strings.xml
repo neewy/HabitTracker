@@ -52,8 +52,8 @@
     <string name="add_habit_name_frequency">Frequency</string>
     <string name="add_habit_name_tune">Tune</string>
     <string name="add_habit_name_confirmation">Confirmation</string>
-    <string name="done">DONE</string>
-    <string name="skip">SKIP</string>
+    <string name="done">Done</string>
+    <string name="skip">Skip</string>
     <string name="remove">REMOVE</string>
     <string name="habit_name_and_question_should_be_filled">Habit name and question should be filled</string>
     <string name="habit_name_and_question_should_be_unique">Habit name and question should be unique</string>
