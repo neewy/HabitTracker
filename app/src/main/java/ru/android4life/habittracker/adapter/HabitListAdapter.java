@@ -1,6 +1,7 @@
 package ru.android4life.habittracker.adapter;
 
 import android.content.Context;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.PopupMenu;
@@ -155,7 +156,9 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
                 habitSchedule.getDatetime(), true, habitSchedule.getHabitId());
         habitScheduleDAO.update(updatedHabitSchedule);
         fillDependOnDrawerSelectionMode();
-        notifyItemChanged(holder.getAdapterPosition());
+        int mAdapterPosition = holder.getAdapterPosition();
+        notifyItemChanged(mAdapterPosition);
+        makeUndoSnackbar(true, habitSchedule, v);
     }
 
     private void onSkipClick(final HabitCardViewHolder holder, final HabitSchedule habitSchedule, View v) {
@@ -163,7 +166,28 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
                 habitSchedule.getDatetime(), false, habitSchedule.getHabitId());
         habitScheduleDAO.update(updatedHabitSchedule);
         fillDependOnDrawerSelectionMode();
-        notifyItemChanged(holder.getAdapterPosition());
+        int mAdapterPosition = holder.getAdapterPosition();
+        notifyItemChanged(mAdapterPosition);
+        makeUndoSnackbar(false, habitSchedule, v);
+    }
+
+    private void makeUndoSnackbar(boolean isDone, final HabitSchedule habitSchedule, View v) {
+
+        String message = (isDone) ? getStringFromResources(R.string.was_done) : getStringFromResources(R.string.was_skipped);
+
+        Snackbar snackbar = Snackbar
+                .make(v, ((Habit) habitDAO.findById(habitSchedule.getHabitId())).getName() + " " + message, Snackbar.LENGTH_LONG)
+                .setAction(getStringFromResources(R.string.undo), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        HabitSchedule prevHabitSchedule = new HabitSchedule(habitSchedule.getId(),
+                                habitSchedule.getDatetime(), null, habitSchedule.getHabitId());
+                        habitScheduleDAO.update(prevHabitSchedule);
+                        fillDependOnDrawerSelectionMode();
+                        notifyDataSetChanged();
+                    }
+                });
+        snackbar.show();
     }
 
     private void setSkipAndDoneListeners(final HabitCardViewHolder holder, final HabitSchedule habitSchedule) {

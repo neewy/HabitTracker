@@ -171,4 +171,5 @@
     <string name="descending">Descending</string>
     <string name="was_done">was done</string>
     <string name="was_skipped">was skipped</string>
+    <string name="undo">UNDO</string>
 </resources>
