@@ -77,13 +77,8 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
         return new HabitCardViewHolder(v);
     }
 
-
     public boolean emptyData() {
-        if (habitSchedules.isEmpty()) {
-            return true;
-        } else {
-            return false;
-        }
+        return habitSchedules.isEmpty();
     }
 
     // To assure that viewType parameter of onCreateViewHolder method will represent an id of the clicked habitSchedule
