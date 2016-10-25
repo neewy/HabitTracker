@@ -18,8 +18,8 @@ import ru.android4life.habittracker.R;
  */
 
 public abstract class BaseActivity extends AppCompatActivity {
-    public static int themeID;
     public final static String SHARED_PREF = "SHARED_PREF";
+    public static int themeID;
     private static Context context;
     protected SharedPreferences prefs = null;
 

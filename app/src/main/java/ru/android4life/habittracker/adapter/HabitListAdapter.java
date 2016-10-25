@@ -75,8 +75,8 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
     }
 
 
-    public boolean emptyData(){
-        if (habitSchedules.isEmpty()){
+    public boolean emptyData() {
+        if (habitSchedules.isEmpty()) {
             return true;
         } else {
             return false;
@@ -267,7 +267,7 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
                 if (isAscending) {
                     return o1.getDatetime().compareTo(o2.getDatetime());
                 } else {
-                    return - o1.getDatetime().compareTo(o2.getDatetime());
+                    return -o1.getDatetime().compareTo(o2.getDatetime());
                 }
             }
         });

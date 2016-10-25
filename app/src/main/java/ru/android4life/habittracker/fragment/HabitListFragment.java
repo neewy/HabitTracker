@@ -37,7 +37,7 @@ public class HabitListFragment extends Fragment {
         mAdapter = new HabitListAdapter(getFragmentManager(), MainActivity.drawerSelectionMode);
     }
 
-    public void invalidateDataSet(){
+    public void invalidateDataSet() {
         mAdapter.fillDependOnDrawerSelectionMode();
         mAdapter.notifyDataSetChanged();
     }
@@ -107,7 +107,7 @@ public class HabitListFragment extends Fragment {
 
             case R.id.sort_asc:
                 // if we sort based on the time
-                if (sortCategory.getItem(0).isChecked()){
+                if (sortCategory.getItem(0).isChecked()) {
                     mAdapter.sortByTime(true);
                 } else {
                     mAdapter.sortByTitle(true);
@@ -115,7 +115,7 @@ public class HabitListFragment extends Fragment {
                 return true;
 
             case R.id.sort_desc:
-                if (sortCategory.getItem(0).isChecked()){
+                if (sortCategory.getItem(0).isChecked()) {
                     mAdapter.sortByTime(false);
                 } else {
                     mAdapter.sortByTitle(false);
