@@ -36,8 +36,8 @@
     <string name="add_habit_name_frequency">Частота</string>
     <string name="add_habit_name_tune">Мелодия</string>
     <string name="add_habit_name_confirmation">Подтверждение</string>
-    <string name="done">ВЫПОЛНЕНО</string>
-    <string name="skip">ПРОПУСТИТЬ</string>
+    <string name="done">Выполнено</string>
+    <string name="skip">Пропустить</string>
     <string name="remove">УДАЛИТЬ</string>
     <string name="habit_name_and_question_should_be_filled">Название привычки и вопрос должны быть введены</string>
     <string name="habit_name_and_question_should_be_unique">Привычка с введённым названием или вопросом уже существует</string>
@@ -130,4 +130,6 @@
     <string name="confirm_delete">Да, удалить</string>
     <string name="habit_tabs_general">Информация</string>
     <string name="habit_tabs_statistics">Статистика</string>
+    <string name="was_done">\" выполнено\"</string>
+    <string name="was_skipped">" пропущено"</string>
 </resources>

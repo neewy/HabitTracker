@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
+import java.lang.reflect.Method;
+
 import ru.android4life.habittracker.R;
 
 /**
@@ -16,7 +18,7 @@ import ru.android4life.habittracker.R;
  */
 
 public abstract class BaseActivity extends AppCompatActivity {
-
+    public static int themeID;
     public final static String SHARED_PREF = "SHARED_PREF";
     private static Context context;
     protected SharedPreferences prefs = null;
@@ -41,6 +43,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
 
         setApplicationStyle();
+        themeID = getThemeId();
     }
 
     private void setApplicationStyle() {
@@ -62,5 +65,17 @@ public abstract class BaseActivity extends AppCompatActivity {
                 setTheme(R.style.AppThemeBlueAndPink);
                 break;
         }
+    }
+
+    private int getThemeId() {
+        try {
+            Class<?> wrapper = Context.class;
+            Method method = wrapper.getMethod("getThemeResId");
+            method.setAccessible(true);
+            return (Integer) method.invoke(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 }

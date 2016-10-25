@@ -62,6 +62,7 @@ dependencies {
         exclude group: 'javax.inject'
         exclude group: 'com.android.support'
     }
+    /*Swipe*/
     compile "com.daimajia.swipelayout:library:1.2.0@aar"
     compile 'com.daimajia.easing:library:1.0.0@aar'
     compile 'com.daimajia.androidanimations:library:1.1.2@aar'
