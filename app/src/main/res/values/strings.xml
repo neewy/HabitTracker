@@ -165,4 +165,10 @@
 
     <string name="delete">Delete item?</string>
     <string name="confirm_delete">Yes, delete</string>
+    <string name="sort_by_time">Sort by time</string>
+    <string name="sort_by_title">Sort by title</string>
+    <string name="ascending">Ascending</string>
+    <string name="descending">Descending</string>
+    <string name="was_done">was done</string>
+    <string name="was_skipped">was skipped</string>
 </resources>

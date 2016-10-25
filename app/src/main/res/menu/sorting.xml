@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/select_sorting"
+        android:title="Select sorting"
+        android:icon="@drawable/ic_filter"
+        android:visible="true"
+        app:showAsAction="always">
+        <menu xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto">
+            <group
+                android:id="@+id/sort_category"
+                android:checkableBehavior="single">
+                <item
+                    android:id="@+id/sort_time"
+                    android:orderInCategory="100"
+                    android:title="@string/sort_by_time"
+                    android:checked="true"
+                    app:showAsAction="never" />
+                <item
+                    android:id="@+id/sort_title"
+                    android:orderInCategory="100"
+                    android:title="@string/sort_by_title"
+                    android:checked="false"
+                    app:showAsAction="never" />
+            </group>
+        </menu>
+    </item>
+    <item
+        android:id="@+id/select_sorting_direction"
+        android:title="Select sorting direction"
+        android:icon="@drawable/ic_sort"
+        android:visible="true"
+        app:showAsAction="always">
+        <menu xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto">
+            <group
+                android:id="@+id/sort_direction"
+                android:checkableBehavior="single">
+                <item
+                    android:id="@+id/sort_asc"
+                    android:checked="true"
+                    android:orderInCategory="100"
+                    android:title="@string/ascending"
+                    app:showAsAction="never" />
+                <item
+                    android:id="@+id/sort_desc"
+                    android:checked="false"
+                    android:orderInCategory="100"
+                    android:title="@string/descending"
+                    app:showAsAction="never" />
+            </group>
+        </menu>
+    </item>
+</menu>

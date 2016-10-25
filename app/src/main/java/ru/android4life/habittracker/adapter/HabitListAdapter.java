@@ -16,6 +16,8 @@ import android.widget.ImageButton;
 
 import com.daimajia.swipe.SwipeLayout;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import ru.android4life.habittracker.R;
@@ -34,6 +36,7 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
 
     private HabitScheduleDAO habitScheduleDAO;
     private HabitDAO habitDAO;
+    private SwipeLayout swipeLayout;
     private List<HabitSchedule> habitSchedules;
     private FragmentManager fragmentManager;
     private Context context;
@@ -53,8 +56,8 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
     @Override
     public HabitCardViewHolder onCreateViewHolder(ViewGroup parent, final int habitScheduleId) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.habit_list_card, parent, false);
-        SwipeLayout sample = (SwipeLayout) v.findViewById(R.id.interactive_card);
-        sample.getSurfaceView().setOnClickListener(new View.OnClickListener() {
+        swipeLayout = (SwipeLayout) v.findViewById(R.id.interactive_card);
+        swipeLayout.getSurfaceView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 fragmentManager.beginTransaction().replace(R.id.container,
@@ -64,9 +67,9 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
         });
         contextMenu = (ImageButton) v.findViewById(R.id.card_context_menu);
 
-        sample.setShowMode(SwipeLayout.ShowMode.PullOut);
-        sample.addDrag(SwipeLayout.DragEdge.Left, sample.findViewById(R.id.bottom_wrapper));
-        sample.addDrag(SwipeLayout.DragEdge.Right, sample.findViewById(R.id.bottom_wrapper_2));
+        swipeLayout.setShowMode(SwipeLayout.ShowMode.PullOut);
+        swipeLayout.addDrag(SwipeLayout.DragEdge.Left, swipeLayout.findViewById(R.id.bottom_wrapper));
+        swipeLayout.addDrag(SwipeLayout.DragEdge.Right, swipeLayout.findViewById(R.id.bottom_wrapper_2));
         return new HabitCardViewHolder(v);
     }
 
@@ -104,6 +107,7 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
+
                         switch (item.getItemId()) {
                             case R.id.menu_done:
                                 onDoneClick(holder, habitSchedule, view);
@@ -152,7 +156,6 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
         habitScheduleDAO.update(updatedHabitSchedule);
         fillDependOnDrawerSelectionMode();
         notifyItemChanged(holder.getAdapterPosition());
-
     }
 
     private void onSkipClick(final HabitCardViewHolder holder, final HabitSchedule habitSchedule, View v) {
@@ -207,4 +210,37 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
     public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
         return false;
     }
+
+
+    public void sortByTitle(final boolean isAscending) {
+        Collections.sort(habitSchedules, new Comparator<HabitSchedule>() {
+            @Override
+            public int compare(HabitSchedule o1, HabitSchedule o2) {
+                Habit habit1 = (Habit) habitDAO.findById(o1.getHabitId());
+                Habit habit2 = (Habit) habitDAO.findById(o2.getHabitId());
+                if (isAscending) {
+                    return habit1.getName().compareTo(habit2.getName());
+                } else {
+                    return -habit1.getName().compareTo(habit2.getName());
+                }
+            }
+        });
+        notifyDataSetChanged();
+    }
+
+    public void sortByTime(final boolean isAscending) {
+        Collections.sort(habitSchedules, new Comparator<HabitSchedule>() {
+            @Override
+            public int compare(HabitSchedule o1, HabitSchedule o2) {
+                if (isAscending) {
+                    return o1.getDatetime().compareTo(o2.getDatetime());
+                } else {
+                    return - o1.getDatetime().compareTo(o2.getDatetime());
+                }
+            }
+        });
+        notifyDataSetChanged();
+    }
+
+
 }

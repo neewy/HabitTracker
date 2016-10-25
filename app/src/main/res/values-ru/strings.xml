@@ -130,4 +130,6 @@
     <string name="confirm_delete">Да, удалить</string>
     <string name="habit_tabs_general">Информация</string>
     <string name="habit_tabs_statistics">Статистика</string>
+    <string name="was_done">\" выполнено\"</string>
+    <string name="was_skipped">" пропущено"</string>
 </resources>
