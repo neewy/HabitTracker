@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.ViewSwitcher;
 
 import ru.android4life.habittracker.R;
 import ru.android4life.habittracker.activity.AddHabitActivity;
@@ -65,6 +66,11 @@ public class HabitListFragment extends Fragment {
         listView.setLayoutManager(mLinearLayoutManager);
         listView.setAdapter(mAdapter);
 
+        if (mAdapter.emptyData()) {
+            ViewSwitcher switcher = (ViewSwitcher) view.findViewById(R.id.switcher);
+            switcher.showNext();
+        }
+
         return view;
     }
 
@@ -79,6 +85,7 @@ public class HabitListFragment extends Fragment {
         sortCategory = menu.getItem(0).getSubMenu();
         sortDirection = menu.getItem(1).getSubMenu();
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
