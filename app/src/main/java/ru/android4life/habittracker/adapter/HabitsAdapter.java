@@ -34,6 +34,10 @@ public class HabitsAdapter extends RecyclerSwipeAdapter<HabitViewHolder> {
         habits = (List<Habit>) habitDAO.findAll();
     }
 
+    public void updateHabits() {
+        habits = (List<Habit>) habitDAO.findAll();
+    }
+
     @Override
     public HabitViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.habit_list_item, parent, false);
@@ -58,8 +62,7 @@ public class HabitsAdapter extends RecyclerSwipeAdapter<HabitViewHolder> {
                 habitScheduleDAO.deleteByHabitId(habit.getId());
                 habitDAO.delete(habit);
                 habits.remove(position);
-                notifyItemRemoved(position);
-                notifyItemRangeChanged(position, habits.size());
+                notifyDataSetChanged();
                 mItemManger.closeAllItems();
             }
         });

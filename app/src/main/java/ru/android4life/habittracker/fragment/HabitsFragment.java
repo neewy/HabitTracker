@@ -62,6 +62,7 @@ public class HabitsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        mAdapter.updateHabits();
         mAdapter.notifyDataSetChanged();
         listView.invalidate();
     }
