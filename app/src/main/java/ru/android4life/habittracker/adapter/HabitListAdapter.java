@@ -179,6 +179,15 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
         makeUndoSnackbar(false, habitSchedule, v);
     }
 
+    private void onPerformClick(final HabitSchedule habitSchedule, View v, boolean isDone) {
+        HabitSchedule updatedHabitSchedule = new HabitSchedule(habitSchedule.getId(),
+                habitSchedule.getDatetime(), isDone, habitSchedule.getHabitId());
+        habitScheduleDAO.update(updatedHabitSchedule);
+        fillDependOnDrawerSelectionMode();
+        notifyDataSetChanged();
+        makeUndoSnackbar(isDone, habitSchedule, v);
+    }
+
     private void makeUndoSnackbar(boolean isDone, final HabitSchedule habitSchedule, View v) {
 
         String message = (isDone) ? getStringFromResources(R.string.was_done) : getStringFromResources(R.string.was_skipped);
@@ -202,13 +211,13 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
         holder.skip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onSkipClick(holder, habitSchedule, v);
+                onPerformClick(habitSchedule, v, false);
             }
         });
         holder.done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onDoneClick(holder, habitSchedule, v);
+                onPerformClick(habitSchedule, v, true);
             }
         });
     }
