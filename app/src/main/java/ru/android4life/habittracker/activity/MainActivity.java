@@ -221,6 +221,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             HabitListFragment habitList = (HabitListFragment) fragmentManager.findFragmentByTag(drawerSelectionMode.stringValue);
             if (habitList != null) {
                 habitList.invalidateDataSet();
+                habitList.switchEmptyView();
             }
         }
     }

@@ -14,7 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-import android.widget.ViewSwitcher;
+import android.widget.ViewFlipper;
 
 import ru.android4life.habittracker.R;
 import ru.android4life.habittracker.activity.AddHabitActivity;
@@ -27,6 +27,7 @@ import ru.android4life.habittracker.adapter.HabitListAdapter;
 public class HabitListFragment extends Fragment {
 
     private HabitListAdapter mAdapter;
+    private RelativeLayout view;
     private Menu sortCategory;
     private Menu sortDirection;
 
@@ -34,7 +35,7 @@ public class HabitListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        mAdapter = new HabitListAdapter(getFragmentManager(), MainActivity.drawerSelectionMode);
+        mAdapter = new HabitListAdapter(this, getFragmentManager(), MainActivity.drawerSelectionMode);
     }
 
     public void invalidateDataSet() {
@@ -46,7 +47,7 @@ public class HabitListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //creating view from layout, attachToRoot false — so the parent cannot listen to events of inflated view
-        RelativeLayout view = (RelativeLayout) inflater.inflate(R.layout.habit_list, container, false);
+        view = (RelativeLayout) inflater.inflate(R.layout.habit_list, container, false);
         RecyclerView listView = (RecyclerView) view.findViewById(R.id.habits_list);
 
         LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity());
@@ -66,12 +67,18 @@ public class HabitListFragment extends Fragment {
         listView.setLayoutManager(mLinearLayoutManager);
         listView.setAdapter(mAdapter);
 
-        if (mAdapter.emptyData()) {
-            ViewSwitcher switcher = (ViewSwitcher) view.findViewById(R.id.switcher);
-            switcher.showNext();
-        }
+        switchEmptyView();
 
         return view;
+    }
+
+    public void switchEmptyView() {
+        ViewFlipper switcher = (ViewFlipper) view.findViewById(R.id.flipper);
+        if (mAdapter.emptyData()) {
+            switcher.setDisplayedChild(1);
+        } else {
+            switcher.setDisplayedChild(0);
+        }
     }
 
     @Override

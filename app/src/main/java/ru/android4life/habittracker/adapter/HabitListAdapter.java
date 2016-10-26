@@ -29,6 +29,7 @@ import ru.android4life.habittracker.db.dataaccessobjects.HabitScheduleDAO;
 import ru.android4life.habittracker.db.tablesrepresentations.Habit;
 import ru.android4life.habittracker.db.tablesrepresentations.HabitSchedule;
 import ru.android4life.habittracker.enumeration.DrawerSelectionMode;
+import ru.android4life.habittracker.fragment.HabitListFragment;
 import ru.android4life.habittracker.fragment.HabitTabsFragment;
 import ru.android4life.habittracker.viewholder.HabitCardViewHolder;
 
@@ -36,6 +37,7 @@ import ru.android4life.habittracker.viewholder.HabitCardViewHolder;
 public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> implements GestureDetector.OnGestureListener {
 
     private HabitScheduleDAO habitScheduleDAO;
+    private HabitListFragment listFragment;
     private HabitDAO habitDAO;
     private SwipeLayout swipeLayout;
     private List<HabitSchedule> habitSchedules;
@@ -45,7 +47,8 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
     private ImageButton contextMenu;
     private PopupMenu popup;
 
-    public HabitListAdapter(FragmentManager fragmentManager, DrawerSelectionMode drawerSelectionMode) {
+    public HabitListAdapter(HabitListFragment listFragment, FragmentManager fragmentManager, DrawerSelectionMode drawerSelectionMode) {
+        this.listFragment = listFragment;
         this.fragmentManager = fragmentManager;
         context = BaseActivity.getContext();
         habitDAO = new HabitDAO(context);
@@ -167,6 +170,7 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
         int mAdapterPosition = holder.getAdapterPosition();
         notifyItemChanged(mAdapterPosition);
         makeUndoSnackbar(true, habitSchedule, v);
+        listFragment.switchEmptyView();
     }
 
     private void onSkipClick(final HabitCardViewHolder holder, final HabitSchedule habitSchedule, View v) {
@@ -177,6 +181,7 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
         int mAdapterPosition = holder.getAdapterPosition();
         notifyItemChanged(mAdapterPosition);
         makeUndoSnackbar(false, habitSchedule, v);
+        listFragment.switchEmptyView();
     }
 
     private void onPerformClick(final HabitSchedule habitSchedule, View v, boolean isDone) {
@@ -186,6 +191,7 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
         fillDependOnDrawerSelectionMode();
         notifyDataSetChanged();
         makeUndoSnackbar(isDone, habitSchedule, v);
+        listFragment.switchEmptyView();
     }
 
     private void makeUndoSnackbar(boolean isDone, final HabitSchedule habitSchedule, View v) {

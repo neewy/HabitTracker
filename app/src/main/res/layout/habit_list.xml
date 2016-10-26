@@ -3,8 +3,8 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <ViewSwitcher
-        android:id="@+id/switcher"
+    <ViewFlipper
+        android:id="@+id/flipper"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -23,7 +23,7 @@
             android:layout_gravity="center_vertical|center_horizontal"
             android:src="@drawable/ic_empty_list" />
 
-    </ViewSwitcher>
+    </ViewFlipper>
 
 
     <FrameLayout
