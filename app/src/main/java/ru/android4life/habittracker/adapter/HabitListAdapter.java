@@ -117,10 +117,10 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
 
                         switch (item.getItemId()) {
                             case R.id.menu_done:
-                                onDoneClick(holder, habitSchedule, view);
+                                onPerformClick(habitSchedule, view, true);
                                 return true;
                             case R.id.menu_skip:
-                                onSkipClick(holder, habitSchedule, view);
+                                onPerformClick(habitSchedule, view, false);
                                 return true;
                             default:
                                 return false;
@@ -155,28 +155,6 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
             default:
                 break;
         }
-    }
-
-    private void onDoneClick(final HabitCardViewHolder holder, final HabitSchedule habitSchedule, View v) {
-        HabitSchedule updatedHabitSchedule = new HabitSchedule(habitSchedule.getId(),
-                habitSchedule.getDatetime(), true, habitSchedule.getHabitId());
-        habitScheduleDAO.update(updatedHabitSchedule);
-        fillDependOnDrawerSelectionMode();
-        int mAdapterPosition = holder.getAdapterPosition();
-        notifyItemChanged(mAdapterPosition);
-        makeUndoSnackbar(true, habitSchedule, v);
-        listFragment.switchEmptyView();
-    }
-
-    private void onSkipClick(final HabitCardViewHolder holder, final HabitSchedule habitSchedule, View v) {
-        HabitSchedule updatedHabitSchedule = new HabitSchedule(habitSchedule.getId(),
-                habitSchedule.getDatetime(), false, habitSchedule.getHabitId());
-        habitScheduleDAO.update(updatedHabitSchedule);
-        fillDependOnDrawerSelectionMode();
-        int mAdapterPosition = holder.getAdapterPosition();
-        notifyItemChanged(mAdapterPosition);
-        makeUndoSnackbar(false, habitSchedule, v);
-        listFragment.switchEmptyView();
     }
 
     private void onPerformClick(final HabitSchedule habitSchedule, View v, boolean isDone) {
