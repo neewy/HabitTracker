@@ -181,6 +181,7 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
                         habitScheduleDAO.update(prevHabitSchedule);
                         fillDependOnDrawerSelectionMode();
                         notifyDataSetChanged();
+                        listFragment.switchEmptyView();
                     }
                 });
         snackbar.show();
