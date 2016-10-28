@@ -44,55 +44,7 @@
                 android:src="@drawable/skip" />
         </LinearLayout>
 
-        <RelativeLayout
-            android:id="@+id/habit_card_frame"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/habit_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="10dp"
-                android:text="Gym"
-                android:textColor="#333333"
-                android:textSize="22sp" />
-
-            <TextView
-                android:id="@+id/habit_question"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/habit_name"
-                android:layout_below="@+id/habit_name"
-                android:layout_marginTop="5dp"
-                android:text="Did I Biceps and Legs?"
-                android:textColor="#bdbdbd"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/habit_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/habit_name"
-                android:layout_below="@+id/habit_question"
-                android:layout_marginTop="5dp"
-                android:text="Today"
-                android:textColor="#333333"
-                android:textSize="16sp" />
-
-            <ImageButton
-                android:id="@+id/card_context_menu"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
-                android:background="@null"
-                android:src="@drawable/ic_context_menu" />
-        </RelativeLayout>
+        <include layout="@layout/card_list_content" />
 
     </com.daimajia.swipe.SwipeLayout>
 

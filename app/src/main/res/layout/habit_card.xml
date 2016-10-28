@@ -23,7 +23,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="60sp"
                 android:layout_centerHorizontal="true"
+                android:layout_marginLeft="15dp"
                 android:layout_marginTop="20dp"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:text="Gym"
                 android:textColor="#3999b2"
                 android:textSize="40sp" />
@@ -35,6 +38,9 @@
                 android:layout_height="30dp"
                 android:layout_below="@+id/habit_card_name"
                 android:layout_centerHorizontal="true"
+                android:layout_marginLeft="15dp"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:text="Did I biceps?"
                 android:textSize="20sp" />
 

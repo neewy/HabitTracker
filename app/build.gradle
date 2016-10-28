@@ -46,6 +46,7 @@ dependencies {
     /*to display material design card for habit card*/
     compile 'com.android.support:recyclerview-v7:24.2.1' /*to use RecyclerView as a list of habits*/
     compile 'com.android.support:appcompat-v7:24.2.1'
+    compile 'com.android.support:percent:24.2.1'
     compile 'org.ocpsoft.prettytime:prettytime:4.0.1.Final' //human readable date
 
     /* Charts */
@@ -68,4 +69,5 @@ dependencies {
     compile 'com.daimajia.androidanimations:library:1.1.2@aar'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'jp.wasabeef:recyclerview-animators:1.0.3@aar'
+
 }
