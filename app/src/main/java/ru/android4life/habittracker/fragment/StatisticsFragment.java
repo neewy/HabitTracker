@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import lecho.lib.hellocharts.gesture.ZoomType;
@@ -78,7 +79,14 @@ public class StatisticsFragment extends Fragment {
         int monthMaxDays = c.getActualMaximum(Calendar.DAY_OF_MONTH);
         List<PointValue> values = new ArrayList<>();
         HabitScheduleDAO habitScheduleDAO = new HabitScheduleDAO(MainActivity.getContext());
-        List<HabitSchedule> habitSchedules = new ArrayList<>(habitScheduleDAO.findInRange(new Date(System.currentTimeMillis() - (monthMaxDays * Constants.DAY_IN_MS)), new Date()));
+        c = new GregorianCalendar();
+        // Get how many days in current month
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
+        Date habitDay = c.getTime();
+        List<HabitSchedule> habitSchedules = new ArrayList<>(habitScheduleDAO.findInRange(new Date(habitDay.getTime() - (monthMaxDays * Constants.DAY_IN_MS)), new Date()));
         int skipped, performed;
         for (int i = 1; i <= monthMaxDays; i++) {
             skipped = 0;

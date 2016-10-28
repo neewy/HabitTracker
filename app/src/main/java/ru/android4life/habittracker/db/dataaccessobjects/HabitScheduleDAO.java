@@ -150,6 +150,7 @@ public class HabitScheduleDAO implements ExtendedCrud {
         c.set(Calendar.HOUR_OF_DAY, 0);
         c.set(Calendar.MINUTE, 0);
         c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
         Date today = c.getTime();
         c.add(Calendar.DATE, 1);
         Date tomorrow = c.getTime();
@@ -174,6 +175,7 @@ public class HabitScheduleDAO implements ExtendedCrud {
         c.set(Calendar.HOUR_OF_DAY, 0);
         c.set(Calendar.MINUTE, 0);
         c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
         c.add(Calendar.DATE, 1);
         Date tomorrow = c.getTime();
         c.add(Calendar.DATE, 1);
@@ -200,6 +202,7 @@ public class HabitScheduleDAO implements ExtendedCrud {
         c.set(Calendar.HOUR_OF_DAY, 0);
         c.set(Calendar.MINUTE, 0);
         c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
         Date today = c.getTime();
         c.add(Calendar.MONTH, 1);
         Date monthAfterToday = c.getTime();
@@ -264,6 +267,7 @@ public class HabitScheduleDAO implements ExtendedCrud {
         c.set(Calendar.HOUR_OF_DAY, 0);
         c.set(Calendar.MINUTE, 0);
         c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
         c.add(Calendar.MONTH, -1);
         Date monthBeforeToday = c.getTime();
 
