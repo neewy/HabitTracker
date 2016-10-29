@@ -67,6 +67,15 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         confirmAfterMinutes = 60;
         categoryId = 1;
         isDone = null;
+
+        HabitCategoryDAO habitCategoryDAO = new HabitCategoryDAO(this.getContext());
+        habitCategoryDAO.create(new HabitCategory(1, this.getContext().getString(R.string.sport)));
+        habitCategoryDAO.create(new HabitCategory(2, this.getContext().getString(R.string.reading)));
+        habitCategoryDAO.create(new HabitCategory(3, this.getContext().getString(R.string.cooking)));
+        habitCategoryDAO.create(new HabitCategory(4, this.getContext().getString(R.string.cleaning)));
+        habitCategoryDAO.create(new HabitCategory(5, this.getContext().getString(R.string.studying)));
+        habitCategoryDAO.create(new HabitCategory(6, this.getContext().getString(R.string.health)));
+        habitCategoryDAO.create(new HabitCategory(7, this.getContext().getString(R.string.other)));
     }
 
     @Test
@@ -146,6 +155,11 @@ public class DataAccessObjectsTest extends AndroidTestCase {
     public void testWritingNewHabitCategoryDataToMobileDB() throws ParseException {
         HabitCategoryDAO habitCategoryDAO = new HabitCategoryDAO(this.getContext());
 
+        List<HabitCategory> habitCategoriesToDelete = (List<HabitCategory>) habitCategoryDAO.findAll();
+        id = habitCategoriesToDelete.size() + 1;
+        for (HabitCategory habitCategory : habitCategoriesToDelete)
+            habitCategoryDAO.delete(habitCategory);
+
         HabitCategory habitCategoryWithTheSameId;
         HabitCategory habitCategoryFromMobileDatabaseWithMaxId;
 
@@ -208,6 +222,14 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         assertEquals(newHabitCategory, habitCategoryFromMobileDatabaseWithMaxId);
         habitCategoryDAO.delete(newHabitCategory);
         assertFalse(habitCategoryDAO.findAll().size() > 0 && newHabitCategory == habitCategoryDAO.getObjectWithMaxId());
+
+        habitCategoryDAO.create(new HabitCategory(1, this.getContext().getString(R.string.sport)));
+        habitCategoryDAO.create(new HabitCategory(2, this.getContext().getString(R.string.reading)));
+        habitCategoryDAO.create(new HabitCategory(3, this.getContext().getString(R.string.cooking)));
+        habitCategoryDAO.create(new HabitCategory(4, this.getContext().getString(R.string.cleaning)));
+        habitCategoryDAO.create(new HabitCategory(5, this.getContext().getString(R.string.studying)));
+        habitCategoryDAO.create(new HabitCategory(6, this.getContext().getString(R.string.health)));
+        habitCategoryDAO.create(new HabitCategory(7, this.getContext().getString(R.string.other)));
     }
 
     @Test
@@ -386,6 +408,7 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         Calendar c = new GregorianCalendar();
         Date date = c.getTime();
         HabitSchedule newHabitSchedule = new HabitSchedule(id, date, isDone, id);
+        habitScheduleDAO.create(newHabitSchedule);
         c.add(Calendar.DATE, 1);
         date = c.getTime();
         newHabitSchedule = new HabitSchedule(id, date, isDone, id);
@@ -403,11 +426,19 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         date = c.getTime();
         newHabitSchedule = new HabitSchedule(id, date, isDone, id);
         habitScheduleDAO.create(newHabitSchedule);
+        c.add(Calendar.DATE, 1);
+        date = c.getTime();
+        newHabitSchedule = new HabitSchedule(id, date, isDone, id);
         habitScheduleDAO.create(newHabitSchedule);
+        c.add(Calendar.DATE, 1);
+        date = c.getTime();
+        newHabitSchedule = new HabitSchedule(id, date, isDone, id);
         habitScheduleDAO.create(newHabitSchedule);
         c.add(Calendar.DATE, 1);
         date = c.getTime();
         Date toDate = date; // 5 habitSchedules in between fromDate and toDate were created
+        c.add(Calendar.DATE, 1);
+        date = c.getTime();
         newHabitSchedule = new HabitSchedule(id, date, isDone, id);
         habitScheduleDAO.create(newHabitSchedule);
         c.add(Calendar.DATE, 1);
@@ -487,5 +518,29 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         List<HabitSchedule> habitScheduleList = (List<HabitSchedule>) habitScheduleDAO.findAll();
         assertEquals(habitScheduleList.size(), 1);
         assertEquals(habitScheduleList.get(0), notOldHabitSchedule);
+    }
+
+    @Test
+    public void testGettingPercentageOfDoneSchedulesForDistinctHabitByHabitId() throws ParseException {
+        HabitScheduleDAO habitScheduleDAO = new HabitScheduleDAO(this.getContext());
+        Calendar c = new GregorianCalendar();
+        c.add(Calendar.DATE, -7);
+        Date date = c.getTime();
+        HabitSchedule newHabitSchedule = new HabitSchedule(id, date, isDone, id);
+        habitScheduleDAO.create(newHabitSchedule);
+        c.add(Calendar.DATE, 1);
+        date = c.getTime();
+        newHabitSchedule = new HabitSchedule(id, date, false, id);
+        habitScheduleDAO.create(newHabitSchedule);
+        c.add(Calendar.DATE, 1);
+        date = c.getTime();
+        newHabitSchedule = new HabitSchedule(id, date, true, id);
+        habitScheduleDAO.create(newHabitSchedule);
+        c.add(Calendar.DATE, 1);
+        date = c.getTime();
+        newHabitSchedule = new HabitSchedule(id, date, true, id);
+        habitScheduleDAO.create(newHabitSchedule);
+        double percentage = habitScheduleDAO.getPercentageOfDoneSchedulesForDistinctHabitByHabitId(id);
+        assertEquals(50.0, percentage);
     }
 }

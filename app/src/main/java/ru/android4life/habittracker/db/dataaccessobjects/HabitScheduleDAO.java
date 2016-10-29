@@ -281,4 +281,39 @@ public class HabitScheduleDAO implements ExtendedCrud {
         }
         return index; // The number of rows updated in the database.
     }
+
+    public double getPercentageOfDoneSchedulesForDistinctHabitByHabitId(int habitId) {
+        double percentage = 0;
+        try {
+            int overallHabitSchedules;
+            int doneHabitSchedules;
+            Date now = new Date();
+            QueryBuilder<HabitSchedule, Integer> qBuilder = helper.getHabitScheduleDao().queryBuilder();
+            qBuilder.where().eq(Constants.HABIT_ID, habitId).and().lt(Constants.DATETIME, now);
+            overallHabitSchedules = qBuilder.query().size();
+            qBuilder.reset();
+            Calendar c = new GregorianCalendar();
+            c.set(Calendar.HOUR_OF_DAY, 0);
+            c.set(Calendar.MINUTE, 0);
+            c.set(Calendar.SECOND, 0);
+            c.set(Calendar.MILLISECOND, 0);
+            c.add(Calendar.DATE, 1);
+            Date tomorrow = c.getTime();
+            qBuilder.where().eq(Constants.HABIT_ID, habitId).and().eq(Constants.IS_DONE, true)
+                    .and().lt(Constants.DATETIME, tomorrow);
+            doneHabitSchedules = qBuilder.query().size();
+            if (doneHabitSchedules == 0 && overallHabitSchedules == 0) { // if first habit schedule is planned for future
+                percentage = 0;
+            } else if (doneHabitSchedules >= overallHabitSchedules) { // if habit was done before scheduled time
+                percentage = 100;
+            } else {
+                float percentageFloat = (float) doneHabitSchedules / overallHabitSchedules;
+                percentage = percentageFloat * 100;
+            }
+        } catch (SQLException e) {
+            Log.d(Constants.DAO_ERROR, Constants.SQL_EXCEPTION_IN + Constants.SPACE +
+                    HabitScheduleDAO.class.getSimpleName());
+        }
+        return percentage;
+    }
 }
