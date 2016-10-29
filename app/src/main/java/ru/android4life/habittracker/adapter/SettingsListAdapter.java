@@ -115,6 +115,7 @@ public class SettingsListAdapter extends RecyclerView.Adapter<SettingsViewHolder
             dialog.setOnColorSelectedListener(new ColorSelectDialog.OnColorSelectedListener() {
                 @Override
                 public void onColorSelected(SelectableColor selectedItem) {
+                    //FIXME: replace with getID
                     mainActivity.getSharedPreferences(SHARED_PREF, MODE_PRIVATE).edit().putString("color", selectedItem.getName()).apply();
                     dialog.dismiss();
                     mainActivity.recreate();
@@ -125,7 +126,7 @@ public class SettingsListAdapter extends RecyclerView.Adapter<SettingsViewHolder
         }
     }
 
-    public void createLanguageDialog(final ViewGroup parent) {
+    private void createLanguageDialog(final ViewGroup parent) {
         final CharSequence[] items = {parent.getResources().getString(R.string.english), parent.getResources().getString(R.string.russian)};
         if (selectedLanguage == null) {
             selectedLanguage = getSelectedLocale(mainActivity.getSharedPreferences(SHARED_PREF, MODE_PRIVATE).getString("locale", parent.getResources().getString(R.string.locale_en)), parent);

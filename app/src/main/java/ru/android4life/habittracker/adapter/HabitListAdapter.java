@@ -14,6 +14,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.daimajia.swipe.SwipeLayout;
 
@@ -39,7 +41,6 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
     private HabitScheduleDAO habitScheduleDAO;
     private HabitListFragment listFragment;
     private HabitDAO habitDAO;
-    private SwipeLayout swipeLayout;
     private List<HabitSchedule> habitSchedules;
     private FragmentManager fragmentManager;
     private Context context;
@@ -60,7 +61,7 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
     @Override
     public HabitCardViewHolder onCreateViewHolder(ViewGroup parent, final int habitScheduleId) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.habit_list_card, parent, false);
-        swipeLayout = (SwipeLayout) v.findViewById(R.id.interactive_card);
+        SwipeLayout swipeLayout = (SwipeLayout) v.findViewById(R.id.interactive_card);
         swipeLayout.getSurfaceView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,6 +94,16 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
         final Habit habit;
         final HabitSchedule habitSchedule = habitSchedules.get(position);
         habit = (Habit) habitDAO.findById(habitSchedule.getHabitId());
+
+        //place for the category image
+        RelativeLayout imagePlaceholder = (RelativeLayout) holder.itemView.findViewById(R.id.image_placeholder);
+
+        //if image placeholder is empty
+        if (imagePlaceholder.getChildCount() == 0) {
+            //then add a category picture to the habit card
+            addBackgroundImage(imagePlaceholder, habit);
+        }
+
         holder.time.setText(Constants.prettyTime.format(habitSchedule.getDatetime()));
         setSkipAndDoneListeners(holder, habitSchedule);
         if (habitSchedule.isDone() != null) {
@@ -130,6 +141,37 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
                 popup.show();
             }
         });
+    }
+
+    /**
+     * Adding habit category image to the imagePlaceholder
+     *
+     * @param imagePlaceholder where to add image
+     * @param habit            which has a habit category
+     */
+    private void addBackgroundImage(RelativeLayout imagePlaceholder, Habit habit) {
+        ImageView image = new ImageView(context);
+        switch (habit.getCategoryId()) {
+            case 1: //sport
+                image.setImageDrawable(context.getResources().getDrawable(R.drawable.card_back_sport));
+                break;
+            case 2: //reading
+                image.setImageDrawable(context.getResources().getDrawable(R.drawable.card_back_reading));
+                break;
+            case 3: //cooking
+                image.setImageDrawable(context.getResources().getDrawable(R.drawable.card_back_cooking));
+                break;
+            case 4: //cleaning
+                image.setImageDrawable(context.getResources().getDrawable(R.drawable.card_back_cleaning));
+                break;
+            case 5: //studying
+                image.setImageDrawable(context.getResources().getDrawable(R.drawable.card_back_studying));
+                break;
+            case 6: //health
+                image.setImageDrawable(context.getResources().getDrawable(R.drawable.card_back_health));
+                break;
+        }
+        imagePlaceholder.addView(image);
     }
 
     @Override

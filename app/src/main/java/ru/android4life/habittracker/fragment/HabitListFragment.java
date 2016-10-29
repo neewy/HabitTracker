@@ -20,6 +20,7 @@ import ru.android4life.habittracker.R;
 import ru.android4life.habittracker.activity.AddHabitActivity;
 import ru.android4life.habittracker.activity.MainActivity;
 import ru.android4life.habittracker.adapter.HabitListAdapter;
+import ru.android4life.habittracker.views.BottomOffsetDecoration;
 
 /**
  * Created by Nikolay Yushkevich on 21.09.16.
@@ -66,6 +67,11 @@ public class HabitListFragment extends Fragment {
         listView.setHasFixedSize(true);
         listView.setLayoutManager(mLinearLayoutManager);
         listView.setAdapter(mAdapter);
+
+        //adding 32dp space to the bottom of the list
+        float offsetPx = getResources().getDimension(R.dimen.recycler_view_padding);
+        BottomOffsetDecoration bottomOffsetDecoration = new BottomOffsetDecoration((int) offsetPx);
+        listView.addItemDecoration(bottomOffsetDecoration);
 
         switchEmptyView();
 
