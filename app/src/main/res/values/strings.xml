@@ -55,7 +55,7 @@
     <string name="done">Done</string>
     <string name="skip">Skip</string>
     <string name="remove">REMOVE</string>
-    <string name="habit_name_and_question_should_be_filled">Habit name and question should be filled</string>
+    <string name="habit_name_should_be_filled">Habit name should be filled</string>
     <string name="habit_name_and_question_should_be_unique">Habit name and question should be unique</string>
 
     <!--Settings-->
