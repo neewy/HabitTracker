@@ -192,7 +192,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         habitCategoryDAO.create(new HabitCategory(4, getResources().getString(R.string.cleaning)));
         habitCategoryDAO.create(new HabitCategory(5, getResources().getString(R.string.studying)));
         habitCategoryDAO.create(new HabitCategory(6, getResources().getString(R.string.health)));
-        habitCategoryDAO.create(new HabitCategory(1, getResources().getString(R.string.other)));
+        habitCategoryDAO.create(new HabitCategory(7, getResources().getString(R.string.other)));
 
         // using the following line to edit/commit prefs
         prefs.edit().putBoolean("firstrun", false).apply();
