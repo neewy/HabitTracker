@@ -23,12 +23,15 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import ru.android4life.habittracker.HabitNotification;
 import ru.android4life.habittracker.R;
 import ru.android4life.habittracker.activity.BaseActivity;
 import ru.android4life.habittracker.db.Constants;
+import ru.android4life.habittracker.db.dataaccessobjects.HabitCategoryDAO;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitDAO;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitScheduleDAO;
 import ru.android4life.habittracker.db.tablesrepresentations.Habit;
+import ru.android4life.habittracker.db.tablesrepresentations.HabitCategory;
 import ru.android4life.habittracker.db.tablesrepresentations.HabitSchedule;
 import ru.android4life.habittracker.enumeration.DrawerSelectionMode;
 import ru.android4life.habittracker.fragment.HabitListFragment;
@@ -39,6 +42,7 @@ import ru.android4life.habittracker.viewholder.HabitCardViewHolder;
 public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> implements GestureDetector.OnGestureListener {
 
     private HabitScheduleDAO habitScheduleDAO;
+    private HabitCategoryDAO habitCategoryDAO;
     private HabitListFragment listFragment;
     private HabitDAO habitDAO;
     private List<HabitSchedule> habitSchedules;
@@ -54,6 +58,7 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
         context = BaseActivity.getContext();
         habitDAO = new HabitDAO(context);
         habitScheduleDAO = new HabitScheduleDAO(context);
+        habitCategoryDAO = new HabitCategoryDAO(context);
         this.drawerSelectionMode = drawerSelectionMode;
         fillDependOnDrawerSelectionMode();
     }
@@ -150,24 +155,25 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
      * @param habit            which has a habit category
      */
     private void addBackgroundImage(RelativeLayout imagePlaceholder, Habit habit) {
+        HabitCategory category = (HabitCategory) habitCategoryDAO.findById(habit.getCategoryId());
         ImageView image = new ImageView(context);
-        switch (habit.getCategoryId()) {
-            case 1: //sport
+        switch (category.getName()) {
+            case "Sport":
                 image.setImageDrawable(context.getResources().getDrawable(R.drawable.card_back_sport));
                 break;
-            case 2: //reading
+            case "Reading":
                 image.setImageDrawable(context.getResources().getDrawable(R.drawable.card_back_reading));
                 break;
-            case 3: //cooking
+            case "Cooking":
                 image.setImageDrawable(context.getResources().getDrawable(R.drawable.card_back_cooking));
                 break;
-            case 4: //cleaning
+            case "Cleaning":
                 image.setImageDrawable(context.getResources().getDrawable(R.drawable.card_back_cleaning));
                 break;
-            case 5: //studying
+            case "Studying":
                 image.setImageDrawable(context.getResources().getDrawable(R.drawable.card_back_studying));
                 break;
-            case 6: //health
+            case "Health":
                 image.setImageDrawable(context.getResources().getDrawable(R.drawable.card_back_health));
                 break;
         }
@@ -207,6 +213,10 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
         notifyDataSetChanged();
         makeUndoSnackbar(isDone, habitSchedule, v);
         listFragment.switchEmptyView();
+
+        //delete notification if the habit was performed manually
+        HabitNotification notification = new HabitNotification(context);
+        notification.deleteHabitScheduleAlarm(habitSchedule.getId());
     }
 
     private void makeUndoSnackbar(boolean isDone, final HabitSchedule habitSchedule, View v) {
@@ -284,7 +294,7 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
                 if (isAscending) {
                     return habit1.getName().compareTo(habit2.getName());
                 } else {
-                    return -habit1.getName().compareTo(habit2.getName());
+                    return habit2.getName().compareTo(habit1.getName());
                 }
             }
         });
@@ -298,7 +308,7 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
                 if (isAscending) {
                     return o1.getDatetime().compareTo(o2.getDatetime());
                 } else {
-                    return -o1.getDatetime().compareTo(o2.getDatetime());
+                    return o2.getDatetime().compareTo(o1.getDatetime());
                 }
             }
         });

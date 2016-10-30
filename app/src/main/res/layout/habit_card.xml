@@ -49,7 +49,6 @@
     </android.support.v7.widget.CardView>
 
     <!-- List with card settings -->
-    <!-- TODO: add title at the top of the list -->
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/habit_settings"

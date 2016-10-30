@@ -17,7 +17,7 @@ import ru.android4life.habittracker.R;
 import ru.android4life.habittracker.activity.AddHabitActivity;
 import ru.android4life.habittracker.activity.BaseActivity;
 import ru.android4life.habittracker.adapter.HabitsAdapter;
-import ru.android4life.habittracker.utils.DividerItemDecoration;
+import ru.android4life.habittracker.views.DividerItemDecoration;
 
 public class HabitsFragment extends Fragment {
 

@@ -19,6 +19,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import ru.android4life.habittracker.HabitNotification;
 import ru.android4life.habittracker.R;
 import ru.android4life.habittracker.adapter.HabitParametersAdapter;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitDAO;
@@ -99,6 +100,10 @@ public class AddHabitActivity extends BaseActivity {
                     mAdapter.notifyDataSetChanged();
 
                     removeValuesForHabitSettingsFromPreferences();
+
+                    //create (or update) alarms for habit notifications
+                    HabitNotification notification = new HabitNotification(getContext());
+                    notification.createAllAlarms();
 
                     new Handler().postDelayed(new Runnable() {
                         @Override

@@ -13,6 +13,7 @@ import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 
 import java.util.List;
 
+import ru.android4life.habittracker.HabitNotification;
 import ru.android4life.habittracker.R;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitDAO;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitScheduleDAO;
@@ -59,6 +60,9 @@ public class HabitsAdapter extends RecyclerSwipeAdapter<HabitViewHolder> {
             @Override
             public void onClick(View view) {
                 mItemManger.removeShownLayouts(viewHolder.getSwipeLayout());
+                //remove the alarms, which are scheduled for the habit
+                HabitNotification notification = new HabitNotification(mContext);
+                notification.deleteHabitAlarms(habit.getId());
                 habitScheduleDAO.deleteByHabitId(habit.getId());
                 habitDAO.delete(habit);
                 habits.remove(position);

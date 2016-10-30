@@ -1,4 +1,4 @@
-package ru.android4life.habittracker.utils;
+package ru.android4life.habittracker.views;
 
 import android.content.Context;
 import android.content.res.TypedArray;

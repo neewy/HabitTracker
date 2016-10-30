@@ -74,7 +74,6 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameterV
         return new HabitParameterViewHolder.AddHabitParameterListener() {
             @Override
             public void onCategory(View caller, final TextView hint) {
-                //TODO replace items with values from db
                 final CharSequence[] items = Translator.translate(habitCategoryDAO.getArrayOfAllNames());
                 final List<HabitCategory> habitCategories = (List<HabitCategory>) habitCategoryDAO.findAll();
 
