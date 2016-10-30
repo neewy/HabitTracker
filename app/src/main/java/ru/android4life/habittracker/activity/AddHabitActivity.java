@@ -138,13 +138,11 @@ public class AddHabitActivity extends BaseActivity {
         mRecyclerView.setAdapter(mAdapter);
     }
 
-    private boolean areHabitNameAndQuestionEntered() {
+    private boolean isHabitNameEntered() {
         TextInputLayout habitNameTextInputLayout = (TextInputLayout) findViewById(R.id.add_habit_title_edit_text);
         String habitName = habitNameTextInputLayout.getEditText().getText().toString();
-        TextInputLayout habitQuestionTextInputLayout = (TextInputLayout) findViewById(R.id.add_habit_question_edit_text);
-        String habitQuestion = habitQuestionTextInputLayout.getEditText().getText().toString();
 
-        return !(habitName.length() == 0 || habitQuestion.length() == 0);
+        return !(habitName.length() == 0);
     }
 
     @Override
@@ -245,8 +243,8 @@ public class AddHabitActivity extends BaseActivity {
     }
 
     private boolean createOrEditHabitAccordingToHabitPreferencesIfDataIsCorrect(int editedHabitScheduleId) {
-        if (!areHabitNameAndQuestionEntered()) {
-            toastMessage(getContext().getString(R.string.habit_name_and_question_should_be_filled));
+        if (!isHabitNameEntered()) {
+            toastMessage(getContext().getString(R.string.habit_name_should_be_filled));
             return false;
         }
 
@@ -261,6 +259,9 @@ public class AddHabitActivity extends BaseActivity {
         String habitName = habitNameTextInputLayout.getEditText().getText().toString();
         TextInputLayout habitQuestionTextInputLayout = (TextInputLayout) findViewById(R.id.add_habit_question_edit_text);
         String habitQuestion = habitQuestionTextInputLayout.getEditText().getText().toString();
+
+        if (habitQuestion.length() == 0)
+            habitQuestion = habitName;
 
         if (editedHabitScheduleId == -1)
             return createHabitAccordingToHabitPreferencesIfDataIsCorrect(habitDay, habitName, habitQuestion);

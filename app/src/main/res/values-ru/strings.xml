@@ -39,7 +39,7 @@
     <string name="done">Выполнено</string>
     <string name="skip">Пропустить</string>
     <string name="remove">УДАЛИТЬ</string>
-    <string name="habit_name_and_question_should_be_filled">Название привычки и вопрос должны быть введены</string>
+    <string name="habit_name_should_be_filled">Название привычки должно быть введено</string>
     <string name="habit_name_and_question_should_be_unique">Привычка с введённым названием или вопросом уже существует</string>
 
     <!--Settings-->

@@ -83,7 +83,8 @@ public class HabitCardFragment extends Fragment {
         Habit habit = (Habit) habitDAO.findById(habitSchedule.getHabitId());
 
         habitNameTextView.setText(habit.getName());
-        habitQuestionTextView.setText(habit.getQuestion());
+        habitQuestionTextView.setText(BaseActivity.getContext().getString(R.string.did_i_question,
+                habit.getQuestion()));
         //as we need a vertical list, the layout manager is vertical
         LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity());
         mLinearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);

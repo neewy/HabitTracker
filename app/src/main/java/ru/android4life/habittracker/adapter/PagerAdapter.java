@@ -28,7 +28,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
                 Fragment tab1 = HabitCardFragment.newInstance(habitScheduleId);
                 return tab1;
             case 1:
-                Fragment tab2 = new HabitStatisticsFragment();
+                Fragment tab2 = HabitStatisticsFragment.newInstance(habitScheduleId);
                 return tab2;
             default:
                 return null;
