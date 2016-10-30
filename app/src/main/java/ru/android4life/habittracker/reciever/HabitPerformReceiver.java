@@ -24,14 +24,19 @@ public class HabitPerformReceiver extends BroadcastReceiver {
         Bundle bundle = intent.getExtras();
         HabitScheduleDAO habitScheduleDAO = new HabitScheduleDAO(context);
         HabitDAO habitDAO = new HabitDAO(context);
+
         NotificationManager notificationManager = (NotificationManager) context
                 .getSystemService(Context.NOTIFICATION_SERVICE);
+
         Integer habitScheduleId = bundle.getInt("habitScheduleId", -1);
         Boolean isDone = bundle.getBoolean("isDone", false);
+
+        // if such a habit exists
         if (habitScheduleId != -1) {
             HabitSchedule schedule = (HabitSchedule) habitScheduleDAO.findById(habitScheduleId);
             HabitSchedule updatedHabitSchedule = new HabitSchedule(schedule.getId(),
                     schedule.getDatetime(), isDone, schedule.getHabitId());
+
             habitScheduleDAO.update(updatedHabitSchedule);
             String habitName = ((Habit) habitDAO.findById(schedule.getHabitId())).getName();
 
@@ -39,9 +44,12 @@ public class HabitPerformReceiver extends BroadcastReceiver {
 
             String message = (isDone) ? context.getString(R.string.was_done) : context.getString(R.string.was_skipped);
             Toast.makeText(context, habitName + " " + message, Toast.LENGTH_LONG).show();
+
+            //cancel the notification to hide it from the screen
             notificationManager.cancel(habitScheduleId);
 
-            //TODO: is this possible to update list of habits if a notification action was checked?
+            //FIXME: is this possible to update list of habits if a notification action was checked?
+            //(probably not)
         }
     }
 }

@@ -22,6 +22,9 @@ import ru.android4life.habittracker.reciever.HabitPerformReceiver;
 import static android.content.Context.ALARM_SERVICE;
 
 /**
+ * Class, which helps to create notifications
+ * for all habit schedules
+ *
  * Created by neewy on 30.10.16.
  */
 
@@ -76,9 +79,11 @@ public class HabitNotification {
                 .setContentText(String.format(context.getString(R.string.did_i_question),
                         habit.getQuestion()));
 
-        //TODO: Add custom tune and vibration!
-
         Notification notification = builder.build();
+        notification.defaults |= Notification.DEFAULT_ALL;
+
+        //TODO: Add custom tune and vibration!
+        //notification.sound = Uri.parse(habit.getAudioResource());
 
         NotificationManager notificationManager = (NotificationManager) context
                 .getSystemService(Context.NOTIFICATION_SERVICE);
@@ -90,16 +95,6 @@ public class HabitNotification {
         for (Habit habit : habits) {
             List<HabitSchedule> habitSchedules = habitScheduleDAO.findByHabitId(habit.getId());
             habitsAndSchedules.put(habit, habitSchedules);
-        }
-    }
-
-    public void createAllNotifications() {
-        Iterator<Habit> habitIterator = habitsAndSchedules.keySet().iterator();
-        while (habitIterator.hasNext()) {
-            Habit habit = habitIterator.next();
-            for (HabitSchedule schedule : habitsAndSchedules.get(habit)) {
-                createNotification(context, schedule, habit);
-            }
         }
     }
 
