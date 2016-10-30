@@ -46,7 +46,7 @@
 
     <!--Add habit-->
     <string name="add_habit_name">Name of habit*</string>
-    <string name="add_habit_question">Custom question</string>
+    <string name="add_habit_question">Did I … ?</string>
     <string name="add_habit_name_category">Category</string>
     <string name="add_habit_name_reminder">Remind at</string>
     <string name="add_habit_name_frequency">Frequency</string>

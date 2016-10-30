@@ -182,9 +182,22 @@ public class AddHabitActivity extends BaseActivity {
     private HabitSettings getHabitSettingsFromPreferences(int editedHabitScheduleId) {
         HabitSettings result;
         if (editedHabitScheduleId == -1) { // Habits creation
-            result = new HabitSettings();
+            if (habitSettingsPrefs.contains(getContext().getString(R.string.notification_sound_name)))
+                result = new HabitSettings(habitSettings.getNotificationSoundUri(),
+                        habitSettings.getNotificationSoundName());
+            else
+                result = new HabitSettings();
         } else { // Habits edition
-            if (habitSettingsPrefs.contains("notificationFrequencyType"))
+            if (habitSettingsPrefs.contains("notificationFrequencyType") &&
+                    habitSettingsPrefs.contains(getContext().getString(R.string.notification_sound_name)))
+                result = new HabitSettings(editedHabitScheduleId, true, habitSettings.getNotificationSoundUri(),
+                        habitSettings.getNotificationSoundName());
+            else if (!habitSettingsPrefs.contains("notificationFrequencyType") &&
+                    habitSettingsPrefs.contains(getContext().getString(R.string.notification_sound_name)))
+                result = new HabitSettings(editedHabitScheduleId, false, habitSettings.getNotificationSoundUri(),
+                        habitSettings.getNotificationSoundName());
+            else if (habitSettingsPrefs.contains("notificationFrequencyType") &&
+                    !habitSettingsPrefs.contains(getContext().getString(R.string.notification_sound_name)))
                 result = new HabitSettings(editedHabitScheduleId, true);
             else
                 result = new HabitSettings(editedHabitScheduleId, false);

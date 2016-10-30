@@ -92,7 +92,7 @@ public class StatisticsFragment extends Fragment {
             skipped = 0;
             performed = 0;
             for (HabitSchedule habitSchedule : habitSchedules) {
-                if (habitSchedule.getDatetime().getDay() == i) {
+                if (habitSchedule.getDatetime().getDate() == i) {
                     if (habitSchedule.isDone() != null && habitSchedule.isDone()) {
                         performed++;
                     } else {
