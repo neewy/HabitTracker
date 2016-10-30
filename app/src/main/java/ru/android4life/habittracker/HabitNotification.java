@@ -106,9 +106,12 @@ public class HabitNotification {
         while (habitIterator.hasNext()) {
             Habit habit = habitIterator.next();
             for (HabitSchedule schedule : habitsAndSchedules.get(habit)) {
-                PendingIntent pendingIntent = createPendingIntent(schedule.getId());
-                alarmManager.cancel(pendingIntent);
-                alarmManager.set(AlarmManager.RTC_WAKEUP, schedule.getDatetime().getTime(), pendingIntent);
+                //if it is not done or skipped and the time now is less
+                if (schedule.isDone() == null && System.currentTimeMillis() <= schedule.getDatetime().getTime()) {
+                    PendingIntent pendingIntent = createPendingIntent(schedule.getId());
+                    alarmManager.cancel(pendingIntent);
+                    alarmManager.set(AlarmManager.RTC_WAKEUP, schedule.getDatetime().getTime(), pendingIntent);
+                }
             }
         }
     }
