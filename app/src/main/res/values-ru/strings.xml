@@ -30,7 +30,7 @@
 
     <!--Add habit-->
     <string name="add_habit_name">Название привычки*</string>
-    <string name="add_habit_question">Вопрос*</string>
+    <string name="add_habit_question">Сделал ли я … ?</string>
     <string name="add_habit_name_category">Категория</string>
     <string name="add_habit_name_reminder">Напомнить в</string>
     <string name="add_habit_name_frequency">Частота</string>
