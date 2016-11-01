@@ -6,15 +6,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 
 import lecho.lib.hellocharts.gesture.ZoomType;
 import lecho.lib.hellocharts.listener.ViewportChangeListener;
 import lecho.lib.hellocharts.model.Axis;
+import lecho.lib.hellocharts.model.AxisValue;
 import lecho.lib.hellocharts.model.Line;
 import lecho.lib.hellocharts.model.LineChartData;
 import lecho.lib.hellocharts.model.PointValue;
@@ -86,13 +89,21 @@ public class StatisticsFragment extends Fragment {
         c.set(Calendar.SECOND, 0);
         c.set(Calendar.MILLISECOND, 0);
         Date habitDay = c.getTime();
-        List<HabitSchedule> habitSchedules = new ArrayList<>(habitScheduleDAO.findInRange(new Date(habitDay.getTime() - (monthMaxDays * Constants.DAY_IN_MS)), new Date()));
+        c.add(Calendar.MONTH, -1);
+        c.add(Calendar.DATE, 1);
+        Date date = c.getTime();
+        List<HabitSchedule> habitSchedules = new ArrayList<>(habitScheduleDAO
+                .findInRange(new Date(habitDay.getTime() - (monthMaxDays * Constants.DAY_IN_MS)), new Date()));
         int skipped, performed;
-        for (int i = 1; i <= monthMaxDays; i++) {
+        int pointsOrder = 0; // order in which point added to the graph
+        SimpleDateFormat dateFormatDayOfMonthNumber =
+                new SimpleDateFormat("d", Locale.ENGLISH);
+        while (date.before(habitDay) || date.equals(habitDay)) {
             skipped = 0;
             performed = 0;
             for (HabitSchedule habitSchedule : habitSchedules) {
-                if (habitSchedule.getDatetime().getDate() == i) {
+                if (dateFormatDayOfMonthNumber.format(habitSchedule.getDatetime())
+                        .equals(dateFormatDayOfMonthNumber.format(date))) {
                     if (habitSchedule.isDone() != null && habitSchedule.isDone()) {
                         performed++;
                     } else {
@@ -101,12 +112,19 @@ public class StatisticsFragment extends Fragment {
                 }
             }
             float ratio = performed == 0 && skipped == 0 ? 0 : (float) performed / (skipped + performed);
-            values.add(new PointValue(i, ratio));
+            PointValue pv = new PointValue(pointsOrder, ratio);
+
+            pv = pv.setLabel(dateFormatDayOfMonthNumber.format(date));
+            values.add(pv);
+            c.add(Calendar.DATE, 1);
+            date = c.getTime();
+            pointsOrder++;
         }
 
         Line line = new Line(values);
+        line = line.setHasLabels(true); // for displaying labels on the graph
         line.setColor(MainActivity.getContext().getResources().getColor(R.color.colorPrimary));
-        line.setHasPoints(false);// too many values so don't draw points.
+        line.setHasPoints(false); // too many values so don't draw points.
         List<Line> lines = new ArrayList<>();
         lines.add(line);
         // Workaround to set Y axis max value to 1
@@ -120,6 +138,16 @@ public class StatisticsFragment extends Fragment {
         data = new LineChartData(lines);
         Axis axisX = new Axis();
         axisX.setName(MainActivity.getContext().getResources().getString(R.string.days));
+
+        // for displaying labels on the graph
+        List<AxisValue> axisValues = new ArrayList<>();
+        AxisValue axisValue;
+        for (int j = 0; j < values.size(); j++) {
+            axisValue = new AxisValue(values.get(j).getX(), values.get(j).getLabelAsChars());
+            axisValues.add(axisValue);
+        }
+        axisX.setValues(axisValues);
+
         data.setAxisXBottom(axisX);
         Axis axisY = new Axis();
         axisY.setName(MainActivity.getContext().getResources().getString(R.string.productivity));
