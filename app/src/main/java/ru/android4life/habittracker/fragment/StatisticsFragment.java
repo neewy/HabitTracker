@@ -27,9 +27,10 @@ import lecho.lib.hellocharts.view.LineChartView;
 import lecho.lib.hellocharts.view.PreviewLineChartView;
 import ru.android4life.habittracker.R;
 import ru.android4life.habittracker.activity.MainActivity;
-import ru.android4life.habittracker.db.Constants;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitScheduleDAO;
 import ru.android4life.habittracker.db.tablesrepresentations.HabitSchedule;
+
+import static ru.android4life.habittracker.utils.StringConstants.DAY_IN_MS;
 
 /**
  * Created by Bulat Mukhutdinov on 06.10.2016.
@@ -40,7 +41,6 @@ import ru.android4life.habittracker.db.tablesrepresentations.HabitSchedule;
  */
 public class StatisticsFragment extends Fragment {
     private LineChartView chart;
-    private PreviewLineChartView previewChart;
     private LineChartData data;
     /**
      * Deep copy of data.
@@ -54,7 +54,7 @@ public class StatisticsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_statistics, container, false);
 
         chart = (LineChartView) rootView.findViewById(R.id.general_statistics_chart);
-        previewChart = (PreviewLineChartView) rootView.findViewById(R.id.general_statistics_preview);
+        PreviewLineChartView previewChart = (PreviewLineChartView) rootView.findViewById(R.id.general_statistics_preview);
 
         // Generate data for previewed chart and copy of that data for preview chart.
         generateData();
@@ -93,7 +93,7 @@ public class StatisticsFragment extends Fragment {
         c.add(Calendar.DATE, 1);
         Date date = c.getTime();
         List<HabitSchedule> habitSchedules = new ArrayList<>(habitScheduleDAO
-                .findInRange(new Date(habitDay.getTime() - (monthMaxDays * Constants.DAY_IN_MS)), new Date()));
+                .findInRange(new Date(habitDay.getTime() - (monthMaxDays * DAY_IN_MS)), new Date()));
         int skipped, performed;
         int pointsOrder = 0; // order in which point added to the graph
         SimpleDateFormat dateFormatDayOfMonthNumber =

@@ -24,8 +24,6 @@ import ru.android4life.habittracker.db.tablesrepresentations.HabitSchedule;
 
 public class HabitStatisticsFragment extends Fragment {
 
-    private RelativeLayout view;
-
     // Pie View — https://github.com/zurche/plain-pie
     private PieView pieView;
 
@@ -51,7 +49,7 @@ public class HabitStatisticsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = (RelativeLayout) inflater.inflate(R.layout.habit_statistics, container, false);
+        RelativeLayout view = (RelativeLayout) inflater.inflate(R.layout.habit_statistics, container, false);
         pieView = (PieView) view.findViewById(R.id.pie_view);
         TypedValue typedValue = new TypedValue();
         getActivity().getTheme().resolveAttribute(R.attr.colorPrimary, typedValue, true);

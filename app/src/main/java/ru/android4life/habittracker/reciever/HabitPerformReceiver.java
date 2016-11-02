@@ -13,6 +13,9 @@ import ru.android4life.habittracker.db.dataaccessobjects.HabitScheduleDAO;
 import ru.android4life.habittracker.db.tablesrepresentations.Habit;
 import ru.android4life.habittracker.db.tablesrepresentations.HabitSchedule;
 
+import static ru.android4life.habittracker.utils.StringConstants.HABIT_SCHEDULE_ID;
+import static ru.android4life.habittracker.utils.StringConstants.IS_DONE;
+
 /**
  * Created by neewy on 29.10.16.
  */
@@ -28,8 +31,8 @@ public class HabitPerformReceiver extends BroadcastReceiver {
         NotificationManager notificationManager = (NotificationManager) context
                 .getSystemService(Context.NOTIFICATION_SERVICE);
 
-        Integer habitScheduleId = bundle.getInt("habitScheduleId", -1);
-        Boolean isDone = bundle.getBoolean("isDone", false);
+        Integer habitScheduleId = bundle.getInt(HABIT_SCHEDULE_ID, -1);
+        Boolean isDone = bundle.getBoolean(IS_DONE, false);
 
         // if such a habit exists
         if (habitScheduleId != -1) {

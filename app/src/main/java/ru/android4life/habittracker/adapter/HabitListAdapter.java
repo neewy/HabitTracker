@@ -38,6 +38,13 @@ import ru.android4life.habittracker.fragment.HabitListFragment;
 import ru.android4life.habittracker.fragment.HabitTabsFragment;
 import ru.android4life.habittracker.viewholder.HabitCardViewHolder;
 
+import static ru.android4life.habittracker.utils.StringConstants.CLEANING;
+import static ru.android4life.habittracker.utils.StringConstants.COOKING;
+import static ru.android4life.habittracker.utils.StringConstants.HEALTH;
+import static ru.android4life.habittracker.utils.StringConstants.READING;
+import static ru.android4life.habittracker.utils.StringConstants.SPORT;
+import static ru.android4life.habittracker.utils.StringConstants.STUDYING;
+
 
 public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> implements GestureDetector.OnGestureListener {
 
@@ -158,22 +165,22 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
         HabitCategory category = (HabitCategory) habitCategoryDAO.findById(habit.getCategoryId());
         ImageView image = new ImageView(context);
         switch (category.getName()) {
-            case "Sport":
+            case SPORT:
                 image.setImageDrawable(context.getResources().getDrawable(R.drawable.card_back_sport));
                 break;
-            case "Reading":
+            case READING:
                 image.setImageDrawable(context.getResources().getDrawable(R.drawable.card_back_reading));
                 break;
-            case "Cooking":
+            case COOKING:
                 image.setImageDrawable(context.getResources().getDrawable(R.drawable.card_back_cooking));
                 break;
-            case "Cleaning":
+            case CLEANING:
                 image.setImageDrawable(context.getResources().getDrawable(R.drawable.card_back_cleaning));
                 break;
-            case "Studying":
+            case STUDYING:
                 image.setImageDrawable(context.getResources().getDrawable(R.drawable.card_back_studying));
                 break;
-            case "Health":
+            case HEALTH:
                 image.setImageDrawable(context.getResources().getDrawable(R.drawable.card_back_health));
                 break;
         }
@@ -224,7 +231,8 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
         String message = (isDone) ? getStringFromResources(R.string.was_done) : getStringFromResources(R.string.was_skipped);
 
         Snackbar snackbar = Snackbar
-                .make(v, ((Habit) habitDAO.findById(habitSchedule.getHabitId())).getName() + " " + message, Snackbar.LENGTH_LONG)
+                .make(v, (context.getString(R.string.empty_delimiter_strings,
+                        ((Habit) habitDAO.findById(habitSchedule.getHabitId())).getName(), message)), Snackbar.LENGTH_LONG)
                 .setAction(getStringFromResources(R.string.undo), new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

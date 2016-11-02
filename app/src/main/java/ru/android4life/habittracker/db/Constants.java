@@ -26,7 +26,7 @@ public final class Constants {
     public static final String DATETIME = "datetime";
     public static final String IS_DONE = "isDone";
     public static final String HABIT_ID = "habitId";
-    public static final String NAME = "name";
+    public static final String NAME = "name"; //TODO: check if it is used
 
     // For DatabaseHelper
     public static final String DB_HELPER = "DB_HELPER";
@@ -38,9 +38,6 @@ public final class Constants {
 
     // For habits list
     public static final PrettyTime prettyTime = new PrettyTime(MainActivity.locale);
-
-    // Other
-    public static final long DAY_IN_MS = 1000 * 60 * 60 * 24;
 
     // Utility classes, which are a collection of static members, are not meant to be instantiated
     private Constants() {

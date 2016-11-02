@@ -23,7 +23,6 @@ import java.util.Calendar;
 import java.util.List;
 
 import ru.android4life.habittracker.R;
-import ru.android4life.habittracker.activity.AddHabitActivity;
 import ru.android4life.habittracker.activity.MainActivity;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitCategoryDAO;
 import ru.android4life.habittracker.db.tablesrepresentations.HabitCategory;
@@ -34,11 +33,18 @@ import ru.android4life.habittracker.utils.Translator;
 import ru.android4life.habittracker.viewholder.HabitParameterViewHolder;
 
 import static android.content.Context.MODE_PRIVATE;
+import static ru.android4life.habittracker.utils.StringConstants.CATEGORY_ID;
+import static ru.android4life.habittracker.utils.StringConstants.NOTIFICATION_FREQUENCY_TYPE;
+import static ru.android4life.habittracker.utils.StringConstants.NOTIFICATION_FREQUENCY_WEEK_NUMBER_OR_DATE;
+import static ru.android4life.habittracker.utils.StringConstants.NOTIFICATION_HOUR;
+import static ru.android4life.habittracker.utils.StringConstants.NOTIFICATION_MINUTE;
+import static ru.android4life.habittracker.utils.StringConstants.PICK_AUDIO_REQUEST;
 
 /**
  * Created by Bulat Mukhutdinov on 28.09.2016.
  */
 public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameterViewHolder> {
+
 
     private HabitCategoryDAO habitCategoryDAO;
     private List<HabitParameter> parameters;
@@ -86,7 +92,7 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameterV
                                 //TODO save selected value
                                 habitSettings.setCategoryId(habitCategories.get(item).getId());
                                 hint.setText(items[item]);
-                                prefs.edit().putInt("categoryId", habitSettings.getCategoryId()).apply();
+                                prefs.edit().putInt(CATEGORY_ID, habitSettings.getCategoryId()).apply();
                                 dialog.cancel();
                             }
                         }).setNegativeButton(context.getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -114,14 +120,14 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameterV
                             hint.setText(context.getResources().getString(R.string.string_colon_space_string_zero,
                                     String.valueOf(habitSettings.getNotificationHour()),
                                     String.valueOf(habitSettings.getNotificationMinute())));
-                            prefs.edit().putInt("notificationHour", habitSettings.getNotificationHour()).apply();
-                            prefs.edit().putInt("notificationMinute", habitSettings.getNotificationMinute()).apply();
+                            prefs.edit().putInt(NOTIFICATION_HOUR, habitSettings.getNotificationHour()).apply();
+                            prefs.edit().putInt(NOTIFICATION_MINUTE, habitSettings.getNotificationMinute()).apply();
                         } else {
                             hint.setText(context.getResources().getString(R.string.string_colon_space_string,
                                     String.valueOf(habitSettings.getNotificationHour()),
                                     String.valueOf(habitSettings.getNotificationMinute())));
-                            prefs.edit().putInt("notificationHour", habitSettings.getNotificationHour()).apply();
-                            prefs.edit().putInt("notificationMinute", habitSettings.getNotificationMinute()).apply();
+                            prefs.edit().putInt(NOTIFICATION_HOUR, habitSettings.getNotificationHour()).apply();
+                            prefs.edit().putInt(NOTIFICATION_MINUTE, habitSettings.getNotificationMinute()).apply();
                         }
                     }
                 };
@@ -144,24 +150,24 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameterV
                                 if (item == 0) {
                                     habitSettings.setNotificationFrequencyType(NotificationFrequencyType.DAILY);
                                     hint.setText(context.getResources().getString(R.string.every_day));
-                                    prefs.edit().putString("notificationFrequencyType", NotificationFrequencyType.DAILY.toString()).apply();
+                                    prefs.edit().putString(NOTIFICATION_FREQUENCY_TYPE, NotificationFrequencyType.DAILY.toString()).apply();
                                 } else
                                     hint.setText("");
                                 switch (item) {
                                     case 1:
                                         habitSettings.setNotificationFrequencyType(NotificationFrequencyType.WEEKLY);
                                         createFrequencyWeeklyDialog(parent, hint);
-                                        prefs.edit().putString("notificationFrequencyType", NotificationFrequencyType.WEEKLY.toString()).apply();
+                                        prefs.edit().putString(NOTIFICATION_FREQUENCY_TYPE, NotificationFrequencyType.WEEKLY.toString()).apply();
                                         break;
                                     case 2:
                                         habitSettings.setNotificationFrequencyType(NotificationFrequencyType.MONTHLY);
                                         createFrequencyMonthlyDialog(parent, hint);
-                                        prefs.edit().putString("notificationFrequencyType", NotificationFrequencyType.MONTHLY.toString()).apply();
+                                        prefs.edit().putString(NOTIFICATION_FREQUENCY_TYPE, NotificationFrequencyType.MONTHLY.toString()).apply();
                                         break;
                                     case 3:
                                         habitSettings.setNotificationFrequencyType(NotificationFrequencyType.SPECIFIED_DAYS);
                                         createFrequencySpecifiedDaysDialog(parent, hint);
-                                        prefs.edit().putString("notificationFrequencyType", NotificationFrequencyType.SPECIFIED_DAYS.toString()).apply();
+                                        prefs.edit().putString(NOTIFICATION_FREQUENCY_TYPE, NotificationFrequencyType.SPECIFIED_DAYS.toString()).apply();
                                         break;
                                 }
                                 dialog.cancel();
@@ -181,7 +187,7 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameterV
             public void onTune(View caller, final TextView hint) {
                 Intent tmpIntent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
                 tmpIntent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
-                activity.startActivityForResult(tmpIntent, AddHabitActivity.PICK_AUDIO_REQUEST);
+                activity.startActivityForResult(tmpIntent, PICK_AUDIO_REQUEST);
                 hint.setText(prefs.getString(caller.getResources().getString(R.string.notification_sound_name),
                         caller.getResources().getString(R.string.standard_from_capital_letter)));
             }
@@ -261,7 +267,7 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameterV
                     public void onClick(DialogInterface dialog, int item) {
                         hint.setText(context.getResources().getString(R.string.on_every,
                                 shortenDaysOfWeek[item]));
-                        prefs.edit().putInt("notificationFrequencyWeekNumberOrDate", item + 1).apply();
+                        prefs.edit().putInt(NOTIFICATION_FREQUENCY_WEEK_NUMBER_OR_DATE, item + 1).apply();
                         dialog.cancel();
                     }
                 }).setNegativeButton(context.getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -288,7 +294,7 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameterV
             public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
                 hint.setText(context.getResources().getString(R.string.every_month_on_space_string,
                         String.valueOf(i2)));
-                prefs.edit().putInt("notificationFrequencyWeekNumberOrDate", i2).apply();
+                prefs.edit().putInt(NOTIFICATION_FREQUENCY_WEEK_NUMBER_OR_DATE, i2).apply();
             }
         });
         dpd.show();

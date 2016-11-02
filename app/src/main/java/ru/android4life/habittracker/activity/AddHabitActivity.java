@@ -29,17 +29,33 @@ import ru.android4life.habittracker.db.tablesrepresentations.HabitSchedule;
 import ru.android4life.habittracker.enumeration.NotificationFrequencyType;
 import ru.android4life.habittracker.models.HabitParameter;
 import ru.android4life.habittracker.models.HabitSettings;
+import ru.android4life.habittracker.utils.StringConstants;
 import ru.android4life.habittracker.views.RippleView;
+
+import static ru.android4life.habittracker.utils.StringConstants.DAILY;
+import static ru.android4life.habittracker.utils.StringConstants.MINUTES_BEFORE_CONFIRMATION;
+import static ru.android4life.habittracker.utils.StringConstants.MONTHLY;
+import static ru.android4life.habittracker.utils.StringConstants.NOTIFICATION_FREQUENCY_SPECIFIED_DAY_1;
+import static ru.android4life.habittracker.utils.StringConstants.NOTIFICATION_FREQUENCY_SPECIFIED_DAY_2;
+import static ru.android4life.habittracker.utils.StringConstants.NOTIFICATION_FREQUENCY_SPECIFIED_DAY_3;
+import static ru.android4life.habittracker.utils.StringConstants.NOTIFICATION_FREQUENCY_SPECIFIED_DAY_4;
+import static ru.android4life.habittracker.utils.StringConstants.NOTIFICATION_FREQUENCY_SPECIFIED_DAY_5;
+import static ru.android4life.habittracker.utils.StringConstants.NOTIFICATION_FREQUENCY_SPECIFIED_DAY_6;
+import static ru.android4life.habittracker.utils.StringConstants.NOTIFICATION_FREQUENCY_SPECIFIED_DAY_7;
+import static ru.android4life.habittracker.utils.StringConstants.NOTIFICATION_FREQUENCY_TYPE;
+import static ru.android4life.habittracker.utils.StringConstants.NOTIFICATION_FREQUENCY_WEEK_NUMBER_OR_DATE;
+import static ru.android4life.habittracker.utils.StringConstants.NOTIFICATION_HOUR;
+import static ru.android4life.habittracker.utils.StringConstants.NOTIFICATION_MINUTE;
+import static ru.android4life.habittracker.utils.StringConstants.PICK_AUDIO_REQUEST;
+import static ru.android4life.habittracker.utils.StringConstants.SPECIFIED_DAYS;
+import static ru.android4life.habittracker.utils.StringConstants.WEEKLY;
 
 /**
  * Created by Bulat Mukhutdinov on 24.09.2016.
  */
 public class AddHabitActivity extends BaseActivity {
 
-    public static final int PICK_AUDIO_REQUEST = 0;
-    private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
     private HabitSettings habitSettings;
     private HabitScheduleDAO habitScheduleDAO;
     private HabitDAO habitDAO;
@@ -116,14 +132,14 @@ public class AddHabitActivity extends BaseActivity {
             }
         });
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.habit_parameters_list);
+        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.habit_parameters_list);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
         mRecyclerView.setHasFixedSize(true);
 
         // use a linear layout manager
-        mLayoutManager = new LinearLayoutManager(this);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
@@ -164,18 +180,18 @@ public class AddHabitActivity extends BaseActivity {
     }
 
     private void removeValuesForHabitSettingsFromPreferences() {
-        habitSettingsPrefs.edit().remove("categoryId").apply();
-        habitSettingsPrefs.edit().remove("notificationHour").apply();
-        habitSettingsPrefs.edit().remove("notificationMinute").apply();
-        habitSettingsPrefs.edit().remove("notificationFrequencyType").apply();
+        habitSettingsPrefs.edit().remove(StringConstants.CATEGORY_ID).apply();
+        habitSettingsPrefs.edit().remove(NOTIFICATION_HOUR).apply();
+        habitSettingsPrefs.edit().remove(NOTIFICATION_MINUTE).apply();
+        habitSettingsPrefs.edit().remove(NOTIFICATION_FREQUENCY_TYPE).apply();
         for (int i = 0; i <= 7; i++)
             habitSettingsPrefs.edit().remove(getApplicationContext().getResources()
                     .getString(R.string.notification_frequency_specified_day_string,
                             String.valueOf(i))).apply();
-        habitSettingsPrefs.edit().remove("notificationFrequencyWeekNumberOrDate").apply();
+        habitSettingsPrefs.edit().remove(NOTIFICATION_FREQUENCY_WEEK_NUMBER_OR_DATE).apply();
         habitSettingsPrefs.edit().remove(getContext().getResources()
                 .getString(R.string.notification_sound_name)).apply();
-        habitSettingsPrefs.edit().remove("minutesBeforeConfirmation").apply();
+        habitSettingsPrefs.edit().remove(MINUTES_BEFORE_CONFIRMATION).apply();
     }
 
     private HabitSettings getHabitSettingsFromPreferences(int editedHabitScheduleId) {
@@ -187,67 +203,67 @@ public class AddHabitActivity extends BaseActivity {
             else
                 result = new HabitSettings();
         } else { // Habits edition
-            if (habitSettingsPrefs.contains("notificationFrequencyType") &&
+            if (habitSettingsPrefs.contains(NOTIFICATION_FREQUENCY_TYPE) &&
                     habitSettingsPrefs.contains(getContext().getString(R.string.notification_sound_name)))
                 result = new HabitSettings(editedHabitScheduleId, true, habitSettings.getNotificationSoundUri(),
                         habitSettings.getNotificationSoundName());
-            else if (!habitSettingsPrefs.contains("notificationFrequencyType") &&
+            else if (!habitSettingsPrefs.contains(NOTIFICATION_FREQUENCY_TYPE) &&
                     habitSettingsPrefs.contains(getContext().getString(R.string.notification_sound_name)))
                 result = new HabitSettings(editedHabitScheduleId, false, habitSettings.getNotificationSoundUri(),
                         habitSettings.getNotificationSoundName());
-            else if (habitSettingsPrefs.contains("notificationFrequencyType") &&
+            else if (habitSettingsPrefs.contains(NOTIFICATION_FREQUENCY_TYPE) &&
                     !habitSettingsPrefs.contains(getContext().getString(R.string.notification_sound_name)))
                 result = new HabitSettings(editedHabitScheduleId, true);
             else
                 result = new HabitSettings(editedHabitScheduleId, false);
         }
 
-        if (habitSettingsPrefs.contains("categoryId"))
-            result.setCategoryId(habitSettingsPrefs.getInt("categoryId", habitSettings.getCategoryId()));
-        if (habitSettingsPrefs.contains("notificationHour"))
-            result.setNotificationHour(habitSettingsPrefs.getInt("notificationHour", habitSettings.getNotificationHour()));
-        if (habitSettingsPrefs.contains("notificationMinute"))
-            result.setNotificationMinute(habitSettingsPrefs.getInt("notificationMinute", habitSettings.getNotificationMinute()));
-        if (habitSettingsPrefs.contains("notificationFrequencyType"))
+        if (habitSettingsPrefs.contains(StringConstants.CATEGORY_ID))
+            result.setCategoryId(habitSettingsPrefs.getInt(StringConstants.CATEGORY_ID, habitSettings.getCategoryId()));
+        if (habitSettingsPrefs.contains(NOTIFICATION_HOUR))
+            result.setNotificationHour(habitSettingsPrefs.getInt(NOTIFICATION_HOUR, habitSettings.getNotificationHour()));
+        if (habitSettingsPrefs.contains(NOTIFICATION_MINUTE))
+            result.setNotificationMinute(habitSettingsPrefs.getInt(NOTIFICATION_MINUTE, habitSettings.getNotificationMinute()));
+        if (habitSettingsPrefs.contains(NOTIFICATION_FREQUENCY_TYPE))
             result.setNotificationFrequencyType(parseStringToNotificationFrequencyType(habitSettingsPrefs
-                    .getString("notificationFrequencyType", habitSettings.getNotificationFrequencyType().toString())));
+                    .getString(NOTIFICATION_FREQUENCY_TYPE, habitSettings.getNotificationFrequencyType().toString())));
         boolean[] notificationFrequencySpecifiedDays = result.getNotificationFrequencySpecifiedDays();
 
-        if (habitSettingsPrefs.contains("notificationFrequencySpecifiedDay1"))
-            notificationFrequencySpecifiedDays[0] = habitSettingsPrefs.getBoolean("notificationFrequencySpecifiedDay1", habitSettings.getNotificationFrequencySpecifiedDays()[0]);
-        if (habitSettingsPrefs.contains("notificationFrequencySpecifiedDay2"))
-            notificationFrequencySpecifiedDays[1] = habitSettingsPrefs.getBoolean("notificationFrequencySpecifiedDay2", habitSettings.getNotificationFrequencySpecifiedDays()[1]);
-        if (habitSettingsPrefs.contains("notificationFrequencySpecifiedDay3"))
-            notificationFrequencySpecifiedDays[2] = habitSettingsPrefs.getBoolean("notificationFrequencySpecifiedDay3", habitSettings.getNotificationFrequencySpecifiedDays()[2]);
-        if (habitSettingsPrefs.contains("notificationFrequencySpecifiedDay4"))
-            notificationFrequencySpecifiedDays[3] = habitSettingsPrefs.getBoolean("notificationFrequencySpecifiedDay4", habitSettings.getNotificationFrequencySpecifiedDays()[3]);
-        if (habitSettingsPrefs.contains("notificationFrequencySpecifiedDay5"))
-            notificationFrequencySpecifiedDays[4] = habitSettingsPrefs.getBoolean("notificationFrequencySpecifiedDay5", habitSettings.getNotificationFrequencySpecifiedDays()[4]);
-        if (habitSettingsPrefs.contains("notificationFrequencySpecifiedDay6"))
-            notificationFrequencySpecifiedDays[5] = habitSettingsPrefs.getBoolean("notificationFrequencySpecifiedDay6", habitSettings.getNotificationFrequencySpecifiedDays()[5]);
-        if (habitSettingsPrefs.contains("notificationFrequencySpecifiedDay7"))
-            notificationFrequencySpecifiedDays[6] = habitSettingsPrefs.getBoolean("notificationFrequencySpecifiedDay7", habitSettings.getNotificationFrequencySpecifiedDays()[6]);
+        if (habitSettingsPrefs.contains(NOTIFICATION_FREQUENCY_SPECIFIED_DAY_1))
+            notificationFrequencySpecifiedDays[0] = habitSettingsPrefs.getBoolean(NOTIFICATION_FREQUENCY_SPECIFIED_DAY_1, habitSettings.getNotificationFrequencySpecifiedDays()[0]);
+        if (habitSettingsPrefs.contains(NOTIFICATION_FREQUENCY_SPECIFIED_DAY_2))
+            notificationFrequencySpecifiedDays[1] = habitSettingsPrefs.getBoolean(NOTIFICATION_FREQUENCY_SPECIFIED_DAY_2, habitSettings.getNotificationFrequencySpecifiedDays()[1]);
+        if (habitSettingsPrefs.contains(NOTIFICATION_FREQUENCY_SPECIFIED_DAY_3))
+            notificationFrequencySpecifiedDays[2] = habitSettingsPrefs.getBoolean(NOTIFICATION_FREQUENCY_SPECIFIED_DAY_3, habitSettings.getNotificationFrequencySpecifiedDays()[2]);
+        if (habitSettingsPrefs.contains(NOTIFICATION_FREQUENCY_SPECIFIED_DAY_4))
+            notificationFrequencySpecifiedDays[3] = habitSettingsPrefs.getBoolean(NOTIFICATION_FREQUENCY_SPECIFIED_DAY_4, habitSettings.getNotificationFrequencySpecifiedDays()[3]);
+        if (habitSettingsPrefs.contains(NOTIFICATION_FREQUENCY_SPECIFIED_DAY_5))
+            notificationFrequencySpecifiedDays[4] = habitSettingsPrefs.getBoolean(NOTIFICATION_FREQUENCY_SPECIFIED_DAY_5, habitSettings.getNotificationFrequencySpecifiedDays()[4]);
+        if (habitSettingsPrefs.contains(NOTIFICATION_FREQUENCY_SPECIFIED_DAY_6))
+            notificationFrequencySpecifiedDays[5] = habitSettingsPrefs.getBoolean(NOTIFICATION_FREQUENCY_SPECIFIED_DAY_6, habitSettings.getNotificationFrequencySpecifiedDays()[5]);
+        if (habitSettingsPrefs.contains(NOTIFICATION_FREQUENCY_SPECIFIED_DAY_7))
+            notificationFrequencySpecifiedDays[6] = habitSettingsPrefs.getBoolean(NOTIFICATION_FREQUENCY_SPECIFIED_DAY_7, habitSettings.getNotificationFrequencySpecifiedDays()[6]);
 
         result.setNotificationFrequencySpecifiedDays(notificationFrequencySpecifiedDays);
 
-        if (habitSettingsPrefs.contains("notificationFrequencyWeekNumberOrDate"))
-            result.setNotificationFrequencyWeekNumberOrDate(habitSettingsPrefs.getInt("notificationFrequencyWeekNumberOrDate",
+        if (habitSettingsPrefs.contains(NOTIFICATION_FREQUENCY_WEEK_NUMBER_OR_DATE))
+            result.setNotificationFrequencyWeekNumberOrDate(habitSettingsPrefs.getInt(NOTIFICATION_FREQUENCY_WEEK_NUMBER_OR_DATE,
                     habitSettings.getNotificationFrequencyWeekNumberOrDate()));
-        if (habitSettingsPrefs.contains("minutesBeforeConfirmation"))
-            result.setMinutesBeforeConfirmation(habitSettingsPrefs.getInt("minutesBeforeConfirmation", habitSettings.getMinutesBeforeConfirmation()));
+        if (habitSettingsPrefs.contains(MINUTES_BEFORE_CONFIRMATION))
+            result.setMinutesBeforeConfirmation(habitSettingsPrefs.getInt(MINUTES_BEFORE_CONFIRMATION, habitSettings.getMinutesBeforeConfirmation()));
 
         return result;
     }
 
     private NotificationFrequencyType parseStringToNotificationFrequencyType(String s) {
         switch (s) {
-            case "DAILY":
+            case DAILY:
                 return NotificationFrequencyType.DAILY;
-            case "WEEKLY":
+            case WEEKLY:
                 return NotificationFrequencyType.WEEKLY;
-            case "MONTHLY":
+            case MONTHLY:
                 return NotificationFrequencyType.MONTHLY;
-            case "SPECIFIED_DAYS":
+            case SPECIFIED_DAYS:
                 return NotificationFrequencyType.SPECIFIED_DAYS;
             default:
                 return NotificationFrequencyType.DAILY;
@@ -289,7 +305,7 @@ public class AddHabitActivity extends BaseActivity {
         int habitsEditionResult = habitDAO.update(new Habit(editedHabit.getId(), habitName, habitQuestion, habitDay, 55.75417935,
                 48.7440855, 9, habitSettings.getNotificationSoundUri().toString(), true, 60, habitSettings.getCategoryId()));
         if (habitsEditionResult >= 0) {
-            if (habitSettingsPrefs.contains("notificationFrequencyType")) { // If habit schedules should be changed
+            if (habitSettingsPrefs.contains(NOTIFICATION_FREQUENCY_TYPE)) { // If habit schedules should be changed
                 habitScheduleDAO.deleteByHabitId(editedHabit.getId());
                 createSchedulesForTheHabitByItsId(editedHabit.getId());
             }

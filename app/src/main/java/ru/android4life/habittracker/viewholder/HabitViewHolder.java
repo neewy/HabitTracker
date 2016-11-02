@@ -1,7 +1,6 @@
 package ru.android4life.habittracker.viewholder;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -27,8 +26,7 @@ public class HabitViewHolder extends RecyclerView.ViewHolder {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(getClass().getSimpleName(), "onItemSelected: " + name.getText().toString());
-                Toast.makeText(view.getContext(), "onItemSelected: " + name.getText().toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(view.getContext(), view.getContext().getString(R.string.on_item_selected, name.getText().toString()), Toast.LENGTH_SHORT).show();
             }
         });
     }

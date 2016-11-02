@@ -20,6 +20,13 @@ import ru.android4life.habittracker.reciever.AlarmReceiver;
 import ru.android4life.habittracker.reciever.HabitPerformReceiver;
 
 import static android.content.Context.ALARM_SERVICE;
+import static ru.android4life.habittracker.utils.StringConstants.CONFIRMATION;
+import static ru.android4life.habittracker.utils.StringConstants.DONE;
+import static ru.android4life.habittracker.utils.StringConstants.HABIT_SCHEDULE_ID;
+import static ru.android4life.habittracker.utils.StringConstants.IS_DONE;
+import static ru.android4life.habittracker.utils.StringConstants.MIN_IN_MS;
+import static ru.android4life.habittracker.utils.StringConstants.OPEN;
+import static ru.android4life.habittracker.utils.StringConstants.SKIP;
 
 /**
  * Class, which helps to create notifications
@@ -60,7 +67,7 @@ public class HabitNotification {
      */
     public static void createReminder(Context context, HabitSchedule habitSchedule, Habit habit) {
         Intent openHabitsIntent = new Intent(context, MainActivity.class);
-        openHabitsIntent.setAction(habitSchedule.getId() + "open"); //to distinguish between different intents
+        openHabitsIntent.setAction(habitSchedule.getId() + OPEN); //to distinguish between different intents
 
         // Intent to open the MainActivity is put into pending intent
         PendingIntent openPendingIntent = PendingIntent.getActivity(context,
@@ -108,20 +115,20 @@ public class HabitNotification {
      */
     public static void createConfirmation(Context context, HabitSchedule habitSchedule, Habit habit) {
         Intent skipConfirmationIntent = new Intent(context, HabitPerformReceiver.class);
-        skipConfirmationIntent.setAction(habitSchedule.getId() + "skip");
+        skipConfirmationIntent.setAction(habitSchedule.getId() + SKIP);
 
-        skipConfirmationIntent.putExtra("habitScheduleId", habitSchedule.getId());
-        skipConfirmationIntent.putExtra("isDone", false);
+        skipConfirmationIntent.putExtra(HABIT_SCHEDULE_ID, habitSchedule.getId());
+        skipConfirmationIntent.putExtra(IS_DONE, false);
 
         PendingIntent skipPendingIntent = PendingIntent.getBroadcast(context,
                 0, skipConfirmationIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
         Intent doneConfirmationIntent = new Intent(context, HabitPerformReceiver.class);
-        doneConfirmationIntent.setAction(habitSchedule.getId() + "done");
+        doneConfirmationIntent.setAction(habitSchedule.getId() + DONE);
 
-        doneConfirmationIntent.putExtra("habitScheduleId", habitSchedule.getId());
-        doneConfirmationIntent.putExtra("isDone", true);
+        doneConfirmationIntent.putExtra(HABIT_SCHEDULE_ID, habitSchedule.getId());
+        doneConfirmationIntent.putExtra(IS_DONE, true);
 
         PendingIntent donePendingIntent = PendingIntent.getBroadcast(context,
                 1, doneConfirmationIntent,
@@ -177,7 +184,7 @@ public class HabitNotification {
 
     private PendingIntent createPendingIntent(int habitScheduleId, boolean isReminder) {
         Intent intent = new Intent(context, AlarmReceiver.class);
-        intent.putExtra("habitScheduleId", habitScheduleId);
+        intent.putExtra(HABIT_SCHEDULE_ID, habitScheduleId);
         int alarmId;
         if (isReminder) {
             alarmId = habitScheduleId * 2;
@@ -187,7 +194,7 @@ public class HabitNotification {
             // it is confirmation
             alarmId = habitScheduleId * 2 + 1;
             intent.setAction(String.valueOf(alarmId));
-            intent.putExtra("confirmation", true);
+            intent.putExtra(CONFIRMATION, true);
             return PendingIntent.getBroadcast(context, alarmId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         }
     }
@@ -207,7 +214,7 @@ public class HabitNotification {
 
                 PendingIntent confirmationIntent = createPendingIntent(schedule.getId(), false); //create intent for confirmation
                 alarmManager.cancel(confirmationIntent);
-                alarmManager.set(AlarmManager.RTC_WAKEUP, schedule.getDatetime().getTime() + habit.getConfirmAfterMinutes() * 60 * 1000, confirmationIntent);
+                alarmManager.set(AlarmManager.RTC_WAKEUP, schedule.getDatetime().getTime() + habit.getConfirmAfterMinutes() * MIN_IN_MS, confirmationIntent);
             }
         }
     }

@@ -28,6 +28,8 @@ import static ru.android4life.habittracker.enumeration.DrawerSelectionMode.NEXT_
 import static ru.android4life.habittracker.enumeration.DrawerSelectionMode.TODAY;
 import static ru.android4life.habittracker.enumeration.DrawerSelectionMode.TOMORROW;
 import static ru.android4life.habittracker.enumeration.DrawerSelectionMode.findDrawerSelectionMode;
+import static ru.android4life.habittracker.utils.StringConstants.FIRSTRUN;
+import static ru.android4life.habittracker.utils.StringConstants.LOCALE;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -44,7 +46,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContext(this.getApplicationContext());
-        locale = new Locale(prefs.getString("locale", getResources().getString(R.string.locale_en)));
+        locale = new Locale(prefs.getString(LOCALE, getResources().getString(R.string.locale_en)));
         Constants.updatePrettyTime();
         Locale.setDefault(locale);
         Configuration config = new Configuration();
@@ -70,7 +72,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         //Init the database manager
         DatabaseManager.setHelper(this);
         // run method forFirstRun only if the application wasn't run after installation
-        if (prefs.getBoolean("firstrun", true)) {
+        if (prefs.getBoolean(FIRSTRUN, true)) {
             forFirstRun();
         }
         // Initiate db
@@ -195,7 +197,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         habitCategoryDAO.create(new HabitCategory(7, getResources().getString(R.string.other)));
 
         // using the following line to edit/commit prefs
-        prefs.edit().putBoolean("firstrun", false).apply();
+        prefs.edit().putBoolean(FIRSTRUN, false).apply();
     }
 
     // `onPostCreate` called when activity start-up is complete after `onStart()`

@@ -77,6 +77,7 @@
 
     <!--Habits List-->
     <string name="did_i_question">Did I %1$s?</string>
+    <string name="on_item_selected">onItemSelected: %1$s</string>
 
     <!--Habits List Adapter-->
     <string name="habit_schedule_id">habitScheduleId</string>
@@ -104,6 +105,7 @@
 
     <!--Habits Parameters Adapter-->
     <string name="two_subsequent_strings">%1$s%2$s</string>
+    <string name="empty_delimiter_strings">%1$s %2$s</string>
     <string name="every_month_on_space_string">Every month on %1$s</string>
     <string name="on_every">On every %1$s</string>
     <string name="every_day">Every day</string>
@@ -172,4 +174,6 @@
     <string name="was_done">was done</string>
     <string name="was_skipped">was skipped</string>
     <string name="undo">UNDO</string>
+    <string name="standart_tune">Standard</string>
+    <string name="after_hour">After 60 minutes</string>
 </resources>

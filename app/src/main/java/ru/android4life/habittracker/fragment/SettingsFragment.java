@@ -21,7 +21,8 @@ import ru.android4life.habittracker.enumeration.SettingsType;
 import ru.android4life.habittracker.models.Setting;
 
 import static android.content.Context.MODE_PRIVATE;
-import static ru.android4life.habittracker.activity.BaseActivity.SHARED_PREF;
+import static ru.android4life.habittracker.utils.StringConstants.COLOR;
+import static ru.android4life.habittracker.utils.StringConstants.SHARED_PREF;
 
 /**
  * This class is a controller for in-app settings view.
@@ -29,9 +30,6 @@ import static ru.android4life.habittracker.activity.BaseActivity.SHARED_PREF;
  */
 
 public class SettingsFragment extends Fragment {
-
-    // view, which holds whole layout for the fragment
-    private RelativeLayout view;
 
     // list of personal settings
     private RecyclerView personalSettings;
@@ -57,7 +55,7 @@ public class SettingsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = (RelativeLayout) inflater.inflate(R.layout.fragment_settings_list, container, false);
+        RelativeLayout view = (RelativeLayout) inflater.inflate(R.layout.fragment_settings_list, container, false);
         personalSettings = (RecyclerView) view.findViewById(R.id.personal_settings);
         inAppSettings = (RecyclerView) view.findViewById(R.id.in_app_info);
 
@@ -95,7 +93,7 @@ public class SettingsFragment extends Fragment {
         List<Setting> personalSettingsList = new ArrayList<>();
         String locale = MainActivity.getContext().getResources().getConfiguration().locale.getDisplayName();
         personalSettingsList.add(new Setting(getString(R.string.first_name), getString(R.string.username)));
-        personalSettingsList.add(new Setting(getString(R.string.primary_color), prefs.getString("color", "")));
+        personalSettingsList.add(new Setting(getString(R.string.primary_color), prefs.getString(COLOR, "")));
         personalSettingsList.add(new Setting(getString(R.string.language), locale));
         return personalSettingsList;
     }

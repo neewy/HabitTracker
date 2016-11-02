@@ -21,8 +21,11 @@ import ru.android4life.habittracker.models.Setting;
 import ru.android4life.habittracker.viewholder.SettingsViewHolder;
 
 import static android.content.Context.MODE_PRIVATE;
-import static ru.android4life.habittracker.activity.MainActivity.SHARED_PREF;
 import static ru.android4life.habittracker.activity.MainActivity.getContext;
+import static ru.android4life.habittracker.utils.StringConstants.COLOR;
+import static ru.android4life.habittracker.utils.StringConstants.LOCALE;
+import static ru.android4life.habittracker.utils.StringConstants.PRIMARY_COLOR_DIALOG;
+import static ru.android4life.habittracker.utils.StringConstants.SHARED_PREF;
 
 /**
  * This adapter populates the list of settings in the application.
@@ -32,6 +35,7 @@ import static ru.android4life.habittracker.activity.MainActivity.getContext;
  */
 
 public class SettingsListAdapter extends RecyclerView.Adapter<SettingsViewHolder> {
+
 
     // in order to create dialogs of settings
     public static FragmentManager fragmentManager;
@@ -111,12 +115,12 @@ public class SettingsListAdapter extends RecyclerView.Adapter<SettingsViewHolder
                     .setTitle(R.string.color_select)
                     .setSortColorsByName(true)
                     .build();
-            dialog.show(fragmentManager, "primary_color_dialog");
+            dialog.show(fragmentManager, PRIMARY_COLOR_DIALOG);
             dialog.setOnColorSelectedListener(new ColorSelectDialog.OnColorSelectedListener() {
                 @Override
                 public void onColorSelected(SelectableColor selectedItem) {
                     //FIXME: replace with getID
-                    mainActivity.getSharedPreferences(SHARED_PREF, MODE_PRIVATE).edit().putString("color", selectedItem.getName()).apply();
+                    mainActivity.getSharedPreferences(SHARED_PREF, MODE_PRIVATE).edit().putString(COLOR, selectedItem.getName()).apply();
                     dialog.dismiss();
                     mainActivity.recreate();
                 }
@@ -129,7 +133,7 @@ public class SettingsListAdapter extends RecyclerView.Adapter<SettingsViewHolder
     private void createLanguageDialog(final ViewGroup parent) {
         final CharSequence[] items = {parent.getResources().getString(R.string.english), parent.getResources().getString(R.string.russian)};
         if (selectedLanguage == null) {
-            selectedLanguage = getSelectedLocale(mainActivity.getSharedPreferences(SHARED_PREF, MODE_PRIVATE).getString("locale", parent.getResources().getString(R.string.locale_en)), parent);
+            selectedLanguage = getSelectedLocale(mainActivity.getSharedPreferences(SHARED_PREF, MODE_PRIVATE).getString(LOCALE, parent.getResources().getString(R.string.locale_en)), parent);
         }
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 parent.getContext());
@@ -139,10 +143,10 @@ public class SettingsListAdapter extends RecyclerView.Adapter<SettingsViewHolder
                     public void onClick(DialogInterface dialog, int item) {
                         switch (item) {
                             case 0:
-                                mainActivity.getSharedPreferences(SHARED_PREF, MODE_PRIVATE).edit().putString("locale", parent.getResources().getString(R.string.locale_en)).apply();
+                                mainActivity.getSharedPreferences(SHARED_PREF, MODE_PRIVATE).edit().putString(LOCALE, parent.getResources().getString(R.string.locale_en)).apply();
                                 break;
                             case 1:
-                                mainActivity.getSharedPreferences(SHARED_PREF, MODE_PRIVATE).edit().putString("locale", parent.getResources().getString(R.string.locale_ru)).apply();
+                                mainActivity.getSharedPreferences(SHARED_PREF, MODE_PRIVATE).edit().putString(LOCALE, parent.getResources().getString(R.string.locale_ru)).apply();
                                 break;
                         }
                         if (selectedLanguage != item) {

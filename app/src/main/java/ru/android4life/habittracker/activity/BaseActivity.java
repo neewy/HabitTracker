@@ -10,6 +10,14 @@ import java.lang.reflect.Method;
 
 import ru.android4life.habittracker.R;
 
+import static ru.android4life.habittracker.utils.StringConstants.BLUE;
+import static ru.android4life.habittracker.utils.StringConstants.COLOR;
+import static ru.android4life.habittracker.utils.StringConstants.FIRSTRUN;
+import static ru.android4life.habittracker.utils.StringConstants.PURPLE;
+import static ru.android4life.habittracker.utils.StringConstants.RED;
+import static ru.android4life.habittracker.utils.StringConstants.SHARED_PREF;
+import static ru.android4life.habittracker.utils.StringConstants.TEAL;
+
 /**
  * This activity is for setting style for the activities,
  * if the user checks different style in settings.
@@ -18,7 +26,7 @@ import ru.android4life.habittracker.R;
  */
 
 public abstract class BaseActivity extends AppCompatActivity {
-    public final static String SHARED_PREF = "SHARED_PREF";
+
     public static int themeID;
     private static Context context;
     protected SharedPreferences prefs = null;
@@ -38,8 +46,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         //any activity which inherits now can use shared preferences
         prefs = getSharedPreferences(SHARED_PREF, MODE_PRIVATE);
 
-        if (prefs.getBoolean("firstrun", true)) {
-            prefs.edit().putString("color", "Blue").apply();
+        if (prefs.getBoolean(FIRSTRUN, true)) {
+            prefs.edit().putString(COLOR, BLUE).apply();
         }
 
         setApplicationStyle();
@@ -48,17 +56,17 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     private void setApplicationStyle() {
         //we check if the style was selected in settings:
-        switch (prefs.getString("color", "")) {
-            case "Red":
+        switch (prefs.getString(COLOR, "")) {
+            case RED:
                 setTheme(R.style.AppThemeRedAndBlue);
                 break;
-            case "Blue":
+            case BLUE:
                 setTheme(R.style.AppThemeBlueAndPink);
                 break;
-            case "Purple":
+            case PURPLE:
                 setTheme(R.style.AppThemePurpleAndGreen);
                 break;
-            case "Teal":
+            case TEAL:
                 setTheme(R.style.AppThemeTealAndLime);
                 break;
             default:
