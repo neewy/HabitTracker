@@ -8,10 +8,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.NotificationCompat;
 
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.List;
 
+import ru.android4life.habittracker.activity.MainActivity;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitDAO;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitScheduleDAO;
 import ru.android4life.habittracker.db.tablesrepresentations.Habit;
@@ -35,7 +35,7 @@ public class HabitNotification {
     private AlarmManager alarmManager;
     private HabitScheduleDAO habitScheduleDAO;
 
-    private HashMap<Habit, List<HabitSchedule>> habitsAndSchedules = new HashMap<>();
+    private List<Habit> habits = new ArrayList<>();
 
     public HabitNotification(Context context) {
         this.context = context;
@@ -44,33 +44,95 @@ public class HabitNotification {
         habitScheduleDAO = new HabitScheduleDAO(context);
     }
 
-    public static void createNotification(Context context, HabitSchedule habitSchedule, Habit habit) {
-        Intent skipNotificationIntent = new Intent(context, HabitPerformReceiver.class);
-        skipNotificationIntent.setAction(habitSchedule.getId() + " | " + habitSchedule.getHabitId());
+    /**
+     * Reminder is the push notification,
+     * that a user can see the time a habit
+     * was scheduled
+     * <p>
+     * <b>
+     * The id of reminder notification is
+     * the habitSchedule.id * 2
+     * </b>
+     *
+     * @param context
+     * @param habitSchedule
+     * @param habit
+     */
+    public static void createReminder(Context context, HabitSchedule habitSchedule, Habit habit) {
+        Intent openHabitsIntent = new Intent(context, MainActivity.class);
+        openHabitsIntent.setAction(habitSchedule.getId() + "open"); //to distinguish between different intents
 
-        skipNotificationIntent.putExtra("habitScheduleId", habitSchedule.getId());
-        skipNotificationIntent.putExtra("isDone", false);
-
-        PendingIntent skipPendingIntent = PendingIntent.getBroadcast(context,
-                0, skipNotificationIntent,
+        // Intent to open the MainActivity is put into pending intent
+        PendingIntent openPendingIntent = PendingIntent.getActivity(context,
+                0, openHabitsIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
-        Intent doneNotificationIntent = new Intent(context, HabitPerformReceiver.class);
-        doneNotificationIntent.setAction(habitSchedule.getId() + " | " + habitSchedule.getHabitId());
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 
-        doneNotificationIntent.putExtra("habitScheduleId", habitSchedule.getId());
-        doneNotificationIntent.putExtra("isDone", true);
+        builder.setContentIntent(openPendingIntent)
+                .setSmallIcon(R.drawable.ic_add_habit_reminder)
+                .setTicker(String.format(context.getString(R.string.did_i_question), //top line question
+                        habit.getQuestion()))
+                .setWhen(habitSchedule.getDatetime().getTime())
+                .setAutoCancel(true) //auto cancel if clicked
+                .setContentTitle(habit.getName())
+                .setContentText(String.format(context.getString(R.string.did_i_question),
+                        habit.getQuestion()));
+
+        Notification notification = builder.build();
+        notification.defaults |= Notification.DEFAULT_ALL; //all default settings (vibration, tune, etc.)
+
+        //TODO: Add custom tune and vibration!
+        //notification.sound = Uri.parse(habit.getAudioResource());
+
+        NotificationManager notificationManager = (NotificationManager) context
+                .getSystemService(Context.NOTIFICATION_SERVICE);
+        // we multiple by two to distinguish between reminder and confirmation
+        notificationManager.notify(habitSchedule.getId() * 2, notification);
+    }
+
+
+    /**
+     * Confirmation is the push notification,
+     * that a user can see if he selected habit
+     * with confirmations, and after some time has
+     * passed after reminder
+     * <b>
+     * The id of confirmation notification is
+     * the habitSchedule.id * 2 + 1
+     * </b>
+     *
+     * @param context
+     * @param habitSchedule
+     * @param habit
+     */
+    public static void createConfirmation(Context context, HabitSchedule habitSchedule, Habit habit) {
+        Intent skipConfirmationIntent = new Intent(context, HabitPerformReceiver.class);
+        skipConfirmationIntent.setAction(habitSchedule.getId() + "skip");
+
+        skipConfirmationIntent.putExtra("habitScheduleId", habitSchedule.getId());
+        skipConfirmationIntent.putExtra("isDone", false);
+
+        PendingIntent skipPendingIntent = PendingIntent.getBroadcast(context,
+                0, skipConfirmationIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Intent doneConfirmationIntent = new Intent(context, HabitPerformReceiver.class);
+        doneConfirmationIntent.setAction(habitSchedule.getId() + "done");
+
+        doneConfirmationIntent.putExtra("habitScheduleId", habitSchedule.getId());
+        doneConfirmationIntent.putExtra("isDone", true);
 
         PendingIntent donePendingIntent = PendingIntent.getBroadcast(context,
-                1, doneNotificationIntent,
+                1, doneConfirmationIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 
         builder.setSmallIcon(R.drawable.ic_add_habit_reminder)
-                .addAction(R.drawable.skip, context.getString(R.string.skip), skipPendingIntent)
-                .addAction(R.drawable.done, context.getString(R.string.done), donePendingIntent)
+                .addAction(R.drawable.ic_skip_icon_24dp, context.getString(R.string.skip), skipPendingIntent)
+                .addAction(R.drawable.ic_done_icon_24dp, context.getString(R.string.done), donePendingIntent)
                 .setTicker(String.format(context.getString(R.string.did_i_question),
                         habit.getQuestion()))
                 .setWhen(habitSchedule.getDatetime().getTime())
@@ -87,51 +149,66 @@ public class HabitNotification {
 
         NotificationManager notificationManager = (NotificationManager) context
                 .getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(habitSchedule.getId(), notification);
+        // we multiple by two and add one to distinguish between reminder and confirmation
+        notificationManager.notify(habitSchedule.getId() * 2 + 1, notification);
     }
 
-    private void populateHabitList() {
-        List<Habit> habits = (List<Habit>) habitDAO.findAll();
-        for (Habit habit : habits) {
-            List<HabitSchedule> habitSchedules = habitScheduleDAO.findByHabitId(habit.getId());
-            habitsAndSchedules.put(habit, habitSchedules);
-        }
-    }
 
     public void createAllAlarms() {
-        if (habitsAndSchedules.isEmpty()) {
-            populateHabitList();
+        if (habits.isEmpty()) {
+            habits = (List<Habit>) habitDAO.findAll();
         }
-        Iterator<Habit> habitIterator = habitsAndSchedules.keySet().iterator();
-        while (habitIterator.hasNext()) {
-            Habit habit = habitIterator.next();
-            for (HabitSchedule schedule : habitsAndSchedules.get(habit)) {
-                //if it is not done or skipped and the time now is less
-                if (schedule.isDone() == null && System.currentTimeMillis() <= schedule.getDatetime().getTime()) {
-                    PendingIntent pendingIntent = createPendingIntent(schedule.getId());
-                    alarmManager.cancel(pendingIntent);
-                    alarmManager.set(AlarmManager.RTC_WAKEUP, schedule.getDatetime().getTime(), pendingIntent);
-                }
-            }
+        for (Habit habit : habits) {
+            createHabitAlarms(habit);
         }
     }
 
     public void deleteHabitAlarms(int habitId) {
         List<HabitSchedule> habitSchedules = habitScheduleDAO.findByHabitId(habitId);
         for (HabitSchedule schedule : habitSchedules) {
-            deleteHabitScheduleAlarm(schedule.getId());
+            deleteHabitScheduleAlarms(schedule.getId());
         }
     }
 
-    public void deleteHabitScheduleAlarm(int habitScheduleId) {
-        alarmManager.cancel(createPendingIntent(habitScheduleId));
+    public void deleteHabitScheduleAlarms(int habitScheduleId) {
+        alarmManager.cancel(createPendingIntent(habitScheduleId, true));
+        alarmManager.cancel(createPendingIntent(habitScheduleId, false));
     }
 
-    private PendingIntent createPendingIntent(int habitScheduleId) {
+    private PendingIntent createPendingIntent(int habitScheduleId, boolean isReminder) {
         Intent intent = new Intent(context, AlarmReceiver.class);
         intent.putExtra("habitScheduleId", habitScheduleId);
-        intent.setAction(String.valueOf(habitScheduleId));
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, habitScheduleId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        return pendingIntent;
+        int alarmId;
+        if (isReminder) {
+            alarmId = habitScheduleId * 2;
+            intent.setAction(String.valueOf(alarmId));
+            return PendingIntent.getBroadcast(context, alarmId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        } else {
+            // it is confirmation
+            alarmId = habitScheduleId * 2 + 1;
+            intent.setAction(String.valueOf(alarmId));
+            intent.putExtra("confirmation", true);
+            return PendingIntent.getBroadcast(context, alarmId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        }
+    }
+
+    /**
+     * Creates and re-creates all alarms for the habit
+     * @param habit
+     */
+    public void createHabitAlarms(Habit habit) {
+        List<HabitSchedule> habitSchedules = habitScheduleDAO.findByHabitId(habit.getId());
+        for (HabitSchedule schedule : habitSchedules) {
+            //if it is not done or skipped and the time now is less
+            if (schedule.isDone() == null && System.currentTimeMillis() <= schedule.getDatetime().getTime()) {
+                PendingIntent reminderIntent = createPendingIntent(schedule.getId(), true); //create intent for reminder
+                alarmManager.cancel(reminderIntent);
+                alarmManager.set(AlarmManager.RTC_WAKEUP, schedule.getDatetime().getTime(), reminderIntent);
+
+                PendingIntent confirmationIntent = createPendingIntent(schedule.getId(), false); //create intent for confirmation
+                alarmManager.cancel(confirmationIntent);
+                alarmManager.set(AlarmManager.RTC_WAKEUP, schedule.getDatetime().getTime() + habit.getConfirmAfterMinutes() * 60 * 1000, confirmationIntent);
+            }
+        }
     }
 }

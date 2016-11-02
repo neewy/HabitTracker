@@ -22,8 +22,12 @@ public class AlarmReceiver extends BroadcastReceiver {
             HabitScheduleDAO habitScheduleDAO = new HabitScheduleDAO(context);
             HabitSchedule schedule = (HabitSchedule) habitScheduleDAO.findById(habitScheduleId);
             Habit habit = (Habit) habitDAO.findById(schedule.getHabitId());
-            HabitNotification.createNotification(context, schedule, habit);
+            boolean isConfirmation = bundle.getBoolean("confirmation", false);
+            if (isConfirmation) {
+                HabitNotification.createConfirmation(context, schedule, habit);
+            } else {
+                HabitNotification.createReminder(context, schedule, habit);
+            }
         }
-
     }
 }

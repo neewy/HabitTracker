@@ -44,6 +44,7 @@ public class AddHabitActivity extends BaseActivity {
     private HabitScheduleDAO habitScheduleDAO;
     private HabitDAO habitDAO;
     private SharedPreferences habitSettingsPrefs = null;
+    private HabitNotification notification;
 
 
     @Override
@@ -51,6 +52,8 @@ public class AddHabitActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_habit);
         setContext(this.getApplicationContext());
+
+        notification = new HabitNotification(getContext());
 
         // Initialise DAOs, habitSettingsPrefs & notificationSoundUri with default notification uri
         habitSettingsPrefs = getApplicationContext().getSharedPreferences(getApplicationContext()
@@ -100,10 +103,6 @@ public class AddHabitActivity extends BaseActivity {
                     mAdapter.notifyDataSetChanged();
 
                     removeValuesForHabitSettingsFromPreferences();
-
-                    //create (or update) alarms for habit notifications
-                    HabitNotification notification = new HabitNotification(getContext());
-                    notification.createAllAlarms();
 
                     new Handler().postDelayed(new Runnable() {
                         @Override
@@ -294,6 +293,7 @@ public class AddHabitActivity extends BaseActivity {
                 habitScheduleDAO.deleteByHabitId(editedHabit.getId());
                 createSchedulesForTheHabitByItsId(editedHabit.getId());
             }
+            notification.createHabitAlarms(editedHabit);
             return true;
         } else {
             toastMessage(getContext().getString(R.string.habit_name_and_question_should_be_unique));
@@ -302,11 +302,13 @@ public class AddHabitActivity extends BaseActivity {
     }
 
     private boolean createHabitAccordingToHabitPreferencesIfDataIsCorrect(Date habitDay, String habitName, String habitQuestion) {
-        int habitsCreationResult = habitDAO.create(new Habit(1, habitName, habitQuestion, habitDay, 55.75417935,
-                48.7440855, 9, habitSettings.getNotificationSoundUri().toString(), true, 60, habitSettings.getCategoryId()));
+        Habit habitToCreate = new Habit(1, habitName, habitQuestion, habitDay, 55.75417935,
+                48.7440855, 9, habitSettings.getNotificationSoundUri().toString(), true, 60, habitSettings.getCategoryId());
+        int habitsCreationResult = habitDAO.create(habitToCreate);
         if (habitsCreationResult > 0) {
             Habit habitWithMaxId = (Habit) habitDAO.getObjectWithMaxId();
             createSchedulesForTheHabitByItsId(habitWithMaxId.getId());
+            notification.createHabitAlarms(habitToCreate);
             return true;
         } else {
             toastMessage(getContext().getString(R.string.habit_name_and_question_should_be_unique));

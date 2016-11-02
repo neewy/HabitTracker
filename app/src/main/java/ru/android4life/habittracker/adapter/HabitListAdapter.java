@@ -214,9 +214,9 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
         makeUndoSnackbar(isDone, habitSchedule, v);
         listFragment.switchEmptyView();
 
-        //delete notification if the habit was performed manually
+        //delete notifications if the habit was performed manually
         HabitNotification notification = new HabitNotification(context);
-        notification.deleteHabitScheduleAlarm(habitSchedule.getId());
+        notification.deleteHabitScheduleAlarms(habitSchedule.getId());
     }
 
     private void makeUndoSnackbar(boolean isDone, final HabitSchedule habitSchedule, View v) {
