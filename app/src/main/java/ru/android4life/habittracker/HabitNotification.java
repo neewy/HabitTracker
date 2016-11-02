@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.NotificationCompat;
 
 import java.util.ArrayList;
@@ -87,10 +88,10 @@ public class HabitNotification {
                         habit.getQuestion()));
 
         Notification notification = builder.build();
-        notification.defaults |= Notification.DEFAULT_ALL; //all default settings (vibration, tune, etc.)
+        //notification.defaults |= Notification.DEFAULT_ALL; //all default settings (vibration, tune, etc.)
 
         //TODO: Add custom tune and vibration!
-        //notification.sound = Uri.parse(habit.getAudioResource());
+        notification.sound = Uri.parse(habit.getAudioResource());
 
         NotificationManager notificationManager = (NotificationManager) context
                 .getSystemService(Context.NOTIFICATION_SERVICE);
@@ -149,10 +150,10 @@ public class HabitNotification {
                         habit.getQuestion()));
 
         Notification notification = builder.build();
-        notification.defaults |= Notification.DEFAULT_ALL;
+        //notification.defaults |= Notification.DEFAULT_ALL;
 
         //TODO: Add custom tune and vibration!
-        //notification.sound = Uri.parse(habit.getAudioResource());
+        notification.sound = Uri.parse(habit.getAudioResource());
 
         NotificationManager notificationManager = (NotificationManager) context
                 .getSystemService(Context.NOTIFICATION_SERVICE);
