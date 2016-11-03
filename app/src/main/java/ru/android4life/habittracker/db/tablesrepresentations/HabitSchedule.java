@@ -23,6 +23,18 @@ public class HabitSchedule {
     @DatabaseField(uniqueCombo = true)
     private int habitId;
 
+    public HabitSchedule(Date datetime, Boolean isDone, int habitId) {
+        this.datetime = datetime;
+        this.isDone = isDone;
+        this.habitId = habitId;
+    }
+
+    public HabitSchedule(String datetimeString, Boolean isDone, int habitId) throws ParseException {
+        this.datetime = Constants.dateFormat.parse(datetimeString);
+        this.isDone = isDone;
+        this.habitId = habitId;
+    }
+
     public HabitSchedule(int id, Date datetime, Boolean isDone, int habitId) {
         this.id = id;
         this.datetime = datetime;

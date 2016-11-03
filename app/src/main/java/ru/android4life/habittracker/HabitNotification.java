@@ -32,7 +32,7 @@ import static ru.android4life.habittracker.utils.StringConstants.SKIP;
 /**
  * Class, which helps to create notifications
  * for all habit schedules
- *
+ * <p>
  * Created by neewy on 30.10.16.
  */
 
@@ -202,6 +202,7 @@ public class HabitNotification {
 
     /**
      * Creates and re-creates all alarms for the habit
+     *
      * @param habit
      */
     public void createHabitAlarms(Habit habit) {

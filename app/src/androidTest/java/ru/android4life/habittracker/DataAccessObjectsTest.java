@@ -69,13 +69,13 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         isDone = null;
 
         HabitCategoryDAO habitCategoryDAO = new HabitCategoryDAO(this.getContext());
-        habitCategoryDAO.create(new HabitCategory(1, this.getContext().getString(R.string.sport)));
-        habitCategoryDAO.create(new HabitCategory(2, this.getContext().getString(R.string.reading)));
-        habitCategoryDAO.create(new HabitCategory(3, this.getContext().getString(R.string.cooking)));
-        habitCategoryDAO.create(new HabitCategory(4, this.getContext().getString(R.string.cleaning)));
-        habitCategoryDAO.create(new HabitCategory(5, this.getContext().getString(R.string.studying)));
-        habitCategoryDAO.create(new HabitCategory(6, this.getContext().getString(R.string.health)));
-        habitCategoryDAO.create(new HabitCategory(7, this.getContext().getString(R.string.other)));
+        habitCategoryDAO.create(new HabitCategory(this.getContext().getString(R.string.sport)));
+        habitCategoryDAO.create(new HabitCategory(this.getContext().getString(R.string.reading)));
+        habitCategoryDAO.create(new HabitCategory(this.getContext().getString(R.string.cooking)));
+        habitCategoryDAO.create(new HabitCategory(this.getContext().getString(R.string.cleaning)));
+        habitCategoryDAO.create(new HabitCategory(this.getContext().getString(R.string.studying)));
+        habitCategoryDAO.create(new HabitCategory(this.getContext().getString(R.string.health)));
+        habitCategoryDAO.create(new HabitCategory(this.getContext().getString(R.string.other)));
     }
 
     @Test
@@ -85,7 +85,7 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         Habit habitWithTheSameId;
         Habit habitFromMobileDatabaseWithMaxId;
 
-        Habit newHabit = new Habit(id, name, question, modifiedDateTime, latitude, longitude,
+        Habit newHabit = new Habit(name, question, modifiedDateTime, latitude, longitude,
                 range, audioResource, usesConfirmation, confirmAfterMinutes, categoryId);
         habitDAO.create(newHabit);
 
@@ -112,7 +112,7 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         // As auto-increment is used for the ids,
         // the id of the next created element will be bigger on 1
         id++;
-        newHabit = new Habit(id, name, question, modifiedDateTime, latitude, longitude,
+        newHabit = new Habit(name, question, modifiedDateTime, latitude, longitude,
                 range, audioResource, usesConfirmation, confirmAfterMinutes, categoryId);
 
         habitDAO.createOrUpdateIfExists(newHabit);
@@ -135,7 +135,7 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         // As auto-increment is used for the ids,
         // the id of the next created element will be bigger on 1
         id++;
-        newHabit = new Habit(id, name, question, modifiedDateTime, latitude, longitude,
+        newHabit = new Habit(name, question, modifiedDateTime, latitude, longitude,
                 range, audioResource, usesConfirmation, confirmAfterMinutes, categoryId);
 
         habitDAO.create(newHabit);
@@ -163,7 +163,7 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         HabitCategory habitCategoryWithTheSameId;
         HabitCategory habitCategoryFromMobileDatabaseWithMaxId;
 
-        HabitCategory newHabitCategory = new HabitCategory(id, name);
+        HabitCategory newHabitCategory = new HabitCategory(name);
         habitCategoryDAO.create(newHabitCategory);
 
         // create(), findById() check
@@ -189,7 +189,7 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         // As auto-increment is used for the ids,
         // the id of the next created element will be bigger on 1
         id++;
-        newHabitCategory = new HabitCategory(id, name);
+        newHabitCategory = new HabitCategory(name);
 
         habitCategoryDAO.createOrUpdateIfExists(newHabitCategory);
         habitCategoryFromMobileDatabaseWithMaxId = (HabitCategory) habitCategoryDAO.getObjectWithMaxId();
@@ -210,7 +210,7 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         // As auto-increment is used for the ids,
         // the id of the next created element will be bigger on 1
         id++;
-        newHabitCategory = new HabitCategory(id, name);
+        newHabitCategory = new HabitCategory(name);
 
         habitCategoryDAO.create(newHabitCategory);
         // name currently equals "sport"
@@ -223,13 +223,13 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         habitCategoryDAO.delete(newHabitCategory);
         assertFalse(habitCategoryDAO.findAll().size() > 0 && newHabitCategory == habitCategoryDAO.getObjectWithMaxId());
 
-        habitCategoryDAO.create(new HabitCategory(1, this.getContext().getString(R.string.sport)));
-        habitCategoryDAO.create(new HabitCategory(2, this.getContext().getString(R.string.reading)));
-        habitCategoryDAO.create(new HabitCategory(3, this.getContext().getString(R.string.cooking)));
-        habitCategoryDAO.create(new HabitCategory(4, this.getContext().getString(R.string.cleaning)));
-        habitCategoryDAO.create(new HabitCategory(5, this.getContext().getString(R.string.studying)));
-        habitCategoryDAO.create(new HabitCategory(6, this.getContext().getString(R.string.health)));
-        habitCategoryDAO.create(new HabitCategory(7, this.getContext().getString(R.string.other)));
+        habitCategoryDAO.create(new HabitCategory(this.getContext().getString(R.string.sport)));
+        habitCategoryDAO.create(new HabitCategory(this.getContext().getString(R.string.reading)));
+        habitCategoryDAO.create(new HabitCategory(this.getContext().getString(R.string.cooking)));
+        habitCategoryDAO.create(new HabitCategory(this.getContext().getString(R.string.cleaning)));
+        habitCategoryDAO.create(new HabitCategory(this.getContext().getString(R.string.studying)));
+        habitCategoryDAO.create(new HabitCategory(this.getContext().getString(R.string.health)));
+        habitCategoryDAO.create(new HabitCategory(this.getContext().getString(R.string.other)));
     }
 
     @Test
@@ -239,7 +239,7 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         HabitSchedule habitScheduleWithTheSameId;
         HabitSchedule habitScheduleFromMobileDatabaseWithMaxId;
 
-        HabitSchedule newHabitSchedule = new HabitSchedule(id, modifiedDateTime, isDone, id);
+        HabitSchedule newHabitSchedule = new HabitSchedule(modifiedDateTime, isDone, id);
         habitScheduleDAO.create(newHabitSchedule);
 
         // create(), findById() check
@@ -265,7 +265,7 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         // As auto-increment is used for the ids,
         // the id of the next created element will be bigger on 1
         id++;
-        newHabitSchedule = new HabitSchedule(id, modifiedDateTime, isDone, id);
+        newHabitSchedule = new HabitSchedule(modifiedDateTime, isDone, id);
 
         habitScheduleDAO.createOrUpdateIfExists(newHabitSchedule);
         habitScheduleFromMobileDatabaseWithMaxId = (HabitSchedule) habitScheduleDAO.getObjectWithMaxId();
@@ -286,7 +286,7 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         // As auto-increment is used for the ids,
         // the id of the next created element will be bigger on 1
         id++;
-        newHabitSchedule = new HabitSchedule(id, modifiedDateTime, isDone, id);
+        newHabitSchedule = new HabitSchedule(modifiedDateTime, isDone, id);
 
         habitScheduleDAO.create(newHabitSchedule);
         // isDone is equal to true
@@ -303,7 +303,7 @@ public class DataAccessObjectsTest extends AndroidTestCase {
     @Test
     public void testFindingHabitSchedulesFoundForToday() throws ParseException {
         HabitScheduleDAO habitScheduleDAO = new HabitScheduleDAO(this.getContext());
-        HabitSchedule newHabitSchedule = new HabitSchedule(id, modifiedDateTime, isDone, id);
+        HabitSchedule newHabitSchedule = new HabitSchedule(modifiedDateTime, isDone, id);
         // Test schedules for today
         Calendar c = new GregorianCalendar();
         c.set(Calendar.HOUR_OF_DAY, 10);
@@ -313,9 +313,9 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         c.add(Calendar.DATE, 2);
         Date twoDaysAfterToday = c.getTime();
         habitScheduleDAO.create(newHabitSchedule);
-        HabitSchedule habitScheduleForToday = new HabitSchedule(id, today, isDone, id);
+        HabitSchedule habitScheduleForToday = new HabitSchedule(today, isDone, id);
         habitScheduleDAO.create(habitScheduleForToday);
-        newHabitSchedule = new HabitSchedule(id, twoDaysAfterToday, isDone, id);
+        newHabitSchedule = new HabitSchedule(twoDaysAfterToday, isDone, id);
         habitScheduleDAO.create(newHabitSchedule);
         List<HabitSchedule> habitScheduleList = habitScheduleDAO.findHabitSchedulesForToday();
         assertEquals(habitScheduleList.size(), 1);
@@ -325,7 +325,7 @@ public class DataAccessObjectsTest extends AndroidTestCase {
     @Test
     public void testFindingHabitSchedulesFoundForTomorrow() throws ParseException {
         HabitScheduleDAO habitScheduleDAO = new HabitScheduleDAO(this.getContext());
-        HabitSchedule newHabitSchedule = new HabitSchedule(id, modifiedDateTime, isDone, id);
+        HabitSchedule newHabitSchedule = new HabitSchedule(modifiedDateTime, isDone, id);
         // Test schedules for tomorrow
         Calendar c = new GregorianCalendar();
         c.set(Calendar.HOUR_OF_DAY, 10);
@@ -337,11 +337,11 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         c.add(Calendar.DATE, 1);
         Date twoDaysAfterToday = c.getTime();
         habitScheduleDAO.create(newHabitSchedule);
-        newHabitSchedule = new HabitSchedule(id, today, isDone, id);
+        newHabitSchedule = new HabitSchedule(today, isDone, id);
         habitScheduleDAO.create(newHabitSchedule);
-        HabitSchedule habitScheduleForTomorrow = new HabitSchedule(id, tomorrow, isDone, id);
+        HabitSchedule habitScheduleForTomorrow = new HabitSchedule(tomorrow, isDone, id);
         habitScheduleDAO.create(habitScheduleForTomorrow);
-        newHabitSchedule = new HabitSchedule(id, twoDaysAfterToday, isDone, id);
+        newHabitSchedule = new HabitSchedule(twoDaysAfterToday, isDone, id);
         habitScheduleDAO.create(newHabitSchedule);
         List<HabitSchedule> habitScheduleList = habitScheduleDAO.findHabitSchedulesForTomorrow();
         assertEquals(habitScheduleList.size(), 1);
@@ -351,7 +351,7 @@ public class DataAccessObjectsTest extends AndroidTestCase {
     @Test
     public void testFindingHabitSchedulesFoundForNextMonth() throws ParseException {
         HabitScheduleDAO habitScheduleDAO = new HabitScheduleDAO(this.getContext());
-        HabitSchedule newHabitSchedule = new HabitSchedule(id, modifiedDateTime, isDone, id);
+        HabitSchedule newHabitSchedule = new HabitSchedule(modifiedDateTime, isDone, id);
         // Test schedules for next month
         Calendar c = new GregorianCalendar();
         c.set(Calendar.HOUR_OF_DAY, 10);
@@ -362,9 +362,9 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         c.add(Calendar.MONTH, 1);
         Date aDayAndAMonthAfterToday = c.getTime();
         habitScheduleDAO.create(newHabitSchedule);
-        HabitSchedule habitScheduleForTomorrow = new HabitSchedule(id, tomorrow, isDone, id);
+        HabitSchedule habitScheduleForTomorrow = new HabitSchedule(tomorrow, isDone, id);
         habitScheduleDAO.create(habitScheduleForTomorrow);
-        newHabitSchedule = new HabitSchedule(id, aDayAndAMonthAfterToday, isDone, id);
+        newHabitSchedule = new HabitSchedule(aDayAndAMonthAfterToday, isDone, id);
         habitScheduleDAO.create(newHabitSchedule);
         List<HabitSchedule> habitScheduleList = habitScheduleDAO.findHabitSchedulesForTomorrow();
         assertEquals(habitScheduleList.size(), 1);
@@ -374,10 +374,10 @@ public class DataAccessObjectsTest extends AndroidTestCase {
     @Test
     public void testGetArrayOfAllHabitCategoryNames() throws ParseException {
         HabitCategoryDAO habitCategoryDAO = new HabitCategoryDAO(this.getContext());
-        HabitCategory habitCategory = new HabitCategory(id, name);
+        HabitCategory habitCategory = new HabitCategory(name);
         habitCategoryDAO.create(habitCategory);
         // change name to "abrakadabra"
-        habitCategory = new HabitCategory(id, "abrakadabra");
+        habitCategory = new HabitCategory("abrakadabra");
         habitCategoryDAO.create(habitCategory);
         CharSequence[] categoryNamesArray = habitCategoryDAO.getArrayOfAllNames();
         List<HabitCategory> habitCategories = (List<HabitCategory>) habitCategoryDAO.findAll();
@@ -389,13 +389,13 @@ public class DataAccessObjectsTest extends AndroidTestCase {
     @Test
     public void testFindingHabitSchedulesByHabitId() throws ParseException {
         HabitScheduleDAO habitScheduleDAO = new HabitScheduleDAO(this.getContext());
-        HabitSchedule newHabitSchedule = new HabitSchedule(id, modifiedDateTime, isDone, id);
+        HabitSchedule newHabitSchedule = new HabitSchedule(modifiedDateTime, isDone, id);
         habitScheduleDAO.create(newHabitSchedule);
         habitScheduleDAO.create(newHabitSchedule);
         habitScheduleDAO.create(newHabitSchedule);
         // changing habitId to 2
         id = 2;
-        newHabitSchedule = new HabitSchedule(id, modifiedDateTime, isDone, id);
+        newHabitSchedule = new HabitSchedule(modifiedDateTime, isDone, id);
         habitScheduleDAO.create(newHabitSchedule);
         List<HabitSchedule> habitScheduleList = habitScheduleDAO.findByHabitId(id);
         assertEquals(habitScheduleList.size(), 1);
@@ -407,51 +407,51 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         HabitScheduleDAO habitScheduleDAO = new HabitScheduleDAO(this.getContext());
         Calendar c = new GregorianCalendar();
         Date date = c.getTime();
-        HabitSchedule newHabitSchedule = new HabitSchedule(id, date, isDone, id);
+        HabitSchedule newHabitSchedule = new HabitSchedule(date, isDone, id);
         habitScheduleDAO.create(newHabitSchedule);
         c.add(Calendar.DATE, 1);
         date = c.getTime();
-        newHabitSchedule = new HabitSchedule(id, date, isDone, id);
+        newHabitSchedule = new HabitSchedule(date, isDone, id);
         habitScheduleDAO.create(newHabitSchedule);
         c.add(Calendar.DATE, 1);
         date = c.getTime();
         Date fromDate = date;
-        newHabitSchedule = new HabitSchedule(id, date, isDone, id);
+        newHabitSchedule = new HabitSchedule(date, isDone, id);
         habitScheduleDAO.create(newHabitSchedule);
         c.add(Calendar.DATE, 1);
         date = c.getTime();
-        newHabitSchedule = new HabitSchedule(id, date, isDone, id);
+        newHabitSchedule = new HabitSchedule(date, isDone, id);
         habitScheduleDAO.create(newHabitSchedule);
         c.add(Calendar.DATE, 1);
         date = c.getTime();
-        newHabitSchedule = new HabitSchedule(id, date, isDone, id);
+        newHabitSchedule = new HabitSchedule(date, isDone, id);
         habitScheduleDAO.create(newHabitSchedule);
         c.add(Calendar.DATE, 1);
         date = c.getTime();
-        newHabitSchedule = new HabitSchedule(id, date, isDone, id);
+        newHabitSchedule = new HabitSchedule(date, isDone, id);
         habitScheduleDAO.create(newHabitSchedule);
         c.add(Calendar.DATE, 1);
         date = c.getTime();
-        newHabitSchedule = new HabitSchedule(id, date, isDone, id);
+        newHabitSchedule = new HabitSchedule(date, isDone, id);
         habitScheduleDAO.create(newHabitSchedule);
         c.add(Calendar.DATE, 1);
         date = c.getTime();
         Date toDate = date; // 5 habitSchedules in between fromDate and toDate were created
         c.add(Calendar.DATE, 1);
         date = c.getTime();
-        newHabitSchedule = new HabitSchedule(id, date, isDone, id);
+        newHabitSchedule = new HabitSchedule(date, isDone, id);
         habitScheduleDAO.create(newHabitSchedule);
         c.add(Calendar.DATE, 1);
         date = c.getTime();
-        newHabitSchedule = new HabitSchedule(id, date, isDone, id);
+        newHabitSchedule = new HabitSchedule(date, isDone, id);
         habitScheduleDAO.create(newHabitSchedule);
         c.add(Calendar.DATE, 1);
         date = c.getTime();
-        newHabitSchedule = new HabitSchedule(id, date, isDone, id);
+        newHabitSchedule = new HabitSchedule(date, isDone, id);
         habitScheduleDAO.create(newHabitSchedule);
         c.add(Calendar.DATE, 1);
         date = c.getTime();
-        newHabitSchedule = new HabitSchedule(id, date, isDone, id);
+        newHabitSchedule = new HabitSchedule(date, isDone, id);
         habitScheduleDAO.create(newHabitSchedule);
         List<HabitSchedule> habitScheduleList = habitScheduleDAO.findInRange(fromDate, toDate);
         assertEquals(habitScheduleList.size(), 5);
@@ -467,39 +467,39 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         c.set(Calendar.SECOND, 0);
         c.add(Calendar.MONTH, -2);
         Date date = c.getTime();
-        HabitSchedule newHabitSchedule = new HabitSchedule(id, date, isDone, id);
+        HabitSchedule newHabitSchedule = new HabitSchedule(date, isDone, id);
         habitScheduleDAO.create(newHabitSchedule);
         c.add(Calendar.DATE, 1);
         date = c.getTime();
-        newHabitSchedule = new HabitSchedule(id, date, isDone, id);
+        newHabitSchedule = new HabitSchedule(date, isDone, id);
         habitScheduleDAO.create(newHabitSchedule);
         c.add(Calendar.DATE, 1);
         date = c.getTime();
-        newHabitSchedule = new HabitSchedule(id, date, isDone, id);
+        newHabitSchedule = new HabitSchedule(date, isDone, id);
         habitScheduleDAO.create(newHabitSchedule);
         c.add(Calendar.DATE, 1);
         date = c.getTime();
-        newHabitSchedule = new HabitSchedule(id, date, isDone, id);
+        newHabitSchedule = new HabitSchedule(date, isDone, id);
         habitScheduleDAO.create(newHabitSchedule);
         c.add(Calendar.DATE, 1);
         date = c.getTime();
-        newHabitSchedule = new HabitSchedule(id, date, isDone, id);
+        newHabitSchedule = new HabitSchedule(date, isDone, id);
         habitScheduleDAO.create(newHabitSchedule);
         c.add(Calendar.DATE, 1);
         date = c.getTime();
-        newHabitSchedule = new HabitSchedule(id, date, isDone, id);
+        newHabitSchedule = new HabitSchedule(date, isDone, id);
         habitScheduleDAO.create(newHabitSchedule);
         c.add(Calendar.DATE, 1);
         date = c.getTime();
-        newHabitSchedule = new HabitSchedule(id, date, isDone, id);
+        newHabitSchedule = new HabitSchedule(date, isDone, id);
         habitScheduleDAO.create(newHabitSchedule);
         c.add(Calendar.DATE, 1);
         date = c.getTime();
-        newHabitSchedule = new HabitSchedule(id, date, isDone, id);
+        newHabitSchedule = new HabitSchedule(date, isDone, id);
         habitScheduleDAO.create(newHabitSchedule);
         c.add(Calendar.DATE, 1);
         date = c.getTime();
-        newHabitSchedule = new HabitSchedule(id, date, isDone, id);
+        newHabitSchedule = new HabitSchedule(date, isDone, id);
         habitScheduleDAO.create(newHabitSchedule);
         c = new GregorianCalendar();
         c.set(Calendar.HOUR_OF_DAY, 10);
@@ -508,11 +508,11 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         c.add(Calendar.MONTH, -1);
         c.add(Calendar.DATE, -1);
         date = c.getTime();
-        newHabitSchedule = new HabitSchedule(id, date, isDone, id);
+        newHabitSchedule = new HabitSchedule(date, isDone, id);
         habitScheduleDAO.create(newHabitSchedule);
         c.add(Calendar.DATE, 1);
         date = c.getTime();
-        HabitSchedule notOldHabitSchedule = new HabitSchedule(id, date, isDone, id);
+        HabitSchedule notOldHabitSchedule = new HabitSchedule(date, isDone, id);
         habitScheduleDAO.create(notOldHabitSchedule);
         habitScheduleDAO.deleteHabitSchedulesOlderThanThirtyOneDay();
         List<HabitSchedule> habitScheduleList = (List<HabitSchedule>) habitScheduleDAO.findAll();
@@ -526,19 +526,19 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         Calendar c = new GregorianCalendar();
         c.add(Calendar.DATE, -7);
         Date date = c.getTime();
-        HabitSchedule newHabitSchedule = new HabitSchedule(id, date, isDone, id);
+        HabitSchedule newHabitSchedule = new HabitSchedule(date, isDone, id);
         habitScheduleDAO.create(newHabitSchedule);
         c.add(Calendar.DATE, 1);
         date = c.getTime();
-        newHabitSchedule = new HabitSchedule(id, date, false, id);
+        newHabitSchedule = new HabitSchedule(date, false, id);
         habitScheduleDAO.create(newHabitSchedule);
         c.add(Calendar.DATE, 1);
         date = c.getTime();
-        newHabitSchedule = new HabitSchedule(id, date, true, id);
+        newHabitSchedule = new HabitSchedule(date, true, id);
         habitScheduleDAO.create(newHabitSchedule);
         c.add(Calendar.DATE, 1);
         date = c.getTime();
-        newHabitSchedule = new HabitSchedule(id, date, true, id);
+        newHabitSchedule = new HabitSchedule(date, true, id);
         habitScheduleDAO.create(newHabitSchedule);
         double percentage = habitScheduleDAO.getPercentageOfDoneSchedulesForDistinctHabitByHabitId(id);
         assertEquals(50.0, percentage);

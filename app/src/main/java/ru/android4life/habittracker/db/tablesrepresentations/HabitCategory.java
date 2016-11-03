@@ -14,6 +14,10 @@ public class HabitCategory {
     @DatabaseField(unique = true)
     private String name;
 
+    public HabitCategory(String name) {
+        this.name = name;
+    }
+
     public HabitCategory(int id, String name) {
         this.id = id;
         this.name = name;

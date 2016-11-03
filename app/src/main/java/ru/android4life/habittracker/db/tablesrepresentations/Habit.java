@@ -37,6 +37,37 @@ public class Habit {
     @DatabaseField
     private int categoryId;
 
+    public Habit(String name, String question, Date notificationTime, double latitude,
+                 double longitude, double range, String audioResource, boolean usesConfirmation,
+                 int confirmAfterMinutes, int categoryId) {
+        this.name = name;
+        this.question = question;
+        this.notificationTime = notificationTime;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.range = range;
+        this.audioResource = audioResource;
+        this.usesConfirmation = usesConfirmation;
+        this.confirmAfterMinutes = confirmAfterMinutes;
+        this.categoryId = categoryId;
+    }
+
+    public Habit(String name, String question, String notificationTimeString,
+                 double latitude, double longitude, double range, String audioResource,
+                 boolean usesConfirmation, int confirmAfterMinutes,
+                 int categoryId) throws ParseException {
+        this.name = name;
+        this.question = question;
+        this.notificationTime = Constants.dateFormat.parse(notificationTimeString);
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.range = range;
+        this.audioResource = audioResource;
+        this.usesConfirmation = usesConfirmation;
+        this.confirmAfterMinutes = confirmAfterMinutes;
+        this.categoryId = categoryId;
+    }
+
     public Habit(int id, String name, String question, Date notificationTime, double latitude,
                  double longitude, double range, String audioResource, boolean usesConfirmation,
                  int confirmAfterMinutes, int categoryId) {
