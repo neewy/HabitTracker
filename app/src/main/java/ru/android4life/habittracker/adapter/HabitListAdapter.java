@@ -6,7 +6,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateUtils;
 import android.view.GestureDetector;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -15,7 +17,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.daimajia.swipe.SwipeLayout;
 
@@ -213,6 +218,17 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
     }
 
     private void onPerformClick(final HabitSchedule habitSchedule, View v, boolean isDone) {
+        if (!DateUtils.isToday(habitSchedule.getDatetime().getTime())) {
+            Toast toast = Toast.makeText(context,
+                    context.getString(R.string.perform_future_habit), Toast.LENGTH_LONG);
+            LinearLayout layout = (LinearLayout) toast.getView();
+            if (layout.getChildCount() > 0) {
+                TextView tv = (TextView) layout.getChildAt(0);
+                tv.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
+            }
+            toast.show();
+            return;
+        }
         HabitSchedule updatedHabitSchedule = new HabitSchedule(habitSchedule.getId(),
                 habitSchedule.getDatetime(), isDone, habitSchedule.getHabitId());
         habitScheduleDAO.update(updatedHabitSchedule);

@@ -54,7 +54,7 @@ public class HabitParameter {
         habitParameters.add(parameter);
         parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_frequency), context.getResources().getString(R.string.daily), ContextCompat.getDrawable(context, R.drawable.ic_add_habit_frequency));
         habitParameters.add(parameter);
-        parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_tune), context.getString(R.string.standart_tune), ContextCompat.getDrawable(context, R.drawable.ic_add_habit_tune));
+        parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_tune), context.getString(R.string.standard_tune), ContextCompat.getDrawable(context, R.drawable.ic_add_habit_tune));
         habitParameters.add(parameter);
         parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_confirmation), context.getString(R.string.after_hour), ContextCompat.getDrawable(context, R.drawable.ic_add_habit_confirmation));
         habitParameters.add(parameter);
