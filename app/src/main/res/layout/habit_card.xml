@@ -37,6 +37,7 @@
                 android:layout_below="@+id/habit_card_name"
                 android:layout_centerHorizontal="true"
                 android:layout_marginLeft="15dp"
+                android:layout_marginBottom="16dp"
                 android:text="Did I biceps?"
                 android:textSize="20sp" />
 
