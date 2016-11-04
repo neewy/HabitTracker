@@ -18,6 +18,7 @@ import ru.android4life.habittracker.R;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitDAO;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitScheduleDAO;
 import ru.android4life.habittracker.db.tablesrepresentations.Habit;
+import ru.android4life.habittracker.fragment.HabitsFragment;
 import ru.android4life.habittracker.viewholder.HabitViewHolder;
 
 public class HabitsAdapter extends RecyclerSwipeAdapter<HabitViewHolder> {
@@ -26,13 +27,20 @@ public class HabitsAdapter extends RecyclerSwipeAdapter<HabitViewHolder> {
     private List<Habit> habits;
     private HabitDAO habitDAO;
     private HabitScheduleDAO habitScheduleDAO;
+    private HabitsFragment fragment;
     //protected SwipeItemRecyclerMangerImpl mItemManger = new SwipeItemRecyclerMangerImpl(this);
 
-    public HabitsAdapter(Context context) {
+    public HabitsAdapter(HabitsFragment fragment, Context context) {
         mContext = context;
         habitDAO = new HabitDAO(context);
         habitScheduleDAO = new HabitScheduleDAO(context);
         habits = (List<Habit>) habitDAO.findAll();
+        this.fragment = fragment;
+
+    }
+
+    public boolean emptyData() {
+        return habits.isEmpty();
     }
 
     public void updateHabits() {
@@ -68,6 +76,7 @@ public class HabitsAdapter extends RecyclerSwipeAdapter<HabitViewHolder> {
                 habits.remove(position);
                 notifyDataSetChanged();
                 mItemManger.closeAllItems();
+                fragment.switchEmptyView();
             }
         });
         viewHolder.getName().setText(habit.getName());

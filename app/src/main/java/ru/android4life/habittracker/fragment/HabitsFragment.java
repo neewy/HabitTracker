@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.ViewFlipper;
 
 import ru.android4life.habittracker.R;
 import ru.android4life.habittracker.activity.AddHabitActivity;
@@ -22,17 +23,18 @@ public class HabitsFragment extends Fragment {
 
     private RecyclerView listView;
     private HabitsAdapter mAdapter;
+    private RelativeLayout view;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAdapter = new HabitsAdapter(BaseActivity.getContext());
+        mAdapter = new HabitsAdapter(this, BaseActivity.getContext());
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        RelativeLayout view = (RelativeLayout) inflater.inflate(R.layout.habit_list, container, false);
+        view = (RelativeLayout) inflater.inflate(R.layout.habit_list, container, false);
         listView = (RecyclerView) view.findViewById(R.id.habits_list);
 
         LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity());
@@ -51,7 +53,17 @@ public class HabitsFragment extends Fragment {
                 startActivity(intent);
             }
         });
+        switchEmptyView();
         return view;
+    }
+
+    public void switchEmptyView() {
+        ViewFlipper switcher = (ViewFlipper) view.findViewById(R.id.flipper);
+        if (mAdapter.emptyData()) {
+            switcher.setDisplayedChild(1);
+        } else {
+            switcher.setDisplayedChild(0);
+        }
     }
 
     @Override
@@ -60,5 +72,6 @@ public class HabitsFragment extends Fragment {
         mAdapter.updateHabits();
         mAdapter.notifyDataSetChanged();
         listView.invalidate();
+        switchEmptyView();
     }
 }
