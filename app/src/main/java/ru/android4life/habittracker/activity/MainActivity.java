@@ -35,8 +35,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     public static Locale locale;
     public static DrawerSelectionMode drawerSelectionMode;
-    private DrawerLayout drawer;
-    private ActionBarDrawerToggle toggle;
+    public static DrawerLayout drawer;
+    public static ActionBarDrawerToggle toggle;
     private FragmentManager fragmentManager;
 
     /**
@@ -143,7 +143,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @Override
     public void onBackPressed() {
         String fragmentName, title = "";
-
+        toggle.setDrawerIndicatorEnabled(true); //enable "hamburger" drawable
+        toggle.syncState();
         // If there are some fragments it backstack
         if (fragmentManager.getBackStackEntryCount() > 0) {
             // then get the name of last element

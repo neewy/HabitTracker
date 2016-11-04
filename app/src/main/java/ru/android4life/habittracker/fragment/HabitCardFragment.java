@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 import ru.android4life.habittracker.R;
 import ru.android4life.habittracker.activity.AddHabitActivity;
 import ru.android4life.habittracker.activity.BaseActivity;
+import ru.android4life.habittracker.activity.MainActivity;
 import ru.android4life.habittracker.adapter.HabitParametersAdapter;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitDAO;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitScheduleDAO;
@@ -65,6 +67,41 @@ public class HabitCardFragment extends Fragment {
         // adapter for habits parameters (thank you, Bulat)
         mAdapter = new HabitParametersAdapter(getActivity(),
                 HabitParameter.createParametersByHabitScheduleId(getContext(), habitScheduleId), false);
+
+        MainActivity.toggle.setDrawerIndicatorEnabled(false);
+        MainActivity.toggle.setHomeAsUpIndicator(R.drawable.ic_add_habit_back);
+        MainActivity.toggle.setToolbarNavigationClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment fragment = null;
+                switch (MainActivity.drawerSelectionMode) {
+                    case TODAY:
+                        fragment = new HabitListFragment();
+                        getActivity().setTitle(getString(R.string.today));
+                        break;
+                    case TOMORROW:
+                        fragment = new HabitListFragment();
+                        getActivity().setTitle(getString(R.string.tomorrow));
+                        break;
+                    case NEXT_MONTH:
+                        fragment = new HabitListFragment();
+                        getActivity().setTitle(getString(R.string.next_month));
+                        break;
+                    case ALL_TASKS:
+                        fragment = new HabitsFragment();
+                        getActivity().setTitle(getString(R.string.all_tasks));
+                        break;
+                }
+                // Emptying fragments in the backstack
+                getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+                // Replacing activity content with the content of fragment
+                getFragmentManager().beginTransaction().replace(R.id.container, fragment, MainActivity.drawerSelectionMode.stringValue).commit();
+                MainActivity.toggle.setDrawerIndicatorEnabled(true); //enable "hamburger" drawable
+                MainActivity.toggle.syncState();
+            }
+        });
+        MainActivity.toggle.syncState();
     }
 
     @Nullable
