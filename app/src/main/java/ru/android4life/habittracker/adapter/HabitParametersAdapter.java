@@ -113,9 +113,13 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameterV
                     @RequiresApi(api = Build.VERSION_CODES.M)
                     @Override
                     public void onTimeSet(TimePicker timePicker, int i, int i1) {
-                        System.out.println(timePicker.getHour() + " " + timePicker.getMinute());
-                        habitSettings.setNotificationMinute(timePicker.getMinute());
-                        habitSettings.setNotificationHour(timePicker.getHour());
+                        if (Build.VERSION.SDK_INT >= 23) {
+                            habitSettings.setNotificationMinute(timePicker.getMinute());
+                            habitSettings.setNotificationHour(timePicker.getHour());
+                        } else {
+                            habitSettings.setNotificationMinute(timePicker.getCurrentMinute());
+                            habitSettings.setNotificationHour(timePicker.getCurrentHour());
+                        }
                         if (String.valueOf(habitSettings.getNotificationMinute()).length() < 2) {
                             hint.setText(context.getResources().getString(R.string.string_colon_space_string_zero,
                                     String.valueOf(habitSettings.getNotificationHour()),
@@ -130,9 +134,11 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameterV
                             prefs.edit().putInt(NOTIFICATION_MINUTE, habitSettings.getNotificationMinute()).apply();
                         }
                     }
-                };
+                }
+
+                ;
                 TimePickerDialog timePickerDialog = new TimePickerDialog(
-                        parent.getContext(), timePickerListener, 0, 0, true);
+                        parent.getContext(), timePickerListener, 10, 0, true);
                 timePickerDialog.show();
             }
 
@@ -196,7 +202,9 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameterV
             public void onConfirmation(View caller, final TextView hint) {
 
             }
-        };
+        }
+
+                ;
     }
 
 
