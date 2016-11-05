@@ -292,21 +292,23 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameterV
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void createFrequencyMonthlyDialog(ViewGroup parent, final TextView hint) {
         Calendar calendar = Calendar.getInstance();
-        DatePickerDialog dpd = new DatePickerDialog(parent.getContext(), null, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_WEEK));
+        DatePickerDialog.OnDateSetListener myCallBack = new DatePickerDialog.OnDateSetListener() {
+
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                hint.setText(context.getResources().getString(R.string.every_month_on_space_string,
+                        String.valueOf(dayOfMonth)));
+                prefs.edit().putInt(NOTIFICATION_FREQUENCY_WEEK_NUMBER_OR_DATE, dayOfMonth).apply();
+            }
+        };
+        DatePickerDialog dpd = new DatePickerDialog(parent.getContext(), myCallBack, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_WEEK));
         calendar.set(Calendar.DAY_OF_MONTH, 1);
         dpd.getDatePicker().setMinDate(calendar.getTimeInMillis());
         calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
         dpd.getDatePicker().setMaxDate(calendar.getTimeInMillis());
-        dpd.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                hint.setText(context.getResources().getString(R.string.every_month_on_space_string,
-                        String.valueOf(i2)));
-                prefs.edit().putInt(NOTIFICATION_FREQUENCY_WEEK_NUMBER_OR_DATE, i2).apply();
-            }
-        });
         dpd.show();
     }
+
 
     @Override
     public void onBindViewHolder(HabitParameterViewHolder holder, int position) {
