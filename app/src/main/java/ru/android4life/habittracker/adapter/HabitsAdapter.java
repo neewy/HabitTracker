@@ -1,6 +1,7 @@
 package ru.android4life.habittracker.adapter;
 
 import android.content.Context;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,24 +19,29 @@ import ru.android4life.habittracker.R;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitDAO;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitScheduleDAO;
 import ru.android4life.habittracker.db.tablesrepresentations.Habit;
+import ru.android4life.habittracker.fragment.HabitTabsFragment;
 import ru.android4life.habittracker.fragment.HabitsFragment;
 import ru.android4life.habittracker.viewholder.HabitViewHolder;
+
+import static ru.android4life.habittracker.activity.MainActivity.drawerSelectionMode;
 
 public class HabitsAdapter extends RecyclerSwipeAdapter<HabitViewHolder> {
 
     private Context mContext;
     private List<Habit> habits;
     private HabitDAO habitDAO;
+    private FragmentManager fragmentManager;
     private HabitScheduleDAO habitScheduleDAO;
     private HabitsFragment fragment;
     //protected SwipeItemRecyclerMangerImpl mItemManger = new SwipeItemRecyclerMangerImpl(this);
 
-    public HabitsAdapter(HabitsFragment fragment, Context context) {
+    public HabitsAdapter(FragmentManager fragmentManager, HabitsFragment fragment, Context context) {
         mContext = context;
         habitDAO = new HabitDAO(context);
         habitScheduleDAO = new HabitScheduleDAO(context);
         habits = (List<Habit>) habitDAO.findAll();
         this.fragment = fragment;
+        this.fragmentManager = fragmentManager;
 
     }
 
@@ -62,6 +68,14 @@ public class HabitsAdapter extends RecyclerSwipeAdapter<HabitViewHolder> {
             @Override
             public void onOpen(SwipeLayout layout) {
                 YoYo.with(Techniques.Tada).duration(500).delay(100).playOn(layout.findViewById(R.id.trash));
+            }
+        });
+        viewHolder.getSwipeLayout().getSurfaceView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragmentManager.beginTransaction().replace(R.id.container,
+                        HabitTabsFragment.newInstance(habit.getId())).addToBackStack(drawerSelectionMode.stringValue).commit();
+
             }
         });
         viewHolder.getButtonDelete().setOnClickListener(new View.OnClickListener() {
