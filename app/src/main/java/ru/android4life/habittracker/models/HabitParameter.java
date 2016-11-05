@@ -61,13 +61,14 @@ public class HabitParameter {
         return habitParameters;
     }
 
-    public static List<HabitParameter> createParametersByHabitScheduleId(Context context, int habitScheduleId) {
+    public static List<HabitParameter> createParametersByHabitId(Context context, int habitId) {
         HabitScheduleDAO habitScheduleDAO = new HabitScheduleDAO(context);
         HabitDAO habitDAO = new HabitDAO(context);
         HabitCategoryDAO habitCategoryDAO = new HabitCategoryDAO(context);
         List<HabitParameter> habitParameters = new ArrayList<>();
-        HabitSchedule habitSchedule = (HabitSchedule) habitScheduleDAO.findById(habitScheduleId);
-        Habit habit = (Habit) habitDAO.findById(habitSchedule.getHabitId());
+        Habit habit = (Habit) habitDAO.findById(habitId);
+        HabitSchedule habitSchedule =  habitScheduleDAO.findByHabitId(habitId).get(0);
+
         HabitCategory habitCategory = (HabitCategory) habitCategoryDAO.findById(habit.getCategoryId());
 
         HabitParameter parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_category),

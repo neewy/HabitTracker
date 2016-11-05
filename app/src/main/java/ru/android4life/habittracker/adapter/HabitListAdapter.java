@@ -79,11 +79,13 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
     public HabitCardViewHolder onCreateViewHolder(ViewGroup parent, final int habitScheduleId) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.habit_list_card, parent, false);
         SwipeLayout swipeLayout = (SwipeLayout) v.findViewById(R.id.interactive_card);
+        HabitScheduleDAO habitScheduleDAO = new HabitScheduleDAO(context);
+        final HabitSchedule habitSchedule = (HabitSchedule) habitScheduleDAO.findById(habitScheduleId);
         swipeLayout.getSurfaceView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 fragmentManager.beginTransaction().replace(R.id.container,
-                        HabitTabsFragment.newInstance(habitScheduleId)).addToBackStack(drawerSelectionMode.stringValue).commit();
+                        HabitTabsFragment.newInstance(habitSchedule.getHabitId())).addToBackStack(drawerSelectionMode.stringValue).commit();
 
             }
         });

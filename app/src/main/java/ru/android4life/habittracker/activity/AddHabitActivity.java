@@ -81,11 +81,10 @@ public class AddHabitActivity extends BaseActivity {
         habitSettings = new HabitSettings();
 
         // if habit is edited, habit schedule id is passed, else = -1
-        final int editedHabitScheduleId = getIntent().getIntExtra(getString(R.string.habit_schedule_id), -1);
+        final int editedHabitId = getIntent().getIntExtra(getString(R.string.habit_id), -1);
 
-        if (editedHabitScheduleId != -1) { // If habit is being edited
-            HabitSchedule editedHabitsSchedule = (HabitSchedule) habitScheduleDAO.findById(editedHabitScheduleId);
-            Habit editedHabit = (Habit) habitDAO.findById(editedHabitsSchedule.getHabitId());
+        if (editedHabitId != -1) { // If habit is being edited
+            Habit editedHabit = (Habit) habitDAO.findById(editedHabitId);
 
             TextInputLayout habitNameTextInputLayout = (TextInputLayout) findViewById(R.id.add_habit_title_edit_text);
             habitNameTextInputLayout.getEditText().setText(editedHabit.getName());
@@ -114,8 +113,8 @@ public class AddHabitActivity extends BaseActivity {
 
                 confirmButton.setEnabled(false); // disable button for the time while habits are created
 
-                habitSettings = getHabitSettingsFromPreferences(editedHabitScheduleId);
-                if (createOrEditHabitAccordingToHabitPreferencesIfDataIsCorrect(editedHabitScheduleId)) {
+                habitSettings = getHabitSettingsFromPreferences(editedHabitId);
+                if (createOrEditHabitAccordingToHabitPreferencesIfDataIsCorrect(editedHabitId)) {
                     mAdapter.notifyDataSetChanged();
 
                     removeValuesForHabitSettingsFromPreferences();
@@ -143,12 +142,12 @@ public class AddHabitActivity extends BaseActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        if (editedHabitScheduleId == -1) // habits creation
+        if (editedHabitId == -1) // habits creation
             mAdapter = new HabitParametersAdapter(this, HabitParameter.createParameters(getApplicationContext()), true);
         else { // habits edition
             mAdapter = new HabitParametersAdapter(this,
-                    HabitParameter.createParametersByHabitScheduleId(getApplicationContext(),
-                            editedHabitScheduleId), true);
+                    HabitParameter.createParametersByHabitId(getApplicationContext(),
+                            editedHabitId), true);
         }
         mRecyclerView.setAdapter(mAdapter);
     }
@@ -194,9 +193,9 @@ public class AddHabitActivity extends BaseActivity {
         habitSettingsPrefs.edit().remove(MINUTES_BEFORE_CONFIRMATION).apply();
     }
 
-    private HabitSettings getHabitSettingsFromPreferences(int editedHabitScheduleId) {
+    private HabitSettings getHabitSettingsFromPreferences(int editedHabitId) {
         HabitSettings result;
-        if (editedHabitScheduleId == -1) { // Habits creation
+        if (editedHabitId == -1) { // Habits creation
             if (habitSettingsPrefs.contains(getContext().getString(R.string.notification_sound_name)))
                 result = new HabitSettings(habitSettings.getNotificationSoundUri(),
                         habitSettings.getNotificationSoundName());
@@ -205,17 +204,17 @@ public class AddHabitActivity extends BaseActivity {
         } else { // Habits edition
             if (habitSettingsPrefs.contains(NOTIFICATION_FREQUENCY_TYPE) &&
                     habitSettingsPrefs.contains(getContext().getString(R.string.notification_sound_name)))
-                result = new HabitSettings(editedHabitScheduleId, true, habitSettings.getNotificationSoundUri(),
+                result = new HabitSettings(editedHabitId, true, habitSettings.getNotificationSoundUri(),
                         habitSettings.getNotificationSoundName());
             else if (!habitSettingsPrefs.contains(NOTIFICATION_FREQUENCY_TYPE) &&
                     habitSettingsPrefs.contains(getContext().getString(R.string.notification_sound_name)))
-                result = new HabitSettings(editedHabitScheduleId, false, habitSettings.getNotificationSoundUri(),
+                result = new HabitSettings(editedHabitId, false, habitSettings.getNotificationSoundUri(),
                         habitSettings.getNotificationSoundName());
             else if (habitSettingsPrefs.contains(NOTIFICATION_FREQUENCY_TYPE) &&
                     !habitSettingsPrefs.contains(getContext().getString(R.string.notification_sound_name)))
-                result = new HabitSettings(editedHabitScheduleId, true);
+                result = new HabitSettings(editedHabitId, true);
             else
-                result = new HabitSettings(editedHabitScheduleId, false);
+                result = new HabitSettings(editedHabitId, false);
         }
 
         if (habitSettingsPrefs.contains(StringConstants.CATEGORY_ID))
@@ -270,7 +269,7 @@ public class AddHabitActivity extends BaseActivity {
         }
     }
 
-    private boolean createOrEditHabitAccordingToHabitPreferencesIfDataIsCorrect(int editedHabitScheduleId) {
+    private boolean createOrEditHabitAccordingToHabitPreferencesIfDataIsCorrect(int editedHabitId) {
         if (!isHabitNameEntered()) {
             toastMessage(getContext().getString(R.string.habit_name_should_be_filled));
             return false;
@@ -291,17 +290,18 @@ public class AddHabitActivity extends BaseActivity {
         if (habitQuestion.length() == 0)
             habitQuestion = habitName;
 
-        if (editedHabitScheduleId == -1)
+        if (editedHabitId == -1)
             return createHabitAccordingToHabitPreferencesIfDataIsCorrect(habitDay, habitName, habitQuestion);
         else
             return editHabitAccordingToHabitPreferencesIfDataIsCorrect(habitDay, habitName, habitQuestion,
-                    editedHabitScheduleId);
+                    editedHabitId);
     }
 
     private boolean editHabitAccordingToHabitPreferencesIfDataIsCorrect(Date habitDay, String habitName,
-                                                                        String habitQuestion, int editedHabitScheduleId) {
-        HabitSchedule editedHabitsSchedule = (HabitSchedule) habitScheduleDAO.findById(editedHabitScheduleId);
-        Habit editedHabit = (Habit) habitDAO.findById(editedHabitsSchedule.getHabitId());
+                                                                        String habitQuestion, int editedHabitId) {
+        Habit editedHabit = (Habit) habitDAO.findById(editedHabitId);
+        HabitSchedule editedHabitsSchedule = (HabitSchedule) habitScheduleDAO.findByHabitId(editedHabitId).get(0);
+
         int habitsEditionResult = habitDAO.update(new Habit(editedHabit.getId(), habitName, habitQuestion, habitDay, 55.75417935,
                 48.7440855, 9, habitSettings.getNotificationSoundUri().toString(), true, 60, habitSettings.getCategoryId()));
         if (habitsEditionResult >= 0) {
