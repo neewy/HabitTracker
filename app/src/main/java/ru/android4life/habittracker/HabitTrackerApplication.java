@@ -46,56 +46,64 @@ public class HabitTrackerApplication extends Application {
         HabitScheduleDAO habitScheduleDAO = new HabitScheduleDAO(context);
         List<HabitSchedule> habitSchedules = habitScheduleDAO.findByHabitId(habitId);
         Calendar habitScheduleDateTimeCalendar = new GregorianCalendar();
-        Date currentTime = habitScheduleDateTimeCalendar.getTime();
-        habitScheduleDateTimeCalendar.setTime(habitSchedules.get(0).getDatetime());
-        // Get how many days in current month
-        int monthMaxDays = habitScheduleDateTimeCalendar.getActualMaximum(Calendar.DAY_OF_MONTH);
-        Date habitDay = habitScheduleDateTimeCalendar.getTime();
-        habitScheduleDateTimeCalendar.add(Calendar.DAY_OF_YEAR, monthMaxDays);
-        Date afterAMonth = habitScheduleDateTimeCalendar.getTime();
-        habitScheduleDateTimeCalendar.add(Calendar.DAY_OF_YEAR, monthMaxDays * (-1));
-        boolean habitDayBeforeAfterAMonth = habitDay.before(afterAMonth) || habitDay.equals(afterAMonth);
-        boolean[] mCheckedItems = {false, false, false, false, false, false, false};
 
-        if (habitSchedules.size() <= 2) { // MONTHLY
-            while (habitDayBeforeAfterAMonth) {
-                if (habitDay.after(currentTime))
-                    habitScheduleDAO.create(new HabitSchedule(habitDay, null, habitId));
-                habitScheduleDateTimeCalendar.add(Calendar.MONTH, 1);
-                habitDay = habitScheduleDateTimeCalendar.getTime();
-                habitDayBeforeAfterAMonth = habitDay.before(afterAMonth) || habitDay.equals(afterAMonth);
-            }
-        } else if (habitSchedules.size() >= 28) { // DAILY
-            while (habitDayBeforeAfterAMonth) {
-                if (habitDay.after(currentTime))
-                    habitScheduleDAO.create(new HabitSchedule(habitDay, null, habitId));
-                habitScheduleDateTimeCalendar.add(Calendar.DATE, 1);
-                habitDay = habitScheduleDateTimeCalendar.getTime();
-                habitDayBeforeAfterAMonth = habitDay.before(afterAMonth) || habitDay.equals(afterAMonth);
-            }
-        } else if (habitSchedules.size() >= 4 && habitSchedules.size() <= 5) { // WEEKLY
-            while (habitDayBeforeAfterAMonth) {
-                if (habitDay.after(currentTime))
-                    habitScheduleDAO.create(new HabitSchedule(habitDay, null, habitId));
-                habitScheduleDateTimeCalendar.add(Calendar.DAY_OF_YEAR, 7);
-                habitDay = habitScheduleDateTimeCalendar.getTime();
-                habitDayBeforeAfterAMonth = habitDay.before(afterAMonth) || habitDay.equals(afterAMonth);
-            }
-        } else { // SPECIFIED DAYS
-            for (HabitSchedule habitSchedule : habitSchedules) {
-                habitScheduleDateTimeCalendar.setTime(habitSchedule.getDatetime());
-                mCheckedItems[habitScheduleDateTimeCalendar.get(Calendar.DAY_OF_WEEK) - 1] = true;
-            }
-            for (int i = 0; i < 7; i++) {
-                if (mCheckedItems[i]) {
-                    habitScheduleDateTimeCalendar.set(Calendar.DAY_OF_WEEK, i + 1);
+        Date maxOfCurrentTimeAndNewestScheduleTime;
+        HabitSchedule newestHabitSchedule = habitScheduleDAO.getNewestHabitScheduleForDistinctHabitByHabitId(habitId);
+        if (newestHabitSchedule != null) {
+            maxOfCurrentTimeAndNewestScheduleTime = new Date(Math.max(habitScheduleDateTimeCalendar.getTime().getTime(),
+                    newestHabitSchedule.getDatetime().getTime()));
+
+            habitScheduleDateTimeCalendar.setTime(newestHabitSchedule.getDatetime());
+
+            // Get how many days in current month
+            int monthMaxDays = habitScheduleDateTimeCalendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+            Date habitDay = habitScheduleDateTimeCalendar.getTime();
+            Calendar anotherDateTimeCalendar = new GregorianCalendar();
+            anotherDateTimeCalendar.add(Calendar.DAY_OF_YEAR, monthMaxDays);
+            Date afterAMonth = anotherDateTimeCalendar.getTime();
+            boolean habitDayBeforeAfterAMonth = habitDay.before(afterAMonth) || habitDay.equals(afterAMonth);
+            boolean[] mCheckedItems = {false, false, false, false, false, false, false};
+
+            if (habitSchedules.size() <= 2) { // MONTHLY
+                while (habitDayBeforeAfterAMonth) {
+                    if (habitDay.after(maxOfCurrentTimeAndNewestScheduleTime))
+                        habitScheduleDAO.create(new HabitSchedule(habitDay, null, habitId));
+                    habitScheduleDateTimeCalendar.add(Calendar.MONTH, 1);
                     habitDay = habitScheduleDateTimeCalendar.getTime();
-                    while (habitDayBeforeAfterAMonth) {
-                        if (habitDay.after(currentTime))
-                            habitScheduleDAO.create(new HabitSchedule(habitDay, null, habitId));
-                        habitScheduleDateTimeCalendar.add(Calendar.DAY_OF_YEAR, 7);
+                    habitDayBeforeAfterAMonth = habitDay.before(afterAMonth) || habitDay.equals(afterAMonth);
+                }
+            } else if (habitSchedules.size() >= 28) { // DAILY
+                while (habitDayBeforeAfterAMonth) {
+                    if (habitDay.after(maxOfCurrentTimeAndNewestScheduleTime))
+                        habitScheduleDAO.create(new HabitSchedule(habitDay, null, habitId));
+                    habitScheduleDateTimeCalendar.add(Calendar.DATE, 1);
+                    habitDay = habitScheduleDateTimeCalendar.getTime();
+                    habitDayBeforeAfterAMonth = habitDay.before(afterAMonth) || habitDay.equals(afterAMonth);
+                }
+            } else if (habitSchedules.size() >= 4 && habitSchedules.size() <= 5) { // WEEKLY
+                while (habitDayBeforeAfterAMonth) {
+                    if (habitDay.after(maxOfCurrentTimeAndNewestScheduleTime))
+                        habitScheduleDAO.create(new HabitSchedule(habitDay, null, habitId));
+                    habitScheduleDateTimeCalendar.add(Calendar.DAY_OF_YEAR, 7);
+                    habitDay = habitScheduleDateTimeCalendar.getTime();
+                    habitDayBeforeAfterAMonth = habitDay.before(afterAMonth) || habitDay.equals(afterAMonth);
+                }
+            } else { // SPECIFIED DAYS
+                for (HabitSchedule habitSchedule : habitSchedules) {
+                    habitScheduleDateTimeCalendar.setTime(habitSchedule.getDatetime());
+                    mCheckedItems[habitScheduleDateTimeCalendar.get(Calendar.DAY_OF_WEEK) - 1] = true;
+                }
+                for (int i = 0; i < 7; i++) {
+                    if (mCheckedItems[i]) {
+                        habitScheduleDateTimeCalendar.set(Calendar.DAY_OF_WEEK, i + 1);
                         habitDay = habitScheduleDateTimeCalendar.getTime();
-                        habitDayBeforeAfterAMonth = habitDay.before(afterAMonth) || habitDay.equals(afterAMonth);
+                        while (habitDayBeforeAfterAMonth) {
+                            if (habitDay.after(maxOfCurrentTimeAndNewestScheduleTime))
+                                habitScheduleDAO.create(new HabitSchedule(habitDay, null, habitId));
+                            habitScheduleDateTimeCalendar.add(Calendar.DAY_OF_YEAR, 7);
+                            habitDay = habitScheduleDateTimeCalendar.getTime();
+                            habitDayBeforeAfterAMonth = habitDay.before(afterAMonth) || habitDay.equals(afterAMonth);
+                        }
                     }
                 }
             }
