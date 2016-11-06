@@ -56,6 +56,8 @@ public class HabitParameter {
         habitParameters.add(parameter);
         parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_tune), context.getString(R.string.standard_tune), ContextCompat.getDrawable(context, R.drawable.ic_add_habit_tune));
         habitParameters.add(parameter);
+        parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_position), context.getString(R.string.none), ContextCompat.getDrawable(context, R.drawable.ic_explore_black_24dp));
+        habitParameters.add(parameter);
         parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_confirmation), context.getString(R.string.after_hour), ContextCompat.getDrawable(context, R.drawable.ic_add_habit_confirmation));
         habitParameters.add(parameter);
         return habitParameters;
@@ -86,6 +88,11 @@ public class HabitParameter {
 
         parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_tune), getHabitNotificationRingtoneName(context, habit.getAudioResource()),
                 ContextCompat.getDrawable(context, R.drawable.ic_add_habit_tune));
+        habitParameters.add(parameter);
+
+        // FIXME: 05.11.16 Add gps position
+        parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_position),
+                context.getString(R.string.none), ContextCompat.getDrawable(context, R.drawable.ic_explore_black_24dp));
         habitParameters.add(parameter);
 
         parameter = new HabitParameter(context.getString(R.string.add_habit_name_confirmation),

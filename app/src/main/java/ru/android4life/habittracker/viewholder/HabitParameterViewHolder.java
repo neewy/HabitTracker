@@ -39,6 +39,8 @@ public class HabitParameterViewHolder extends RecyclerView.ViewHolder implements
                 mListener.onFrequency(view, hint);
             } else if (title.getText().toString().equals(view.getResources().getString(R.string.add_habit_name_tune))) {
                 mListener.onTune(view, hint);
+            } else if (title.getText().toString().equals(view.getResources().getString(R.string.add_habit_name_position))) {
+                mListener.onPosition(view, hint);
             } else {
                 mListener.onConfirmation(view, hint);
             }
@@ -53,6 +55,8 @@ public class HabitParameterViewHolder extends RecyclerView.ViewHolder implements
         void onFrequency(View caller, final TextView hint);
 
         void onTune(View caller, final TextView hint);
+
+        void onPosition(View caller, final TextView hint);
 
         void onConfirmation(View caller, final TextView hint);
 

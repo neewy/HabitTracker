@@ -51,6 +51,7 @@
     <string name="add_habit_name_reminder">Remind at</string>
     <string name="add_habit_name_frequency">Frequency</string>
     <string name="add_habit_name_tune">Tune</string>
+    <string name="add_habit_name_position">Position</string>
     <string name="add_habit_name_confirmation">Confirmation</string>
     <string name="done">Done</string>
     <string name="skip">Skip</string>
@@ -175,10 +176,12 @@
     <string name="was_skipped">was skipped</string>
     <string name="undo">UNDO</string>
     <string name="standard_tune">Standard</string>
+    <string name="none">None</string>
     <string name="after_hour">After 60 minutes</string>
 
 
     <string name="perform_future_habit">Hey, do not try to cheat! You can perform only today habits</string>
+    <string name="title_activity_maps">Map</string>
 
 
 </resources>

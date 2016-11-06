@@ -38,7 +38,7 @@ dependencies {
 
     // https://mvnrepository.com/artifact/com.j256.ormlite/ormlite-android
     compile group: 'com.j256.ormlite', name: 'ormlite-android', version: '4.48'
-
+    compile 'com.google.android.gms:play-services:9.4.0'
 
     compile 'com.android.support:appcompat-v7:24.2.1' /*Library for support design */
     compile 'com.android.support:design:24.2.1' /*the same as above*/

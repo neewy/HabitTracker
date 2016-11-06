@@ -24,6 +24,7 @@ import java.util.List;
 
 import ru.android4life.habittracker.R;
 import ru.android4life.habittracker.activity.MainActivity;
+import ru.android4life.habittracker.activity.MapsActivity;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitCategoryDAO;
 import ru.android4life.habittracker.db.tablesrepresentations.HabitCategory;
 import ru.android4life.habittracker.enumeration.NotificationFrequencyType;
@@ -190,6 +191,12 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameterV
                 activity.startActivityForResult(tmpIntent, PICK_AUDIO_REQUEST);
                 hint.setText(prefs.getString(caller.getResources().getString(R.string.notification_sound_name),
                         caller.getResources().getString(R.string.standard_from_capital_letter)));
+            }
+
+            @Override
+            public void onPosition(View caller, TextView hint) {
+                Intent openPosition = new Intent(context, MapsActivity.class);
+                context.startActivity(openPosition);
             }
 
             @Override
