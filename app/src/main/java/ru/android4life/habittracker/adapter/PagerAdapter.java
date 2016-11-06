@@ -12,12 +12,12 @@ import ru.android4life.habittracker.fragment.HabitStatisticsFragment;
  */
 public class PagerAdapter extends FragmentStatePagerAdapter {
     private int mNumOfTabs;
-    private int habitScheduleId;
+    private int habitId;
 
-    public PagerAdapter(FragmentManager fm, int NumOfTabs, int habitScheduleId) {
+    public PagerAdapter(FragmentManager fm, int NumOfTabs, int habitId) {
         super(fm);
         this.mNumOfTabs = NumOfTabs;
-        this.habitScheduleId = habitScheduleId;
+        this.habitId = habitId;
     }
 
     @Override
@@ -25,10 +25,10 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 
         switch (position) {
             case 0:
-                Fragment tab1 = HabitCardFragment.newInstance(habitScheduleId);
+                Fragment tab1 = HabitCardFragment.newInstance(habitId);
                 return tab1;
             case 1:
-                Fragment tab2 = HabitStatisticsFragment.newInstance(habitScheduleId);
+                Fragment tab2 = HabitStatisticsFragment.newInstance(habitId);
                 return tab2;
             default:
                 return null;
