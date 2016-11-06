@@ -1,7 +1,115 @@
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/map"
-    android:name="com.google.android.gms.maps.SupportMapFragment"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:ripple="http://schemas.android.com/tools"
+    android:id="@+id/map_wrapper"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="ru.android4life.habittracker.activity.MapsActivity" />
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/add_habit_header"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/primary_background_with_shadow">
+        <!--Back button-->
+
+        <ru.android4life.habittracker.views.RippleView
+            android:id="@+id/add_habit_back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            ripple:rv_type="rectangle">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="left"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="15dp"
+                android:background="?colorPrimary"
+                android:src="@drawable/ic_add_habit_back" />
+        </ru.android4life.habittracker.views.RippleView>
+
+        <ru.android4life.habittracker.views.RippleView
+            android:id="@+id/add_habit_confirm_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            ripple:rv_type="rectangle">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="left"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="15dp"
+                android:background="?colorPrimary"
+                android:src="@drawable/ic_add_habit_confirm" />
+        </ru.android4life.habittracker.views.RippleView>
+
+    </RelativeLayout>
+
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/add_habit_header" />
+
+    <com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_above="@+id/map"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="64dp"
+        android:background="@color/backgroundColor"
+        android:paddingLeft="5dp"
+        app:alignContent="center"
+        app:alignItems="center"
+        app:flexWrap="nowrap"
+        app:justifyContent="space_around">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="10" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="50" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="100" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="500" />
+    </com.google.android.flexbox.FlexboxLayout>
+
+    <com.etiennelawlor.discreteslider.library.ui.DiscreteSlider
+        android:id="@+id/range_picker"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/backgroundColor"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        app:backdropFillColor="@color/backgroundColorPress"
+        app:backdropStrokeColor="@color/backgroundColorPress"
+        app:backdropStrokeWidth="1dp"
+        app:horizontalBarThickness="4dp"
+        app:position="1"
+        app:progressDrawable="@drawable/transparent_progress_drawable"
+        app:thumb="@drawable/thumb"
+        app:tickMarkCount="5"
+        app:tickMarkRadius="8dp" />
+</RelativeLayout>

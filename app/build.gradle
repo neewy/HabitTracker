@@ -40,6 +40,9 @@ dependencies {
     compile group: 'com.j256.ormlite', name: 'ormlite-android', version: '4.48'
     compile 'com.google.android.gms:play-services:9.4.0'
 
+    compile 'com.github.lawloretienne:discreteslider:0.0.9'
+    compile 'com.google.android:flexbox:0.2.3'
+
     compile 'com.android.support:appcompat-v7:24.2.1' /*Library for support design */
     compile 'com.android.support:design:24.2.1' /*the same as above*/
     compile 'com.android.support:cardview-v7:24.2.1'
