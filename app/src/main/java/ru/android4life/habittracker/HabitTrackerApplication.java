@@ -46,6 +46,7 @@ public class HabitTrackerApplication extends Application {
         HabitScheduleDAO habitScheduleDAO = new HabitScheduleDAO(context);
         List<HabitSchedule> habitSchedules = habitScheduleDAO.findByHabitId(habitId);
         Calendar habitScheduleDateTimeCalendar = new GregorianCalendar();
+        Date currentTime = habitScheduleDateTimeCalendar.getTime();
         habitScheduleDateTimeCalendar.setTime(habitSchedules.get(0).getDatetime());
         // Get how many days in current month
         int monthMaxDays = habitScheduleDateTimeCalendar.getActualMaximum(Calendar.DAY_OF_MONTH);
@@ -58,21 +59,24 @@ public class HabitTrackerApplication extends Application {
 
         if (habitSchedules.size() <= 2) { // MONTHLY
             while (habitDayBeforeAfterAMonth) {
-                habitScheduleDAO.create(new HabitSchedule(habitDay, null, habitId));
+                if (habitDay.after(currentTime))
+                    habitScheduleDAO.create(new HabitSchedule(habitDay, null, habitId));
                 habitScheduleDateTimeCalendar.add(Calendar.MONTH, 1);
                 habitDay = habitScheduleDateTimeCalendar.getTime();
                 habitDayBeforeAfterAMonth = habitDay.before(afterAMonth) || habitDay.equals(afterAMonth);
             }
         } else if (habitSchedules.size() >= 28) { // DAILY
             while (habitDayBeforeAfterAMonth) {
-                habitScheduleDAO.create(new HabitSchedule(habitDay, null, habitId));
+                if (habitDay.after(currentTime))
+                    habitScheduleDAO.create(new HabitSchedule(habitDay, null, habitId));
                 habitScheduleDateTimeCalendar.add(Calendar.DATE, 1);
                 habitDay = habitScheduleDateTimeCalendar.getTime();
                 habitDayBeforeAfterAMonth = habitDay.before(afterAMonth) || habitDay.equals(afterAMonth);
             }
         } else if (habitSchedules.size() >= 4 && habitSchedules.size() <= 5) { // WEEKLY
             while (habitDayBeforeAfterAMonth) {
-                habitScheduleDAO.create(new HabitSchedule(habitDay, null, habitId));
+                if (habitDay.after(currentTime))
+                    habitScheduleDAO.create(new HabitSchedule(habitDay, null, habitId));
                 habitScheduleDateTimeCalendar.add(Calendar.DAY_OF_YEAR, 7);
                 habitDay = habitScheduleDateTimeCalendar.getTime();
                 habitDayBeforeAfterAMonth = habitDay.before(afterAMonth) || habitDay.equals(afterAMonth);
@@ -87,7 +91,8 @@ public class HabitTrackerApplication extends Application {
                     habitScheduleDateTimeCalendar.set(Calendar.DAY_OF_WEEK, i + 1);
                     habitDay = habitScheduleDateTimeCalendar.getTime();
                     while (habitDayBeforeAfterAMonth) {
-                        habitScheduleDAO.create(new HabitSchedule(habitDay, null, habitId));
+                        if (habitDay.after(currentTime))
+                            habitScheduleDAO.create(new HabitSchedule(habitDay, null, habitId));
                         habitScheduleDateTimeCalendar.add(Calendar.DAY_OF_YEAR, 7);
                         habitDay = habitScheduleDateTimeCalendar.getTime();
                         habitDayBeforeAfterAMonth = habitDay.before(afterAMonth) || habitDay.equals(afterAMonth);

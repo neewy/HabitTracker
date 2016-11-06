@@ -337,6 +337,7 @@ public class AddHabitActivity extends BaseActivity {
     private void createSchedulesForTheHabitByItsId(int habitId) {
         Calendar c = new GregorianCalendar();
         // Get how many days in current month
+        Date currentTime = c.getTime();
         int monthMaxDays = c.getActualMaximum(Calendar.DAY_OF_MONTH);
         c.set(Calendar.HOUR_OF_DAY, habitSettings.getNotificationHour());
         c.set(Calendar.MINUTE, habitSettings.getNotificationMinute());
@@ -350,7 +351,8 @@ public class AddHabitActivity extends BaseActivity {
         switch (habitSettings.getNotificationFrequencyType()) {
             case DAILY:
                 while (habitDayBeforeAfterAMonth) {
-                    habitScheduleDAO.create(new HabitSchedule(habitDay, null, habitId));
+                    if (habitDay.after(currentTime))
+                        habitScheduleDAO.create(new HabitSchedule(habitDay, null, habitId));
                     c.add(Calendar.DATE, 1);
                     habitDay = c.getTime();
                     habitDayBeforeAfterAMonth = habitDay.before(afterAMonth) || habitDay.equals(afterAMonth);
@@ -360,7 +362,8 @@ public class AddHabitActivity extends BaseActivity {
                 c = setDayOfWeekByItsNumber(c, habitSettings.getNotificationFrequencyWeekNumberOrDate());
                 habitDay = c.getTime();
                 while (habitDayBeforeAfterAMonth) {
-                    habitScheduleDAO.create(new HabitSchedule(habitDay, null, habitId));
+                    if (habitDay.after(currentTime))
+                        habitScheduleDAO.create(new HabitSchedule(habitDay, null, habitId));
                     c.add(Calendar.DAY_OF_YEAR, 7);
                     habitDay = c.getTime();
                     habitDayBeforeAfterAMonth = habitDay.before(afterAMonth) || habitDay.equals(afterAMonth);
@@ -370,7 +373,8 @@ public class AddHabitActivity extends BaseActivity {
                 c.set(Calendar.DAY_OF_MONTH, habitSettings.getNotificationFrequencyWeekNumberOrDate());
                 habitDay = c.getTime();
                 while (habitDayBeforeAfterAMonth) {
-                    habitScheduleDAO.create(new HabitSchedule(habitDay, null, habitId));
+                    if (habitDay.after(currentTime))
+                        habitScheduleDAO.create(new HabitSchedule(habitDay, null, habitId));
                     c.add(Calendar.MONTH, 1);
                     habitDay = c.getTime();
                     habitDayBeforeAfterAMonth = habitDay.before(afterAMonth) || habitDay.equals(afterAMonth);
@@ -383,7 +387,8 @@ public class AddHabitActivity extends BaseActivity {
                         habitDay = c.getTime();
                         habitDayBeforeAfterAMonth = habitDay.before(afterAMonth) || habitDay.equals(afterAMonth);
                         while (habitDayBeforeAfterAMonth) {
-                            habitScheduleDAO.create(new HabitSchedule(habitDay, null, habitId));
+                            if (habitDay.after(currentTime))
+                                habitScheduleDAO.create(new HabitSchedule(habitDay, null, habitId));
                             c.add(Calendar.DAY_OF_YEAR, 7);
                             habitDay = c.getTime();
                             habitDayBeforeAfterAMonth = habitDay.before(afterAMonth) || habitDay.equals(afterAMonth);
@@ -397,7 +402,8 @@ public class AddHabitActivity extends BaseActivity {
                 break;
             default:
                 while (habitDayBeforeAfterAMonth) {
-                    habitScheduleDAO.create(new HabitSchedule(habitDay, null, habitId));
+                    if (habitDay.after(currentTime))
+                        habitScheduleDAO.create(new HabitSchedule(habitDay, null, habitId));
                     c.add(Calendar.DATE, 1);
                     habitDay = c.getTime();
                     habitDayBeforeAfterAMonth = habitDay.before(afterAMonth) || habitDay.equals(afterAMonth);
