@@ -317,10 +317,11 @@ public class HabitScheduleDAO implements ExtendedCrud {
         return percentage;
     }
 
-    public HabitSchedule getNewestHabitSchedule() {
+    public HabitSchedule getNewestHabitScheduleForDistinctHabitByHabitId(int habitId) {
         HabitSchedule habitSchedule = null;
         try {
             QueryBuilder<HabitSchedule, Integer> qBuilder = helper.getHabitScheduleDao().queryBuilder();
+            qBuilder.where().eq(Constants.HABIT_ID, habitId);
             qBuilder.orderBy(Constants.DATETIME, false); // false for descending order
             qBuilder.limit(1);
             habitSchedule = helper.getHabitScheduleDao().queryForId(qBuilder.query().get(0).getId());
