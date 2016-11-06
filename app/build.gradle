@@ -38,7 +38,7 @@ dependencies {
 
     // https://mvnrepository.com/artifact/com.j256.ormlite/ormlite-android
     compile group: 'com.j256.ormlite', name: 'ormlite-android', version: '4.48'
-    compile 'com.google.android.gms:play-services:9.4.0'
+    compile 'com.google.android.gms:play-services-maps:9.4.0'
 
     compile 'com.github.lawloretienne:discreteslider:0.0.9'
     compile 'com.google.android:flexbox:0.2.3'
@@ -48,7 +48,6 @@ dependencies {
     compile 'com.android.support:cardview-v7:24.2.1'
     /*to display material design card for habit card*/
     compile 'com.android.support:recyclerview-v7:24.2.1' /*to use RecyclerView as a list of habits*/
-    compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:percent:24.2.1'
     compile 'org.ocpsoft.prettytime:prettytime:4.0.1.Final' //human readable date
 
