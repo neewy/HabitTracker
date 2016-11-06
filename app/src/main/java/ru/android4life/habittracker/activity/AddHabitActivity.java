@@ -202,15 +202,21 @@ public class AddHabitActivity extends BaseActivity {
             else
                 result = new HabitSettings();
         } else { // Habits edition
-            if (habitSettingsPrefs.contains(NOTIFICATION_FREQUENCY_TYPE) &&
+            if ((habitSettingsPrefs.contains(NOTIFICATION_FREQUENCY_TYPE) ||
+                    habitSettingsPrefs.contains(NOTIFICATION_HOUR) ||
+                    habitSettingsPrefs.contains(NOTIFICATION_MINUTE)) &&
                     habitSettingsPrefs.contains(getContext().getString(R.string.notification_sound_name)))
                 result = new HabitSettings(editedHabitId, true, habitSettings.getNotificationSoundUri(),
                         habitSettings.getNotificationSoundName());
-            else if (!habitSettingsPrefs.contains(NOTIFICATION_FREQUENCY_TYPE) &&
+            else if (!(habitSettingsPrefs.contains(NOTIFICATION_FREQUENCY_TYPE) ||
+                    habitSettingsPrefs.contains(NOTIFICATION_HOUR) ||
+                    habitSettingsPrefs.contains(NOTIFICATION_MINUTE)) &&
                     habitSettingsPrefs.contains(getContext().getString(R.string.notification_sound_name)))
                 result = new HabitSettings(editedHabitId, false, habitSettings.getNotificationSoundUri(),
                         habitSettings.getNotificationSoundName());
-            else if (habitSettingsPrefs.contains(NOTIFICATION_FREQUENCY_TYPE) &&
+            else if ((habitSettingsPrefs.contains(NOTIFICATION_FREQUENCY_TYPE) ||
+                    habitSettingsPrefs.contains(NOTIFICATION_HOUR) ||
+                    habitSettingsPrefs.contains(NOTIFICATION_MINUTE)) &&
                     !habitSettingsPrefs.contains(getContext().getString(R.string.notification_sound_name)))
                 result = new HabitSettings(editedHabitId, true);
             else
