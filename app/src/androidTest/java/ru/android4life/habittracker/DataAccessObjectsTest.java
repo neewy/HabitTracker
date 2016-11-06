@@ -543,4 +543,28 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         double percentage = habitScheduleDAO.getPercentageOfDoneSchedulesForDistinctHabitByHabitId(id);
         assertEquals(50.0, percentage);
     }
+
+    @Test
+    public void testGettingNewestHabitSchedule() {
+        HabitScheduleDAO habitScheduleDAO = new HabitScheduleDAO(this.getContext());
+        Calendar c = new GregorianCalendar();
+        c.add(Calendar.DATE, -7);
+        Date date = c.getTime();
+        HabitSchedule newHabitSchedule = new HabitSchedule(date, isDone, id);
+        habitScheduleDAO.create(newHabitSchedule);
+        c.add(Calendar.DATE, 1);
+        date = c.getTime();
+        newHabitSchedule = new HabitSchedule(date, false, id);
+        habitScheduleDAO.create(newHabitSchedule);
+        c.add(Calendar.DATE, 1);
+        date = c.getTime();
+        newHabitSchedule = new HabitSchedule(date, true, id);
+        habitScheduleDAO.create(newHabitSchedule);
+        c.add(Calendar.DATE, 1);
+        date = c.getTime();
+        newHabitSchedule = new HabitSchedule(date, true, id);
+        habitScheduleDAO.create(newHabitSchedule);
+        HabitSchedule newestHabitSchedule = habitScheduleDAO.getNewestHabitSchedule();
+        assertEquals(newHabitSchedule, newestHabitSchedule);
+    }
 }
