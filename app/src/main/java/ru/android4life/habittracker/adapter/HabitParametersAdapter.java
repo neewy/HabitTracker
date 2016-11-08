@@ -202,9 +202,7 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameterV
             public void onConfirmation(View caller, final TextView hint) {
 
             }
-        }
-
-                ;
+        };
     }
 
 

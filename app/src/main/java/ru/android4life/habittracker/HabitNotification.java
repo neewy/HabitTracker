@@ -150,10 +150,14 @@ public class HabitNotification {
                         habit.getQuestion()));
 
         Notification notification = builder.build();
-        //notification.defaults |= Notification.DEFAULT_ALL;
+        notification.vibrate = new long[]{1000, 100, 1000, 100, 1000, 2000};
 
-        //TODO: Add custom tune and vibration!
+        // in order to expand the buttons
+        notification.priority = Notification.PRIORITY_MAX;
+
+
         notification.sound = Uri.parse(habit.getAudioResource());
+
 
         NotificationManager notificationManager = (NotificationManager) context
                 .getSystemService(Context.NOTIFICATION_SERVICE);
