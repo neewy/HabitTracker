@@ -28,7 +28,7 @@ public class HabitsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAdapter = new HabitsAdapter(this, BaseActivity.getContext());
+        mAdapter = new HabitsAdapter(getFragmentManager(), this, BaseActivity.getContext());
     }
 
     @Nullable

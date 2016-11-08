@@ -13,7 +13,6 @@ import az.plainpie.PieView;
 import ru.android4life.habittracker.R;
 import ru.android4life.habittracker.activity.BaseActivity;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitScheduleDAO;
-import ru.android4life.habittracker.db.tablesrepresentations.HabitSchedule;
 
 /**
  * This class represents a fragment of right tab,
@@ -35,13 +34,13 @@ public class HabitStatisticsFragment extends Fragment {
         See https://stackoverflow.com/questions/9245408/best-practice-for-instantiating-a-new-android-fragment
         for the details.
      */
-    public static HabitStatisticsFragment newInstance(int habitScheduleId) {
+    public static HabitStatisticsFragment newInstance(int habitId) {
 
         Bundle args = new Bundle();
 
         HabitStatisticsFragment fragment = new HabitStatisticsFragment();
         // Setting an id of the clicked habit, see HabitListAdapter.onCreateViewHolder()
-        args.putInt(BaseActivity.getContext().getString(R.string.habit_schedule_id), habitScheduleId);
+        args.putInt(BaseActivity.getContext().getString(R.string.habit_id), habitId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -55,12 +54,11 @@ public class HabitStatisticsFragment extends Fragment {
         getActivity().getTheme().resolveAttribute(R.attr.colorPrimary, typedValue, true);
         pieView.setPercentageBackgroundColor(typedValue.data);
 
-        int habitScheduleId = this.getArguments()
-                .getInt(BaseActivity.getContext().getString(R.string.habit_schedule_id));
+        int habitId = this.getArguments()
+                .getInt(BaseActivity.getContext().getString(R.string.habit_id));
         HabitScheduleDAO habitScheduleDAO = new HabitScheduleDAO(BaseActivity.getContext());
-        HabitSchedule habitSchedule = (HabitSchedule) habitScheduleDAO.findById(habitScheduleId);
         double percentage = habitScheduleDAO
-                .getPercentageOfDoneSchedulesForDistinctHabitByHabitId(habitSchedule.getHabitId());
+                .getPercentageOfDoneSchedulesForDistinctHabitByHabitId(habitId);
 
         if (percentage == 0) // Plain Pie Chart work inadequately with 0 values, pieChart becomes invisible
             percentage = 0.1;

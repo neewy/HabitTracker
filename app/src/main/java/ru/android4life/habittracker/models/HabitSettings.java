@@ -61,13 +61,13 @@ public class HabitSettings {
     }
 
     // Get habit settings for the edited habit, by the habit schedule id if notification sound had not changed
-    public HabitSettings(int editedHabitScheduleId, boolean frequencyChanged) {
+    public HabitSettings(int editedHabitId, boolean frequencyChanged) {
         HabitDAO habitDAO = new HabitDAO(BaseActivity.getContext());
         HabitScheduleDAO habitScheduleDAO = new HabitScheduleDAO(BaseActivity.getContext());
-        HabitSchedule editedHabitsSchedule = (HabitSchedule) habitScheduleDAO.findById(editedHabitScheduleId);
-        Habit editedHabit = (Habit) habitDAO.findById(editedHabitsSchedule.getHabitId());
+        Habit editedHabit = (Habit) habitDAO.findById(editedHabitId);
         Calendar habitScheduleDateTimeCalendar = new GregorianCalendar();
-        habitScheduleDateTimeCalendar.setTime(editedHabitsSchedule.getDatetime());
+        HabitSchedule habitSchedule = habitScheduleDAO.findByHabitId(editedHabit.getId()).get(0);
+        habitScheduleDateTimeCalendar.setTime(habitSchedule.getDatetime());
         this.categoryId = editedHabit.getCategoryId();
         this.notificationHour = habitScheduleDateTimeCalendar.get(Calendar.HOUR_OF_DAY);
         this.notificationMinute = habitScheduleDateTimeCalendar.get(Calendar.MINUTE);
@@ -88,12 +88,12 @@ public class HabitSettings {
             } else if (habitSchedules.size() >= 4 && habitSchedules.size() <= 5) { // WEEKLY
                 this.notificationFrequencyType = NotificationFrequencyType.WEEKLY;
                 this.notificationFrequencyWeekNumberOrDate =
-                        CalendarUtils.getDayOfWeeksNumberFromDate(editedHabitsSchedule.getDatetime());
+                        CalendarUtils.getDayOfWeeksNumberFromDate(habitSchedule.getDatetime());
             } else { // SPECIFIED DAYS
                 this.notificationFrequencyType = NotificationFrequencyType.SPECIFIED_DAYS;
                 this.notificationFrequencyWeekNumberOrDate = 1;
-                for (HabitSchedule habitSchedule : habitSchedules) {
-                    notificationFrequencySpecifiedDays[CalendarUtils.getDayOfWeeksNumberFromDate(habitSchedule.getDatetime()) - 1] = true;
+                for (HabitSchedule schedule : habitSchedules) {
+                    notificationFrequencySpecifiedDays[CalendarUtils.getDayOfWeeksNumberFromDate(schedule.getDatetime()) - 1] = true;
                 }
             }
         } else {
@@ -110,12 +110,12 @@ public class HabitSettings {
     }
 
     // Get habit settings for the edited habit, by the habit schedule id if notification sound changed
-    public HabitSettings(int editedHabitScheduleId, boolean frequencyChanged,
+    public HabitSettings(int editedHabitId, boolean frequencyChanged,
                          Uri notificationSoundUri, String notificationSoundName) {
         HabitDAO habitDAO = new HabitDAO(BaseActivity.getContext());
         HabitScheduleDAO habitScheduleDAO = new HabitScheduleDAO(BaseActivity.getContext());
-        HabitSchedule editedHabitsSchedule = (HabitSchedule) habitScheduleDAO.findById(editedHabitScheduleId);
-        Habit editedHabit = (Habit) habitDAO.findById(editedHabitsSchedule.getHabitId());
+        Habit editedHabit = (Habit) habitDAO.findById(editedHabitId);
+        HabitSchedule editedHabitsSchedule = habitScheduleDAO.findByHabitId(editedHabitId).get(0);
         Calendar habitScheduleDateTimeCalendar = new GregorianCalendar();
         habitScheduleDateTimeCalendar.setTime(editedHabitsSchedule.getDatetime());
         this.categoryId = editedHabit.getCategoryId();

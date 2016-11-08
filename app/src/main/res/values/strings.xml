@@ -82,6 +82,7 @@
 
     <!--Habits List Adapter-->
     <string name="habit_schedule_id">habitScheduleId</string>
+    <string name="habit_id">habitId</string>
 
     <!--HabitListFragment-->
     <string name="today_capital_case">TODAY</string>

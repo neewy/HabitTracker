@@ -21,7 +21,6 @@ import ru.android4life.habittracker.adapter.HabitParametersAdapter;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitDAO;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitScheduleDAO;
 import ru.android4life.habittracker.db.tablesrepresentations.Habit;
-import ru.android4life.habittracker.db.tablesrepresentations.HabitSchedule;
 import ru.android4life.habittracker.models.HabitParameter;
 
 /**
@@ -37,7 +36,7 @@ public class HabitCardFragment extends Fragment {
     private HabitParametersAdapter mAdapter;
     private HabitScheduleDAO habitScheduleDAO;
     private HabitDAO habitDAO;
-    private int habitScheduleId;
+    private int habitId;
 
     /*
             If Android decides to recreate your Fragment later, it's going to call the no-argument
@@ -47,13 +46,13 @@ public class HabitCardFragment extends Fragment {
         See https://stackoverflow.com/questions/9245408/best-practice-for-instantiating-a-new-android-fragment
         for the details.
      */
-    public static HabitCardFragment newInstance(int habitScheduleId) {
+    public static HabitCardFragment newInstance(int habitId) {
 
         Bundle args = new Bundle();
 
         HabitCardFragment fragment = new HabitCardFragment();
         // Setting an id of the clicked habit, see HabitListAdapter.onCreateViewHolder()
-        args.putInt(BaseActivity.getContext().getString(R.string.habit_schedule_id), habitScheduleId);
+        args.putInt(BaseActivity.getContext().getString(R.string.habit_id), habitId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -61,12 +60,12 @@ public class HabitCardFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        habitScheduleId = this.getArguments().getInt(BaseActivity.getContext().getString(R.string.habit_schedule_id));
+        habitId = this.getArguments().getInt(BaseActivity.getContext().getString(R.string.habit_id));
         habitScheduleDAO = new HabitScheduleDAO(BaseActivity.getContext());
         habitDAO = new HabitDAO(BaseActivity.getContext());
         // adapter for habits parameters (thank you, Bulat)
         mAdapter = new HabitParametersAdapter(getActivity(),
-                HabitParameter.createParametersByHabitScheduleId(getContext(), habitScheduleId), false);
+                HabitParameter.createParametersByHabitId(getContext(), habitId), false);
 
         MainActivity.toggle.setDrawerIndicatorEnabled(false);
         MainActivity.toggle.setHomeAsUpIndicator(R.drawable.ic_add_habit_back);
@@ -116,8 +115,7 @@ public class HabitCardFragment extends Fragment {
         AppCompatTextView habitNameTextView = (AppCompatTextView) habitCard.findViewById(R.id.habit_card_name);
         AppCompatTextView habitQuestionTextView = (AppCompatTextView) habitCard.findViewById(R.id.habit_card_question);
 
-        HabitSchedule habitSchedule = (HabitSchedule) habitScheduleDAO.findById(habitScheduleId);
-        Habit habit = (Habit) habitDAO.findById(habitSchedule.getHabitId());
+        Habit habit = (Habit) habitDAO.findById(habitId);
 
         habitNameTextView.setText(habit.getName());
         habitQuestionTextView.setText(BaseActivity.getContext().getString(R.string.did_i_question,
@@ -136,7 +134,7 @@ public class HabitCardFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), AddHabitActivity.class);
-                intent.putExtra(getString(R.string.habit_schedule_id), habitScheduleId);
+                intent.putExtra(getString(R.string.habit_id), habitId);
                 startActivity(intent);
             }
         });
