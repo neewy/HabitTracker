@@ -6,6 +6,7 @@ package ru.android4life.habittracker.utils;
 
 public class StringConstants {
     public static final String CATEGORY_ID = "categoryId";
+    public static final String HABIT_ID = "habitId";
 
     public static final String SPORT = "Sport";
     public static final String READING = "Reading";
@@ -55,5 +56,4 @@ public class StringConstants {
 
     public static final long DAY_IN_MS = 1000 * 60 * 60 * 24;
     public static final long MIN_IN_MS = 1000 * 60;
-
 }

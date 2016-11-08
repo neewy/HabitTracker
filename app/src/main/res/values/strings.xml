@@ -184,6 +184,7 @@
     <string name="perform_future_habit">Hey, do not try to cheat! You can perform only today habits</string>
     <string name="title_activity_maps">Map</string>
     <string name="marker_delete">Delete the marker?</string>
+    <string name="delete_marker">Delete marker</string>
 
 
 </resources>

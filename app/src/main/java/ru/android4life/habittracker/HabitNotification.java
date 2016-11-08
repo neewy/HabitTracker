@@ -155,9 +155,7 @@ public class HabitNotification {
         // in order to expand the buttons
         notification.priority = Notification.PRIORITY_MAX;
 
-
         notification.sound = Uri.parse(habit.getAudioResource());
-
 
         NotificationManager notificationManager = (NotificationManager) context
                 .getSystemService(Context.NOTIFICATION_SERVICE);

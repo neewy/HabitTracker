@@ -6,14 +6,14 @@
     android:layout_height="match_parent">
 
     <RelativeLayout
-        android:id="@+id/add_habit_header"
+        android:id="@+id/add_marker_header"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="@drawable/primary_background_with_shadow">
         <!--Back button-->
 
         <ru.android4life.habittracker.views.RippleView
-            android:id="@+id/add_habit_back_button"
+            android:id="@+id/marker_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -30,7 +30,7 @@
         </ru.android4life.habittracker.views.RippleView>
 
         <ru.android4life.habittracker.views.RippleView
-            android:id="@+id/add_habit_confirm_button"
+            android:id="@+id/marker_confirm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -53,10 +53,30 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/add_habit_header" />
+        android:layout_alignBottom="@+id/range_picker"
+        android:layout_below="@+id/add_marker_header"
+        android:layout_marginBottom="94dp" />
+
+    <RelativeLayout
+        android:id="@+id/delete_marker_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/range_labels"
+        android:layout_marginBottom="30dp">
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/delete_marker"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/delete_marker"
+            android:visibility="gone" />
+    </RelativeLayout>
 
     <com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/range_labels"
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:layout_above="@+id/map"
@@ -72,12 +92,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1" />
+            android:text="10" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="10" />
+            android:text="25" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -92,7 +112,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="500" />
+            android:text="250" />
     </com.google.android.flexbox.FlexboxLayout>
 
     <com.etiennelawlor.discreteslider.library.ui.DiscreteSlider

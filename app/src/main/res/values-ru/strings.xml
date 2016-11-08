@@ -142,5 +142,6 @@
     <string name="perform_future_habit">Хей, не жульничай! Можно выполнить только сегодняшнюю привычку</string>
     <string name="add_habit_name_position">Местоположение</string>
     <string name="marker_delete">Удалить маркер?</string>
+    <string name="delete_marker">Удалить маркер</string>
 
 </resources>
