@@ -63,8 +63,7 @@ public class HabitCardFragment extends Fragment {
         habitId = this.getArguments().getInt(BaseActivity.getContext().getString(R.string.habit_id));
         habitScheduleDAO = new HabitScheduleDAO(BaseActivity.getContext());
         habitDAO = new HabitDAO(BaseActivity.getContext());
-        mAdapter = new HabitParametersAdapter(getActivity(),
-                HabitParameter.createParametersByHabitId(getContext(), habitId), false);
+        mAdapter = new HabitParametersAdapter(getActivity(), HabitParameter.createParametersByHabitId(getContext(), habitId), false);
 
         MainActivity.toggle.setDrawerIndicatorEnabled(false);
         MainActivity.toggle.setHomeAsUpIndicator(R.drawable.ic_add_habit_back);

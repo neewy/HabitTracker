@@ -211,8 +211,7 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameterV
 
             @Override
             public void onPosition(View caller, TextView hint) {
-                Intent openPosition = new Intent(context, MapsActivity.class);
-                openPosition.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                Intent openPosition = new Intent(activity, MapsActivity.class);
                 openPosition.putExtra(HABIT_ID, habitId);
                 activity.startActivityForResult(openPosition, REQUEST_POSITION);
             }

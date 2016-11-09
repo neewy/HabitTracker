@@ -51,7 +51,6 @@ import static ru.android4life.habittracker.utils.StringConstants.NOTIFICATION_MI
 import static ru.android4life.habittracker.utils.StringConstants.PICK_AUDIO_REQUEST;
 import static ru.android4life.habittracker.utils.StringConstants.POSITION;
 import static ru.android4life.habittracker.utils.StringConstants.RANGE;
-import static ru.android4life.habittracker.utils.StringConstants.RETURN_POSITION;
 import static ru.android4life.habittracker.utils.StringConstants.SPECIFIED_DAYS;
 import static ru.android4life.habittracker.utils.StringConstants.WEEKLY;
 
@@ -182,12 +181,14 @@ public class AddHabitActivity extends BaseActivity {
                 habitSettingsPrefs.edit().putString(getContext().getResources()
                         .getString(R.string.notification_sound_name), habitSettings.getNotificationSoundName()).apply();
             }
-        } else if (resultCode == Activity.RESULT_OK && requestCode == RETURN_POSITION) {
+        } else if (resultCode == Activity.RESULT_OK) {
+            //TODO: why request code does not work?
+            //FIXME: pass the data in habit parameter
             boolean hasPosition = resultData.getBooleanExtra(POSITION, false);
             if (hasPosition) {
-                System.out.println("ALLO" + resultData.getDoubleExtra(LATITUDE, 0));
-                System.out.println("ALLO" + resultData.getDoubleExtra(LONGITUDE, 0));
-                System.out.println("ALLO" + resultData.getIntExtra(RANGE, 0));
+                resultData.getDoubleExtra(LATITUDE, 0);
+                resultData.getDoubleExtra(LONGITUDE, 0);
+                resultData.getIntExtra(RANGE, 0);
             } else {
                 System.out.println("No position");
             }
