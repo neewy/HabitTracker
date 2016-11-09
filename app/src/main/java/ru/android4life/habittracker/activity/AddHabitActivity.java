@@ -70,7 +70,7 @@ public class AddHabitActivity extends BaseActivity {
         setContentView(R.layout.activity_add_habit);
         setContext(this.getApplicationContext());
 
-        notificationSoundChanged=false;
+        notificationSoundChanged = false;
 
         notification = new HabitNotification(getContext());
 
