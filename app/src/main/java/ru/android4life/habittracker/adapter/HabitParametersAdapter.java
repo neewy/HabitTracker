@@ -87,6 +87,14 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameterV
         return vh;
     }
 
+    //FIXME: this is temporary workaround!
+    //change it as we figure out how to process data
+    //in order to change habit settings
+    public void updatePosition(String positionHint) {
+        parameters.get(4).setHint(positionHint);
+        this.notifyDataSetChanged();
+    }
+
     private HabitParameterViewHolder.AddHabitParameterListener createOnClickListener(final ViewGroup parent) {
         return new HabitParameterViewHolder.AddHabitParameterListener() {
             @Override

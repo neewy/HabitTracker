@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -183,14 +184,17 @@ public class AddHabitActivity extends BaseActivity {
             }
         } else if (resultCode == Activity.RESULT_OK) {
             //TODO: why request code does not work?
-            //FIXME: pass the data in habit parameter
+            //FIXME: pass the data in habit parameter!
             boolean hasPosition = resultData.getBooleanExtra(POSITION, false);
             if (hasPosition) {
-                resultData.getDoubleExtra(LATITUDE, 0);
-                resultData.getDoubleExtra(LONGITUDE, 0);
-                resultData.getIntExtra(RANGE, 0);
+                double latitude = resultData.getDoubleExtra(LATITUDE, 0);
+                double longitude = resultData.getDoubleExtra(LONGITUDE, 0);
+                DecimalFormat df = new DecimalFormat("#.##");
+                int range = resultData.getIntExtra(RANGE, 0);
+                //FIXME: this is temporary workaround! fix it
+                mAdapter.updatePosition(df.format(latitude) + ", " + df.format(longitude) + " | range: " + range);
             } else {
-                System.out.println("No position");
+                mAdapter.updatePosition("None");
             }
         }
     }
