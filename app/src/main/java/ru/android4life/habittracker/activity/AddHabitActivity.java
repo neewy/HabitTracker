@@ -33,6 +33,8 @@ import ru.android4life.habittracker.utils.StringConstants;
 import ru.android4life.habittracker.views.RippleView;
 
 import static ru.android4life.habittracker.utils.StringConstants.DAILY;
+import static ru.android4life.habittracker.utils.StringConstants.LATITUDE;
+import static ru.android4life.habittracker.utils.StringConstants.LONGITUDE;
 import static ru.android4life.habittracker.utils.StringConstants.MINUTES_BEFORE_CONFIRMATION;
 import static ru.android4life.habittracker.utils.StringConstants.MONTHLY;
 import static ru.android4life.habittracker.utils.StringConstants.NOTIFICATION_FREQUENCY_SPECIFIED_DAY_1;
@@ -47,6 +49,9 @@ import static ru.android4life.habittracker.utils.StringConstants.NOTIFICATION_FR
 import static ru.android4life.habittracker.utils.StringConstants.NOTIFICATION_HOUR;
 import static ru.android4life.habittracker.utils.StringConstants.NOTIFICATION_MINUTE;
 import static ru.android4life.habittracker.utils.StringConstants.PICK_AUDIO_REQUEST;
+import static ru.android4life.habittracker.utils.StringConstants.POSITION;
+import static ru.android4life.habittracker.utils.StringConstants.RANGE;
+import static ru.android4life.habittracker.utils.StringConstants.RETURN_POSITION;
 import static ru.android4life.habittracker.utils.StringConstants.SPECIFIED_DAYS;
 import static ru.android4life.habittracker.utils.StringConstants.WEEKLY;
 
@@ -55,7 +60,8 @@ import static ru.android4life.habittracker.utils.StringConstants.WEEKLY;
  */
 public class AddHabitActivity extends BaseActivity {
 
-    private RecyclerView.Adapter mAdapter;
+
+    private HabitParametersAdapter mAdapter;
     private HabitSettings habitSettings;
     private HabitScheduleDAO habitScheduleDAO;
     private HabitDAO habitDAO;
@@ -148,6 +154,7 @@ public class AddHabitActivity extends BaseActivity {
             mAdapter = new HabitParametersAdapter(this,
                     HabitParameter.createParametersByHabitId(getApplicationContext(),
                             editedHabitId), true);
+            mAdapter.setHabitId(editedHabitId);
         }
         mRecyclerView.setAdapter(mAdapter);
     }
@@ -174,6 +181,15 @@ public class AddHabitActivity extends BaseActivity {
 
                 habitSettingsPrefs.edit().putString(getContext().getResources()
                         .getString(R.string.notification_sound_name), habitSettings.getNotificationSoundName()).apply();
+            }
+        } else if (resultCode == Activity.RESULT_OK && requestCode == RETURN_POSITION) {
+            boolean hasPosition = resultData.getBooleanExtra(POSITION, false);
+            if (hasPosition) {
+                System.out.println("ALLO" + resultData.getDoubleExtra(LATITUDE, 0));
+                System.out.println("ALLO" + resultData.getDoubleExtra(LONGITUDE, 0));
+                System.out.println("ALLO" + resultData.getIntExtra(RANGE, 0));
+            } else {
+                System.out.println("No position");
             }
         }
     }
@@ -306,10 +322,9 @@ public class AddHabitActivity extends BaseActivity {
     private boolean editHabitAccordingToHabitPreferencesIfDataIsCorrect(Date habitDay, String habitName,
                                                                         String habitQuestion, int editedHabitId) {
         Habit editedHabit = (Habit) habitDAO.findById(editedHabitId);
-        HabitSchedule editedHabitsSchedule = (HabitSchedule) habitScheduleDAO.findByHabitId(editedHabitId).get(0);
 
-        int habitsEditionResult = habitDAO.update(new Habit(editedHabit.getId(), habitName, habitQuestion, habitDay, 55.75417935,
-                48.7440855, 9, habitSettings.getNotificationSoundUri().toString(), true, 60, habitSettings.getCategoryId()));
+        int habitsEditionResult = habitDAO.update(new Habit(editedHabit.getId(), habitName, habitQuestion, habitDay, 0,
+                0, 0, habitSettings.getNotificationSoundUri().toString(), true, 60, habitSettings.getCategoryId()));
         if (habitsEditionResult >= 0) {
             if (habitSettingsPrefs.contains(NOTIFICATION_FREQUENCY_TYPE) ||
                     habitSettingsPrefs.contains(NOTIFICATION_HOUR) ||
@@ -326,8 +341,8 @@ public class AddHabitActivity extends BaseActivity {
     }
 
     private boolean createHabitAccordingToHabitPreferencesIfDataIsCorrect(Date habitDay, String habitName, String habitQuestion) {
-        Habit habitToCreate = new Habit(habitName, habitQuestion, habitDay, 55.75417935,
-                48.7440855, 9, habitSettings.getNotificationSoundUri().toString(), true, 60, habitSettings.getCategoryId());
+        Habit habitToCreate = new Habit(habitName, habitQuestion, habitDay, 0,
+                0, 0, habitSettings.getNotificationSoundUri().toString(), true, 60, habitSettings.getCategoryId());
         int habitsCreationResult = habitDAO.create(habitToCreate);
         if (habitsCreationResult > 0) {
             Habit habitWithMaxId = (Habit) habitDAO.getObjectWithMaxId();
@@ -454,4 +469,8 @@ public class AddHabitActivity extends BaseActivity {
         toast.show();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 }

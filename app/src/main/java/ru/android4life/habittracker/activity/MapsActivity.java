@@ -1,5 +1,7 @@
 package ru.android4life.habittracker.activity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
@@ -17,42 +19,59 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import ru.android4life.habittracker.R;
+import ru.android4life.habittracker.db.dataaccessobjects.HabitDAO;
+import ru.android4life.habittracker.db.tablesrepresentations.Habit;
 import ru.android4life.habittracker.views.RippleView;
+
+import static ru.android4life.habittracker.utils.StringConstants.HABIT_ID;
+import static ru.android4life.habittracker.utils.StringConstants.LATITUDE;
+import static ru.android4life.habittracker.utils.StringConstants.LONGITUDE;
+import static ru.android4life.habittracker.utils.StringConstants.POSITION;
+import static ru.android4life.habittracker.utils.StringConstants.RANGE;
+
+/**
+ * User can select the place on map
+ * to perform the habit in specified range
+ * via MapsActivity
+ */
 
 public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
 
+    public static final int FIRST_RANGE = 10;
+    public static final int SECOND_RANGE = 25;
+    public static final int THIRD_RANGE = 50;
+    public static final int FOURTH_RANGE = 100;
+    public static final int FIFTH_RANGE = 250;
+
+
     private GoogleMap mMap;
+
+    private RippleView back;
+    private RippleView confirm;
+
     private AppCompatButton deleteMarkerButton;
-    private DiscreteSlider discreteSlider;
-    private RippleView markerBack;
-    private RippleView markerConfirm;
+    private DiscreteSlider rangeSlider;
+
     private Marker currentMarker;
     private boolean isMarkerVisible;
     private Circle currentCircle;
-    private int habitId;
+
+    private Habit habit;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-        //FIXME: change when habit id is in intent
-        //habitId = getIntent().getExtras().getInt(HABIT_ID);
-
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        markerBack = (RippleView) findViewById(R.id.marker_back);
-        markerConfirm = (RippleView) findViewById(R.id.marker_confirm);
+        back = (RippleView) findViewById(R.id.marker_back);
+        confirm = (RippleView) findViewById(R.id.marker_confirm);
 
-        discreteSlider = (DiscreteSlider) findViewById(R.id.range_picker);
+        rangeSlider = (DiscreteSlider) findViewById(R.id.range_picker);
         deleteMarkerButton = (AppCompatButton) findViewById(R.id.delete_marker);
-        discreteSlider.setOnDiscreteSliderChangeListener(new DiscreteSlider.OnDiscreteSliderChangeListener() {
-            @Override
-            public void onPositionChanged(int position) {
-                setRange(position); //changes the circle radius if not null
-            }
-        });
     }
 
     @Override
@@ -63,50 +82,47 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
         uiSettings.setMyLocationButtonEnabled(true);
         uiSettings.setZoomControlsEnabled(true);
 
-        //moves camera to current position
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(mMap.getMyLocation().getLatitude(), mMap.getMyLocation().getLongitude())));
+        int habitId = getIntent().getExtras().getInt(HABIT_ID, -1);
 
-        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng latLng) {
-                if (currentMarker != null) currentMarker.remove();
-                currentMarker = mMap.addMarker(new MarkerOptions().position(latLng));
-                isMarkerVisible = true;
-                deleteMarkerButton.setVisibility(View.VISIBLE);
-                setRange(discreteSlider.getPosition());
-            }
-        });
+        if (habitId != -1) {
+            HabitDAO habitDAO = new HabitDAO(this);
+            habit = (Habit) habitDAO.findById(habitId);
 
-        deleteMarkerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (currentMarker != null) {
-                    currentMarker.remove();
-                    isMarkerVisible = false;
-                }
-                if (currentCircle != null) currentCircle.remove();
-                deleteMarkerButton.setVisibility(View.GONE);
+            if (isPositionNone(habit)) {
+                moveCameraToCurrentLocation();
+            } else {
+                placeMarker(new LatLng(habit.getLatitude(), habit.getLongitude()));
+                setRangeByMeters((int) habit.getRange());
             }
-        });
+        } else {
+            moveCameraToCurrentLocation();
+        }
 
-        markerBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
-        markerConfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO: pass the settings of marker into corresponding habit
-                finish();
-            }
-        });
+        setupControls();
     }
 
+    private void moveCameraToCurrentLocation() {
+        //moves camera to current position
+        //TODO: uncomment for non-emulator apk
+        //TODO: check if has gps permissions
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(mMap.getMyLocation().getLatitude(), mMap.getMyLocation().getLongitude())));
+    }
+
+    private boolean isPositionNone(Habit habit) {
+        return habit.getLongitude() == 0 && habit.getLongitude() == 0 && habit.getRange() == 0;
+    }
+
+    private void placeMarker(LatLng latLng) {
+        if (currentMarker != null) currentMarker.remove();
+        currentMarker = mMap.addMarker(new MarkerOptions().position(latLng));
+        isMarkerVisible = true;
+        deleteMarkerButton.setVisibility(View.VISIBLE);
+        setRangeBySlider(rangeSlider.getPosition());
+    }
+
+
     private void addCircle(int meters) {
-        if (currentMarker != null && isMarkerVisible) {
+        if (isMarkerVisible) {
             CircleOptions circleOptions = new CircleOptions()
                     .center(currentMarker.getPosition())
                     .radius(meters)
@@ -121,24 +137,122 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
         }
     }
 
-    private void setRange(int position) {
-        switch (position) {
-            case 0:
-                addCircle(10);
+    private void setRangeByMeters(int meters) {
+        switch (meters) {
+            case FIRST_RANGE:
+                setRangeBySlider(0);
                 break;
-            case 1:
-                addCircle(25);
+            case SECOND_RANGE:
+                setRangeBySlider(1);
                 break;
-            case 2:
-                addCircle(50);
+            case THIRD_RANGE:
+                setRangeBySlider(2);
                 break;
-            case 3:
-                addCircle(100);
+            case FOURTH_RANGE:
+                setRangeBySlider(3);
                 break;
-            case 4:
-                addCircle(250);
+            case FIFTH_RANGE:
+                setRangeBySlider(4);
+                break;
+            default:
+                setRangeBySlider(1);
                 break;
         }
+    }
+
+    private void setRangeBySlider(int position) {
+        switch (position) {
+            case 0:
+                addCircle(FIRST_RANGE);
+                break;
+            case 1:
+                addCircle(SECOND_RANGE);
+                break;
+            case 2:
+                addCircle(THIRD_RANGE);
+                break;
+            case 3:
+                addCircle(FOURTH_RANGE);
+                break;
+            case 4:
+                addCircle(FIFTH_RANGE);
+                break;
+        }
+    }
+
+    private int getRange() {
+        switch (rangeSlider.getPosition()) {
+            case 0:
+                return FIRST_RANGE;
+            case 1:
+                return SECOND_RANGE;
+            case 2:
+                return THIRD_RANGE;
+            case 3:
+                return FOURTH_RANGE;
+            case 4:
+                return FIFTH_RANGE;
+        }
+        return -1;
+    }
+
+    private void setupControls() {
+        // if we delete marker from map
+        deleteMarkerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (currentMarker != null) {
+                    currentMarker.remove();
+                    isMarkerVisible = false;
+                }
+                if (currentCircle != null) currentCircle.remove();
+                deleteMarkerButton.setVisibility(View.GONE);
+            }
+        });
+
+        // if we change the range
+        rangeSlider.setOnDiscreteSliderChangeListener(new DiscreteSlider.OnDiscreteSliderChangeListener() {
+            @Override
+            public void onPositionChanged(int position) {
+                setRangeBySlider(position); //changes the circle radius if not null
+            }
+        });
+
+        // if we go back
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        //if we confirm the selection
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Intent positionData = new Intent();
+                if (isMarkerVisible) {
+                    positionData.putExtra(POSITION, true);
+                    positionData.putExtra(LATITUDE, currentMarker.getPosition().latitude);
+                    positionData.putExtra(LONGITUDE, currentMarker.getPosition().longitude);
+                    positionData.putExtra(RANGE, getRange());
+                } else {
+                    // if nothing was selected
+                    positionData.putExtra(POSITION, false);
+                }
+
+                setResult(Activity.RESULT_OK, positionData);
+                finish();
+            }
+        });
+
+        //if we click on map
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                placeMarker(latLng);
+            }
+        });
     }
 
 }

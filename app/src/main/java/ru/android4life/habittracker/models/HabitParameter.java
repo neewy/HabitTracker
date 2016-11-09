@@ -93,7 +93,7 @@ public class HabitParameter {
 
         // FIXME: 05.11.16 Add gps position
         parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_position),
-                context.getString(R.string.none), ContextCompat.getDrawable(context, R.drawable.ic_explore_black_24dp));
+                habit.getLatitude() + ", " + habit.getLongitude() + " | " + habit.getRange(), ContextCompat.getDrawable(context, R.drawable.ic_explore_black_24dp));
         habitParameters.add(parameter);
 
         parameter = new HabitParameter(context.getString(R.string.add_habit_name_confirmation),

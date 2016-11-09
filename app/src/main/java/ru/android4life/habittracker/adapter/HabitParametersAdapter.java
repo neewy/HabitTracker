@@ -23,7 +23,6 @@ import java.util.Calendar;
 import java.util.List;
 
 import ru.android4life.habittracker.R;
-import ru.android4life.habittracker.activity.MainActivity;
 import ru.android4life.habittracker.activity.MapsActivity;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitCategoryDAO;
 import ru.android4life.habittracker.db.tablesrepresentations.HabitCategory;
@@ -35,17 +34,18 @@ import ru.android4life.habittracker.viewholder.HabitParameterViewHolder;
 
 import static android.content.Context.MODE_PRIVATE;
 import static ru.android4life.habittracker.utils.StringConstants.CATEGORY_ID;
+import static ru.android4life.habittracker.utils.StringConstants.HABIT_ID;
 import static ru.android4life.habittracker.utils.StringConstants.NOTIFICATION_FREQUENCY_TYPE;
 import static ru.android4life.habittracker.utils.StringConstants.NOTIFICATION_FREQUENCY_WEEK_NUMBER_OR_DATE;
 import static ru.android4life.habittracker.utils.StringConstants.NOTIFICATION_HOUR;
 import static ru.android4life.habittracker.utils.StringConstants.NOTIFICATION_MINUTE;
 import static ru.android4life.habittracker.utils.StringConstants.PICK_AUDIO_REQUEST;
+import static ru.android4life.habittracker.utils.StringConstants.REQUEST_POSITION;
 
 /**
  * Created by Bulat Mukhutdinov on 28.09.2016.
  */
 public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameterViewHolder> {
-
 
     private HabitCategoryDAO habitCategoryDAO;
     private List<HabitParameter> parameters;
@@ -54,15 +54,25 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameterV
     private HabitSettings habitSettings;
     private SharedPreferences prefs = null;
     private boolean isForCreation;
+    private int habitId = -1;
+
 
     public HabitParametersAdapter(Activity activity, List<HabitParameter> parameters, boolean isForCreation) {
         this.parameters = parameters;
         this.activity = activity;
         this.habitSettings = new HabitSettings();
-        this.context = MainActivity.getContext();
+        this.context = activity;
         this.habitCategoryDAO = new HabitCategoryDAO(context);
         this.prefs = context.getSharedPreferences(context.getString(R.string.creating_habit_settings), MODE_PRIVATE);
         this.isForCreation = isForCreation;
+    }
+
+    public int getHabitId() {
+        return habitId;
+    }
+
+    public void setHabitId(int habitId) {
+        this.habitId = habitId;
     }
 
     @Override
@@ -203,9 +213,8 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameterV
             public void onPosition(View caller, TextView hint) {
                 Intent openPosition = new Intent(context, MapsActivity.class);
                 openPosition.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                //TODO: add habit id
-                //openPosition.putExtra(HABIT_ID, ID!!);
-                context.startActivity(openPosition);
+                openPosition.putExtra(HABIT_ID, habitId);
+                activity.startActivityForResult(openPosition, REQUEST_POSITION);
             }
 
             @Override

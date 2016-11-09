@@ -53,9 +53,9 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         modifiedDateTime = "2015-01-02 03:04:05.6";
         name = "sleep";
         question = "sleep";
-        latitude = 55.75417935;
-        longitude = 48.7440855;
-        range = 9;
+        latitude = 0;
+        longitude = 0;
+        range = 0;
 
         String filename = "/meouing_kittten.mp3";
         // Environment.getExternalStorageDirectory().getPath() represents /sdcard/extended/0

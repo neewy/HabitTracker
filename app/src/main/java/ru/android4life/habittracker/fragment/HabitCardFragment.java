@@ -63,7 +63,6 @@ public class HabitCardFragment extends Fragment {
         habitId = this.getArguments().getInt(BaseActivity.getContext().getString(R.string.habit_id));
         habitScheduleDAO = new HabitScheduleDAO(BaseActivity.getContext());
         habitDAO = new HabitDAO(BaseActivity.getContext());
-        // adapter for habits parameters (thank you, Bulat)
         mAdapter = new HabitParametersAdapter(getActivity(),
                 HabitParameter.createParametersByHabitId(getContext(), habitId), false);
 

@@ -17,6 +17,14 @@ public class StringConstants {
     public static final String OTHER = "Other";
 
     public static final int PICK_AUDIO_REQUEST = 0;
+    public static final int RETURN_POSITION = 1;
+
+    public static final int REQUEST_POSITION = 0x1035;
+
+    public static final String POSITION = "position";
+    public static final String LATITUDE = "latitude";
+    public static final String LONGITUDE = "longitude";
+    public static final String RANGE = "range";
 
     public static final String LOCALE = "locale";
     public final static String SHARED_PREF = "SHARED_PREF";
