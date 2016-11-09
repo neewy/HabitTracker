@@ -55,12 +55,13 @@ import static ru.android4life.habittracker.utils.StringConstants.WEEKLY;
  */
 public class AddHabitActivity extends BaseActivity {
 
-    private RecyclerView.Adapter mAdapter;
+    private HabitParametersAdapter mAdapter;
     private HabitSettings habitSettings;
     private HabitScheduleDAO habitScheduleDAO;
     private HabitDAO habitDAO;
     private SharedPreferences habitSettingsPrefs = null;
     private HabitNotification notification;
+    private boolean notificationSoundChanged;
 
 
     @Override
@@ -68,6 +69,8 @@ public class AddHabitActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_habit);
         setContext(this.getApplicationContext());
+
+        notificationSoundChanged=false;
 
         notification = new HabitNotification(getContext());
 
@@ -172,8 +175,8 @@ public class AddHabitActivity extends BaseActivity {
                 habitSettings.setNotificationSoundName(r.getTitle(getContext()));
                 Log.i("AUDIO", "Name: " + habitSettings.getNotificationSoundName());
 
-                habitSettingsPrefs.edit().putString(getContext().getResources()
-                        .getString(R.string.notification_sound_name), habitSettings.getNotificationSoundName()).apply();
+                mAdapter.updateHintForTuneParameterIfExists(habitSettings.getNotificationSoundName());
+                notificationSoundChanged = true;
             }
         }
     }
@@ -188,15 +191,13 @@ public class AddHabitActivity extends BaseActivity {
                     .getString(R.string.notification_frequency_specified_day_string,
                             String.valueOf(i))).apply();
         habitSettingsPrefs.edit().remove(NOTIFICATION_FREQUENCY_WEEK_NUMBER_OR_DATE).apply();
-        habitSettingsPrefs.edit().remove(getContext().getResources()
-                .getString(R.string.notification_sound_name)).apply();
         habitSettingsPrefs.edit().remove(MINUTES_BEFORE_CONFIRMATION).apply();
     }
 
     private HabitSettings getHabitSettingsFromPreferences(int editedHabitId) {
         HabitSettings result;
         if (editedHabitId == -1) { // Habits creation
-            if (habitSettingsPrefs.contains(getContext().getString(R.string.notification_sound_name)))
+            if (notificationSoundChanged)
                 result = new HabitSettings(habitSettings.getNotificationSoundUri(),
                         habitSettings.getNotificationSoundName());
             else
@@ -205,19 +206,19 @@ public class AddHabitActivity extends BaseActivity {
             if ((habitSettingsPrefs.contains(NOTIFICATION_FREQUENCY_TYPE) ||
                     habitSettingsPrefs.contains(NOTIFICATION_HOUR) ||
                     habitSettingsPrefs.contains(NOTIFICATION_MINUTE)) &&
-                    habitSettingsPrefs.contains(getContext().getString(R.string.notification_sound_name)))
+                    notificationSoundChanged)
                 result = new HabitSettings(editedHabitId, true, habitSettings.getNotificationSoundUri(),
                         habitSettings.getNotificationSoundName());
             else if (!(habitSettingsPrefs.contains(NOTIFICATION_FREQUENCY_TYPE) ||
                     habitSettingsPrefs.contains(NOTIFICATION_HOUR) ||
                     habitSettingsPrefs.contains(NOTIFICATION_MINUTE)) &&
-                    habitSettingsPrefs.contains(getContext().getString(R.string.notification_sound_name)))
+                    notificationSoundChanged)
                 result = new HabitSettings(editedHabitId, false, habitSettings.getNotificationSoundUri(),
                         habitSettings.getNotificationSoundName());
             else if ((habitSettingsPrefs.contains(NOTIFICATION_FREQUENCY_TYPE) ||
                     habitSettingsPrefs.contains(NOTIFICATION_HOUR) ||
                     habitSettingsPrefs.contains(NOTIFICATION_MINUTE)) &&
-                    !habitSettingsPrefs.contains(getContext().getString(R.string.notification_sound_name)))
+                    !notificationSoundChanged)
                 result = new HabitSettings(editedHabitId, true);
             else
                 result = new HabitSettings(editedHabitId, false);
