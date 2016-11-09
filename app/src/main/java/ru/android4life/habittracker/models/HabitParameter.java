@@ -69,7 +69,7 @@ public class HabitParameter {
         HabitCategoryDAO habitCategoryDAO = new HabitCategoryDAO(context);
         List<HabitParameter> habitParameters = new ArrayList<>();
         Habit habit = (Habit) habitDAO.findById(habitId);
-        HabitSchedule habitSchedule =  habitScheduleDAO.findByHabitId(habitId).get(0);
+        HabitSchedule habitSchedule = habitScheduleDAO.findByHabitId(habitId).get(0);
 
         HabitCategory habitCategory = (HabitCategory) habitCategoryDAO.findById(habit.getCategoryId());
 

@@ -97,16 +97,16 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameterV
 
     public void updateHintForTuneParameterIfExists(String hint) {
         boolean tuneParameterExists = false;
-        int i=0;
-        while (!tuneParameterExists && i<parameters.size()) {
-            if(parameters.get(i).getTitle().equals(context.getResources().getString(R.string.add_habit_name_tune))) {
+        int i = 0;
+        while (!tuneParameterExists && i < parameters.size()) {
+            if (parameters.get(i).getTitle().equals(context.getResources().getString(R.string.add_habit_name_tune))) {
                 tuneParameterExists = true;
             } else {
                 i++;
             }
         }
 
-        if(tuneParameterExists) {
+        if (tuneParameterExists) {
             parameters.get(i).setHint(hint);
             this.notifyItemChanged(i);
         }
