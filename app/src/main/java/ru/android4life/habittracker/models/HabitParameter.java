@@ -47,18 +47,18 @@ public class HabitParameter {
         HabitCategoryDAO habitCategoryDAO = new HabitCategoryDAO(context);
         List<HabitCategory> habitCategories = (List<HabitCategory>) habitCategoryDAO.findAll();
         List<HabitParameter> habitParameters = new ArrayList<>();
-        HabitParameter parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_category),
+        HabitParameter parameter = new HabitParameter(context.getString(R.string.add_habit_name_category),
                 Translator.translate(habitCategories.get(0).getName()), ContextCompat.getDrawable(context, R.drawable.ic_add_habit_category));
         habitParameters.add(parameter);
-        parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_reminder), "0:00", ContextCompat.getDrawable(context, R.drawable.ic_add_habit_reminder));
+        parameter = new HabitParameter(context.getString(R.string.add_habit_name_reminder), context.getString(R.string.zero_colon_zero_zero), ContextCompat.getDrawable(context, R.drawable.ic_add_habit_reminder));
         habitParameters.add(parameter);
-        parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_frequency), context.getResources().getString(R.string.daily), ContextCompat.getDrawable(context, R.drawable.ic_add_habit_frequency));
+        parameter = new HabitParameter(context.getString(R.string.add_habit_name_frequency), context.getString(R.string.daily), ContextCompat.getDrawable(context, R.drawable.ic_add_habit_frequency));
         habitParameters.add(parameter);
-        parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_tune), context.getString(R.string.standard_tune), ContextCompat.getDrawable(context, R.drawable.ic_add_habit_tune));
+        parameter = new HabitParameter(context.getString(R.string.add_habit_name_tune), context.getString(R.string.standard_tune), ContextCompat.getDrawable(context, R.drawable.ic_add_habit_tune));
         habitParameters.add(parameter);
-        parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_position), context.getString(R.string.none), ContextCompat.getDrawable(context, R.drawable.ic_explore_black_24dp));
+        parameter = new HabitParameter(context.getString(R.string.add_habit_name_position), context.getString(R.string.none), ContextCompat.getDrawable(context, R.drawable.ic_explore_black_24dp));
         habitParameters.add(parameter);
-        parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_confirmation), context.getString(R.string.after_hour), ContextCompat.getDrawable(context, R.drawable.ic_add_habit_confirmation));
+        parameter = new HabitParameter(context.getString(R.string.add_habit_name_confirmation), context.getString(R.string.after_hour), ContextCompat.getDrawable(context, R.drawable.ic_add_habit_confirmation));
         habitParameters.add(parameter);
         return habitParameters;
     }
@@ -73,26 +73,30 @@ public class HabitParameter {
 
         HabitCategory habitCategory = (HabitCategory) habitCategoryDAO.findById(habit.getCategoryId());
 
-        HabitParameter parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_category),
+        HabitParameter parameter = new HabitParameter(context.getString(R.string.add_habit_name_category),
                 Translator.translate(habitCategory.getName()),
                 ContextCompat.getDrawable(context, R.drawable.ic_add_habit_category));
         habitParameters.add(parameter);
 
-        parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_reminder), getHabitTimeHint(context, habitSchedule.getDatetime()),
+        parameter = new HabitParameter(context.getString(R.string.add_habit_name_reminder),
+                getHabitTimeHint(context, habitSchedule.getDatetime()),
                 ContextCompat.getDrawable(context, R.drawable.ic_add_habit_reminder));
         habitParameters.add(parameter);
 
 
-        parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_frequency), getHabitFrequencyHint(context, habit.getId(), habitScheduleDAO),
+        parameter = new HabitParameter(context.getString(R.string.add_habit_name_frequency),
+                getHabitFrequencyHint(context, habit.getId(), habitScheduleDAO),
                 ContextCompat.getDrawable(context, R.drawable.ic_add_habit_frequency));
         habitParameters.add(parameter);
 
-        parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_tune), getHabitNotificationRingtoneName(context, habit.getAudioResource()),
+        parameter = new HabitParameter(context.getString(R.string.add_habit_name_tune),
+                getHabitNotificationRingtoneName(context, habit.getAudioResource()),
                 ContextCompat.getDrawable(context, R.drawable.ic_add_habit_tune));
         habitParameters.add(parameter);
 
-        parameter = new HabitParameter(context.getResources().getString(R.string.add_habit_name_position),
-                habit.getLatitude() + ", " + habit.getLongitude() + " | " + habit.getRange(), ContextCompat.getDrawable(context, R.drawable.ic_explore_black_24dp));
+        parameter = new HabitParameter(context.getString(R.string.add_habit_name_position),
+                getHabitPositionString(context, habit),
+                ContextCompat.getDrawable(context, R.drawable.ic_explore_black_24dp));
         habitParameters.add(parameter);
 
         parameter = new HabitParameter(context.getString(R.string.add_habit_name_confirmation),
@@ -117,7 +121,7 @@ public class HabitParameter {
             return context.getString(R.string.every_day);
         } else if (habitSchedules.size() >= 4 && habitSchedules.size() <= 5) { // WEEKLY
             habitScheduleDateTimeCalendar.setTime(habitSchedules.get(0).getDatetime());
-            return context.getResources().getString(R.string.on_every,
+            return context.getString(R.string.on_every,
                     habitScheduleDateTimeCalendar.getDisplayName(Calendar.DAY_OF_WEEK,
                             Calendar.LONG, MainActivity.locale));
         } else { // SPECIFIED DAYS
@@ -134,7 +138,7 @@ public class HabitParameter {
             }
             if (selectedDaysInTwoLetters.length() > 1)
                 selectedDaysInTwoLetters.deleteCharAt(selectedDaysInTwoLetters.length() - 2);
-            return context.getResources().getString(R.string.on_every,
+            return context.getString(R.string.on_every,
                     selectedDaysInTwoLetters);
         }
     }
@@ -151,7 +155,7 @@ public class HabitParameter {
                     String.valueOf(habitHour),
                     String.valueOf(habitMinute));
         } else {
-            habitTimeHint = context.getResources().getString(R.string.string_colon_space_string,
+            habitTimeHint = context.getString(R.string.string_colon_space_string,
                     String.valueOf(habitHour),
                     String.valueOf(habitMinute));
         }
@@ -163,6 +167,11 @@ public class HabitParameter {
         Ringtone ringtone = RingtoneManager.getRingtone(context,
                 Uri.parse(habitAudioResource));
         return ringtone.getTitle(context);
+    }
+
+    private static String getHabitPositionString(Context context, Habit habit) {
+        return context.getString(R.string.position_format, String.valueOf(habit.getLatitude()),
+                String.valueOf(habit.getLongitude()), String.valueOf(habit.getRange()));
     }
 
     public String getTitle() {

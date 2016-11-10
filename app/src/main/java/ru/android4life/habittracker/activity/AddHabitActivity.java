@@ -195,9 +195,10 @@ public class AddHabitActivity extends BaseActivity {
                 DecimalFormat df = new DecimalFormat("#.##");
                 int range = resultData.getIntExtra(RANGE, 0);
                 //FIXME: this is temporary workaround! fix it
-                mAdapter.updatePosition(df.format(latitude) + ", " + df.format(longitude) + " | range: " + range);
+                mAdapter.updatePosition(getString(R.string.position_format, df.format(latitude),
+                        df.format(longitude), String.valueOf(range)));
             } else {
-                mAdapter.updatePosition("None");
+                mAdapter.updatePosition(getString(R.string.none));
             }
         }
     }
