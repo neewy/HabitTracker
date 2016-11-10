@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -70,30 +69,7 @@ public class HabitCardFragment extends Fragment {
         MainActivity.toggle.setToolbarNavigationClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Fragment fragment = null;
-                switch (MainActivity.drawerSelectionMode) {
-                    case TODAY:
-                        fragment = new HabitListFragment();
-                        getActivity().setTitle(getString(R.string.today));
-                        break;
-                    case TOMORROW:
-                        fragment = new HabitListFragment();
-                        getActivity().setTitle(getString(R.string.tomorrow));
-                        break;
-                    case NEXT_MONTH:
-                        fragment = new HabitListFragment();
-                        getActivity().setTitle(getString(R.string.next_month));
-                        break;
-                    case ALL_TASKS:
-                        fragment = new HabitsFragment();
-                        getActivity().setTitle(getString(R.string.all_tasks));
-                        break;
-                }
-                // Emptying fragments in the backstack
-                getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-
-                // Replacing activity content with the content of fragment
-                getFragmentManager().beginTransaction().replace(R.id.container, fragment, MainActivity.drawerSelectionMode.stringValue).commit();
+                getActivity().onBackPressed();
                 MainActivity.toggle.setDrawerIndicatorEnabled(true); //enable "hamburger" drawable
                 MainActivity.toggle.syncState();
             }
