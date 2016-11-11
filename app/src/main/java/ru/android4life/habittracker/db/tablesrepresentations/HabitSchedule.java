@@ -104,7 +104,7 @@ public class HabitSchedule {
     public int hashCode() {
         int result = id;
         result = 31 * result + datetime.hashCode();
-        result = 31 * result + isDone.hashCode();
+        result = 31 * result + (isDone == null ? 0 : isDone.hashCode());
         result = 31 * result + note.hashCode();
         result = 31 * result + habitId;
         return result;
