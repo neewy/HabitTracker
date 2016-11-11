@@ -18,6 +18,7 @@
         android:name=".HabitTrackerApplication"
         android:icon="@drawable/logo"
         android:label="@string/app_name"
+        android:theme="@style/BaseStyle"
         tools:replace="android:icon">
         <receiver
             android:name=".reciever.BootReceiver"
