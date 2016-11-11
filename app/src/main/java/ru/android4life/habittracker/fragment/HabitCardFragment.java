@@ -63,18 +63,7 @@ public class HabitCardFragment extends Fragment {
         habitScheduleDAO = new HabitScheduleDAO(BaseActivity.getContext());
         habitDAO = new HabitDAO(BaseActivity.getContext());
         mAdapter = new HabitParametersAdapter(getActivity(), HabitParameter.createParametersByHabitId(getContext(), habitId), false);
-
-        MainActivity.toggle.setDrawerIndicatorEnabled(false);
-        MainActivity.toggle.setHomeAsUpIndicator(R.drawable.ic_add_habit_back);
-        MainActivity.toggle.setToolbarNavigationClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getActivity().onBackPressed();
-                MainActivity.toggle.setDrawerIndicatorEnabled(true); //enable "hamburger" drawable
-                MainActivity.toggle.syncState();
-            }
-        });
-        MainActivity.toggle.syncState();
+        ((MainActivity) getActivity()).foo();
     }
 
     @Nullable

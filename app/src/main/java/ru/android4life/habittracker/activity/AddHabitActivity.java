@@ -380,7 +380,8 @@ public class AddHabitActivity extends BaseActivity {
             case DAILY:
                 while (habitDayBeforeAfterAMonth) {
                     if (habitDay.after(currentTime))
-                        habitScheduleDAO.create(new HabitSchedule(habitDay, null, habitId));
+                        //TODO delete last parameter from create when adding of notes would be implemented
+                        habitScheduleDAO.create(new HabitSchedule(habitDay, null, habitId, "Some note"));
                     c.add(Calendar.DATE, 1);
                     habitDay = c.getTime();
                     habitDayBeforeAfterAMonth = habitDay.before(afterAMonth) || habitDay.equals(afterAMonth);

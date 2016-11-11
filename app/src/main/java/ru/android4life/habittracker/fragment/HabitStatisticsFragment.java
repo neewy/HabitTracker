@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import az.plainpie.PieView;
 import ru.android4life.habittracker.R;
 import ru.android4life.habittracker.activity.BaseActivity;
+import ru.android4life.habittracker.activity.MainActivity;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitScheduleDAO;
 
 /**
@@ -53,7 +54,7 @@ public class HabitStatisticsFragment extends Fragment {
         TypedValue typedValue = new TypedValue();
         getActivity().getTheme().resolveAttribute(R.attr.colorPrimary, typedValue, true);
         pieView.setPercentageBackgroundColor(typedValue.data);
-
+        ((MainActivity) getActivity()).foo();
         int habitId = this.getArguments()
                 .getInt(BaseActivity.getContext().getString(R.string.habit_id));
         HabitScheduleDAO habitScheduleDAO = new HabitScheduleDAO(BaseActivity.getContext());

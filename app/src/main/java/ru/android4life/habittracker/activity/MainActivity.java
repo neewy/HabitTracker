@@ -10,6 +10,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 
 import java.util.Locale;
 
@@ -182,6 +183,20 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             // Finish the Activity
             super.onBackPressed();
         }
+    }
+
+    public void foo() {
+        toggle.setDrawerIndicatorEnabled(false);
+        toggle.setHomeAsUpIndicator(R.drawable.ic_add_habit_back);
+        toggle.setToolbarNavigationClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+                MainActivity.toggle.setDrawerIndicatorEnabled(true); //enable "hamburger" drawable
+                MainActivity.toggle.syncState();
+            }
+        });
+        MainActivity.toggle.syncState();
     }
 
     void forFirstRun() {

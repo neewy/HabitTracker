@@ -65,7 +65,8 @@ public class HabitTabsFragment extends Fragment {
         // Strip with tabs, which goes under the action bar.
         TabLayout tabLayout = (TabLayout) tabsView.findViewById(R.id.tabLayout);
 
-        // Create two tabs
+        // Create three tabs
+        tabLayout.addTab(tabLayout.newTab());
         tabLayout.addTab(tabLayout.newTab());
         tabLayout.addTab(tabLayout.newTab());
 
@@ -78,6 +79,7 @@ public class HabitTabsFragment extends Fragment {
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.getTabAt(0).setText(R.string.habit_tabs_general);
         tabLayout.getTabAt(1).setText(R.string.habit_tabs_statistics);
+        tabLayout.getTabAt(2).setText(R.string.habit_tabs_notes);
 
         // Now when a user swipes ViewPager, TabLayout will update its indicator and selected tab;
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));

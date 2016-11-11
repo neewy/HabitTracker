@@ -48,12 +48,12 @@ public class HabitTrackerApplication extends Application {
         Calendar habitScheduleDateTimeCalendar = new GregorianCalendar();
 
         Date maxOfCurrentTimeAndNewestScheduleTime;
-        HabitSchedule newestHabitSchedule = habitScheduleDAO.getNewestHabitScheduleForDistinctHabitByHabitId(habitId);
-        if (newestHabitSchedule != null) {
+        Date newestHabitScheduleDate = habitScheduleDAO.getNewestHabitScheduleForDistinctHabitByHabitId(habitId);
+        if (newestHabitScheduleDate != null) {
             maxOfCurrentTimeAndNewestScheduleTime = new Date(Math.max(habitScheduleDateTimeCalendar.getTime().getTime(),
-                    newestHabitSchedule.getDatetime().getTime()));
+                    newestHabitScheduleDate.getTime()));
 
-            habitScheduleDateTimeCalendar.setTime(newestHabitSchedule.getDatetime());
+            habitScheduleDateTimeCalendar.setTime(newestHabitScheduleDate);
 
             // Get how many days in current month
             int monthMaxDays = habitScheduleDateTimeCalendar.getActualMaximum(Calendar.DAY_OF_MONTH);

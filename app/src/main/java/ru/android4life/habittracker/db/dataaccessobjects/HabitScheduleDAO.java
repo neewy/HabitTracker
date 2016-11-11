@@ -317,18 +317,25 @@ public class HabitScheduleDAO implements ExtendedCrud {
         return percentage;
     }
 
-    public HabitSchedule getNewestHabitScheduleForDistinctHabitByHabitId(int habitId) {
+    public Date getNewestHabitScheduleForDistinctHabitByHabitId(int habitId) {
         HabitSchedule habitSchedule = null;
         try {
             QueryBuilder<HabitSchedule, Integer> qBuilder = helper.getHabitScheduleDao().queryBuilder();
             qBuilder.where().eq(Constants.HABIT_ID, habitId);
             qBuilder.orderBy(Constants.DATETIME, false); // false for descending order
             qBuilder.limit(1);
-            habitSchedule = helper.getHabitScheduleDao().queryForId(qBuilder.query().get(0).getId());
+            if (qBuilder.query().size() > 0){
+                habitSchedule = helper.getHabitScheduleDao().queryForId(qBuilder.query().get(0).getId());
+            }else{
+                Calendar cal = Calendar.getInstance();
+                cal.add(Calendar.DATE, -30);
+                return cal.getTime();
+            }
+
         } catch (SQLException e) {
             Log.d(Constants.DAO_ERROR, Constants.SQL_EXCEPTION_IN + Constants.SPACE +
                     HabitScheduleDAO.class.getSimpleName());
         }
-        return habitSchedule;
+        return habitSchedule.getDatetime();
     }
 }

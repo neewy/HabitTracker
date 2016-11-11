@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import ru.android4life.habittracker.fragment.HabitCardFragment;
+import ru.android4life.habittracker.fragment.HabitNotesFragment;
 import ru.android4life.habittracker.fragment.HabitStatisticsFragment;
 
 /**
@@ -30,6 +31,9 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
             case 1:
                 Fragment tab2 = HabitStatisticsFragment.newInstance(habitId);
                 return tab2;
+            case 2:
+                Fragment tab3 = HabitNotesFragment.newInstance(habitId);
+                return tab3;
             default:
                 return null;
         }
