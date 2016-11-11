@@ -12,7 +12,7 @@ import ru.android4life.habittracker.activity.MainActivity;
  */
 
 public final class Constants {
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 3;
     public static final String DATABASE_NAME = "habitsTracker" + DATABASE_VERSION + ".db";
     public static final SimpleDateFormat dateFormat =
             new SimpleDateFormat("yyyy-MM-dd H:mm:ss.S", Locale.ENGLISH);
