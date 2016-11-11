@@ -75,6 +75,11 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameterV
         this.habitId = habitId;
     }
 
+    public void updateParameters(List<HabitParameter> parameters) {
+        this.parameters = parameters;
+        notifyDataSetChanged();
+    }
+
     @Override
     public HabitParameterViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.habit_parameter, parent, false);

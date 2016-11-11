@@ -103,4 +103,10 @@ public class HabitCardFragment extends Fragment {
         });
         return habitCard;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mAdapter.updateParameters(HabitParameter.createParametersByHabitId(getContext(), habitId));
+    }
 }
