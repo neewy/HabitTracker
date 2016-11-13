@@ -324,9 +324,9 @@ public class HabitScheduleDAO implements ExtendedCrud {
             qBuilder.where().eq(Constants.HABIT_ID, habitId);
             qBuilder.orderBy(Constants.DATETIME, false); // false for descending order
             qBuilder.limit(1);
-            if (qBuilder.query().size() > 0){
+            if (qBuilder.query().size() > 0) {
                 habitSchedule = helper.getHabitScheduleDao().queryForId(qBuilder.query().get(0).getId());
-            }else{
+            } else {
                 Calendar cal = Calendar.getInstance();
                 cal.add(Calendar.DATE, -30);
                 return cal.getTime();
