@@ -49,13 +49,15 @@
         <!--Habit name edit text-->
         <android.support.design.widget.TextInputLayout
             android:id="@+id/add_habit_title_edit_text"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/add_habit_back_button"
-            android:layout_centerHorizontal="true">
+            android:layout_centerHorizontal="true"
+            android:layout_marginRight="60dp"
+            android:layout_marginLeft="60dp">
 
             <android.support.v7.widget.AppCompatEditText
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="@string/add_habit_name"
@@ -68,13 +70,15 @@
         <!--Custom question edit text-->
         <android.support.design.widget.TextInputLayout
             android:id="@+id/add_habit_question_edit_text"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/add_habit_title_edit_text"
-            android:layout_centerHorizontal="true">
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp">
 
             <android.support.v7.widget.AppCompatEditText
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="@string/add_habit_question"

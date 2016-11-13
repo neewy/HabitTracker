@@ -68,6 +68,7 @@ public class AddHabitActivity extends BaseActivity {
     private SharedPreferences habitSettingsPrefs = null;
     private HabitNotification notification;
     private boolean notificationSoundChanged;
+    private boolean positionChanged;
 
 
     @Override
@@ -77,6 +78,7 @@ public class AddHabitActivity extends BaseActivity {
         setContext(this.getApplicationContext());
 
         notificationSoundChanged = false;
+        positionChanged = false;
 
         notification = new HabitNotification(getContext());
 
@@ -194,6 +196,10 @@ public class AddHabitActivity extends BaseActivity {
                 double longitude = resultData.getDoubleExtra(LONGITUDE, 0);
                 DecimalFormat df = new DecimalFormat("#.##");
                 int range = resultData.getIntExtra(RANGE, 0);
+
+                habitSettings.setLatitudeLongitudeAndRange(latitude, longitude, range);
+                positionChanged = true;
+
                 //FIXME: this is temporary workaround! fix it
                 mAdapter.updatePosition(getString(R.string.position_format, df.format(latitude),
                         df.format(longitude), String.valueOf(range)));
@@ -218,32 +224,30 @@ public class AddHabitActivity extends BaseActivity {
 
     private HabitSettings getHabitSettingsFromPreferences(int editedHabitId) {
         HabitSettings result;
+
+        HabitSettings savedHabitSettings = habitSettings;
+        boolean frequencyChanged = habitSettingsPrefs.contains(NOTIFICATION_FREQUENCY_TYPE) ||
+                habitSettingsPrefs.contains(NOTIFICATION_HOUR) ||
+                habitSettingsPrefs.contains(NOTIFICATION_MINUTE);
+
         if (editedHabitId == -1) { // Habits creation
-            if (notificationSoundChanged)
-                result = new HabitSettings(habitSettings.getNotificationSoundUri(),
-                        habitSettings.getNotificationSoundName());
-            else
-                result = new HabitSettings();
+            result = new HabitSettings();
         } else { // Habits edition
-            if ((habitSettingsPrefs.contains(NOTIFICATION_FREQUENCY_TYPE) ||
-                    habitSettingsPrefs.contains(NOTIFICATION_HOUR) ||
-                    habitSettingsPrefs.contains(NOTIFICATION_MINUTE)) &&
-                    notificationSoundChanged)
-                result = new HabitSettings(editedHabitId, true, habitSettings.getNotificationSoundUri(),
-                        habitSettings.getNotificationSoundName());
-            else if (!(habitSettingsPrefs.contains(NOTIFICATION_FREQUENCY_TYPE) ||
-                    habitSettingsPrefs.contains(NOTIFICATION_HOUR) ||
-                    habitSettingsPrefs.contains(NOTIFICATION_MINUTE)) &&
-                    notificationSoundChanged)
-                result = new HabitSettings(editedHabitId, false, habitSettings.getNotificationSoundUri(),
-                        habitSettings.getNotificationSoundName());
-            else if ((habitSettingsPrefs.contains(NOTIFICATION_FREQUENCY_TYPE) ||
-                    habitSettingsPrefs.contains(NOTIFICATION_HOUR) ||
-                    habitSettingsPrefs.contains(NOTIFICATION_MINUTE)) &&
-                    !notificationSoundChanged)
+            if (frequencyChanged)
                 result = new HabitSettings(editedHabitId, true);
             else
                 result = new HabitSettings(editedHabitId, false);
+        }
+
+        if (notificationSoundChanged) {
+            result.setNotificationSoundUri(savedHabitSettings.getNotificationSoundUri());
+            result.setNotificationSoundName(savedHabitSettings.getNotificationSoundName());
+        }
+
+        if (positionChanged) {
+            result.setLatitude(savedHabitSettings.getLatitude());
+            result.setLongitude(savedHabitSettings.getLongitude());
+            result.setRange(savedHabitSettings.getRange());
         }
 
         if (habitSettingsPrefs.contains(StringConstants.CATEGORY_ID))
@@ -330,8 +334,9 @@ public class AddHabitActivity extends BaseActivity {
                                                                         String habitQuestion, int editedHabitId) {
         Habit editedHabit = (Habit) habitDAO.findById(editedHabitId);
 
-        int habitsEditionResult = habitDAO.update(new Habit(editedHabit.getId(), habitName, habitQuestion, habitDay, 0,
-                0, 0, habitSettings.getNotificationSoundUri().toString(), true, 60, habitSettings.getCategoryId()));
+        int habitsEditionResult = habitDAO.update(new Habit(editedHabit.getId(), habitName, habitQuestion, habitDay,
+                habitSettings.getLatitude(), habitSettings.getLongitude(), habitSettings.getRange(),
+                habitSettings.getNotificationSoundUri().toString(), true, 60, habitSettings.getCategoryId()));
         if (habitsEditionResult >= 0) {
             if (habitSettingsPrefs.contains(NOTIFICATION_FREQUENCY_TYPE) ||
                     habitSettingsPrefs.contains(NOTIFICATION_HOUR) ||
@@ -348,8 +353,9 @@ public class AddHabitActivity extends BaseActivity {
     }
 
     private boolean createHabitAccordingToHabitPreferencesIfDataIsCorrect(Date habitDay, String habitName, String habitQuestion) {
-        Habit habitToCreate = new Habit(habitName, habitQuestion, habitDay, 0,
-                0, 0, habitSettings.getNotificationSoundUri().toString(), true, 60, habitSettings.getCategoryId());
+        Habit habitToCreate = new Habit(habitName, habitQuestion, habitDay,
+                habitSettings.getLatitude(), habitSettings.getLongitude(), habitSettings.getRange(),
+                habitSettings.getNotificationSoundUri().toString(), true, 60, habitSettings.getCategoryId());
         int habitsCreationResult = habitDAO.create(habitToCreate);
         if (habitsCreationResult > 0) {
             Habit habitWithMaxId = (Habit) habitDAO.getObjectWithMaxId();

@@ -26,6 +26,9 @@ public class HabitSettings {
     private NotificationFrequencyType notificationFrequencyType;
     private int notificationFrequencyWeekNumberOrDate;
     private boolean[] notificationFrequencySpecifiedDays;
+    private double latitude;
+    private double longitude;
+    private double range;
     private Uri notificationSoundUri;
     private String notificationSoundName;
     private int minutesBeforeConfirmation;
@@ -40,6 +43,9 @@ public class HabitSettings {
         this.notificationFrequencyWeekNumberOrDate = 1;
         boolean[] notificationFrequencySpecifiedDays = {false, false, false, false, false, false, false};
         this.notificationFrequencySpecifiedDays = notificationFrequencySpecifiedDays;
+        this.latitude = 0;
+        this.longitude = 0;
+        this.range = 0;
         this.notificationSoundUri = notificationSoundUri;
         this.notificationSoundName = notificationSoundName;
         this.minutesBeforeConfirmation = 60;
@@ -55,6 +61,9 @@ public class HabitSettings {
         this.notificationFrequencyWeekNumberOrDate = 1;
         boolean[] notificationFrequencySpecifiedDays = {false, false, false, false, false, false, false};
         this.notificationFrequencySpecifiedDays = notificationFrequencySpecifiedDays;
+        this.latitude = 0;
+        this.longitude = 0;
+        this.range = 0;
         this.notificationSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         this.notificationSoundName = BaseActivity.getContext().getString(R.string.standard_from_capital_letter);
         this.minutesBeforeConfirmation = 60;
@@ -102,6 +111,9 @@ public class HabitSettings {
         }
 
         this.notificationFrequencySpecifiedDays = notificationFrequencySpecifiedDays;
+        this.latitude = 0;
+        this.longitude = 0;
+        this.range = 0;
         this.notificationSoundUri = Uri.parse(editedHabit.getAudioResource());
         Ringtone ringtone = RingtoneManager.getRingtone(BaseActivity.getContext(),
                 Uri.parse(editedHabit.getAudioResource()));
@@ -152,6 +164,9 @@ public class HabitSettings {
         }
 
         this.notificationFrequencySpecifiedDays = notificationFrequencySpecifiedDays;
+        this.latitude = 0;
+        this.longitude = 0;
+        this.range = 0;
         this.notificationSoundUri = notificationSoundUri;
         this.notificationSoundName = notificationSoundName;
         this.minutesBeforeConfirmation = editedHabit.getConfirmAfterMinutes();
@@ -203,6 +218,36 @@ public class HabitSettings {
 
     public void setNotificationFrequencySpecifiedDays(boolean[] notificationFrequencySpecifiedDays) {
         this.notificationFrequencySpecifiedDays = notificationFrequencySpecifiedDays;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public double getRange() {
+        return range;
+    }
+
+    public void setRange(double range) {
+        this.range = range;
+    }
+
+    public void setLatitudeLongitudeAndRange(double latitude, double longitude, double range) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.range = range;
     }
 
     public Uri getNotificationSoundUri() {
