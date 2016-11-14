@@ -90,16 +90,12 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameterV
     //FIXME: this is temporary workaround!
     //change it as we figure out how to process data
     //in order to change habit settings
-    public void updatePosition(String positionHint) {
-        parameters.get(4).setHint(positionHint);
-        this.notifyDataSetChanged();
-    }
 
-    public void updateHintForTuneParameterIfExists(String hint) {
+    public void updateHintForParameterByItsNameIfExists(String parametersName, String hint) {
         boolean tuneParameterExists = false;
         int i = 0;
         while (!tuneParameterExists && i < parameters.size()) {
-            if (parameters.get(i).getTitle().equals(context.getResources().getString(R.string.add_habit_name_tune))) {
+            if (parameters.get(i).getTitle().equals(parametersName)) {
                 tuneParameterExists = true;
             } else {
                 i++;
