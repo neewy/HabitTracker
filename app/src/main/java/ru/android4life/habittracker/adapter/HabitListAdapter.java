@@ -273,7 +273,11 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
         holder.done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onPerformClick(habitSchedule, v, true);
+                if (!BaseActivity.isLocationServiceEnabled()) {
+                    BaseActivity.buildAlertMessageNoGps();
+                } else {
+                    onPerformClick(habitSchedule, v, true);
+                }
             }
         });
     }

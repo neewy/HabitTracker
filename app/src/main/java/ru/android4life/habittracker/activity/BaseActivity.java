@@ -1,7 +1,11 @@
 package ru.android4life.habittracker.activity;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -29,6 +33,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public static int themeID;
     private static Context context;
+    private static AlertDialog locationAlert = null;
     protected SharedPreferences prefs = null;
 
     public static Context getContext() {
@@ -37,6 +42,33 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public static void setContext(Context context) {
         BaseActivity.context = context;
+    }
+
+    public static boolean isLocationServiceEnabled() {
+        final LocationManager locationManager =
+                (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+    }
+
+    public static void buildAlertMessageNoGps() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(@SuppressWarnings("unused") final DialogInterface dialog,
+                                        @SuppressWarnings("unused") final int id) {
+                        getContext().startActivity(new Intent(android
+                                .provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                        dialog.cancel();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        dialog.cancel();
+                    }
+                });
+        locationAlert = builder.create();
+        locationAlert.show();
     }
 
     @Override
@@ -85,5 +117,13 @@ public abstract class BaseActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         return 0;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (locationAlert != null) {
+            locationAlert.dismiss();
+        }
     }
 }

@@ -46,7 +46,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContext(this.getApplicationContext());
+        setContext(this);
         locale = new Locale(prefs.getString(LOCALE, getResources().getString(R.string.locale_en)));
         Constants.updatePrettyTime();
         Locale.setDefault(locale);
@@ -235,6 +235,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @Override
     protected void onResume() {
         super.onResume();
+        setContext(this);
         if (drawerSelectionMode == TODAY || drawerSelectionMode == TOMORROW || drawerSelectionMode == NEXT_MONTH) {
             HabitListFragment habitList = (HabitListFragment) fragmentManager.findFragmentByTag(drawerSelectionMode.stringValue);
             if (habitList != null) {
