@@ -283,13 +283,16 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
         holder.done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Habit habit = (Habit) habitDAO.findById(habitSchedule.getHabitId());
                 Toast toast;
                 boolean locationPermissionsEnabled = ActivityCompat.checkSelfPermission(context,
                         Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
                         ActivityCompat.checkSelfPermission(context,
                                 Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
 
-                if (!locationPermissionsEnabled) {
+                if (habit.getRange() == 0) {
+                    onPerformClick(habitSchedule, v, true);
+                } else if (!locationPermissionsEnabled) {
                     toast = Toast.makeText(context,
                             context.getString(R.string.not_within_set_range), Toast.LENGTH_LONG);
                     toast.show();
@@ -297,7 +300,6 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
                         !BaseActivity.isCoarseLocationServiceEnabled(context)) {
                     BaseActivity.buildAlertMessageNoGps();
                 } else {
-                    Habit habit = (Habit) habitDAO.findById(habitSchedule.getHabitId());
                     Location habitsLocation = new Location(context.getString(R.string.habits_location));
 
                     toast = Toast.makeText(context,
