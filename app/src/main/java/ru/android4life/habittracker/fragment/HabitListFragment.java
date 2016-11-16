@@ -39,7 +39,7 @@ public class HabitListFragment extends Fragment {
         mAdapter = new HabitListAdapter(this, getFragmentManager(), MainActivity.drawerSelectionMode);
     }
 
-    public void invalidateDataSet() {
+    private void invalidateDataSet() {
         mAdapter.fillDependOnDrawerSelectionMode();
         mAdapter.notifyDataSetChanged();
     }
@@ -136,5 +136,11 @@ public class HabitListFragment extends Fragment {
                 return true;
         }
         return false;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        invalidateDataSet();
     }
 }
