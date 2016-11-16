@@ -88,6 +88,7 @@
     <string name="current_location">currentLocation</string>
     <string name="not_within_set_range">You are currently not within the range set for this habit. Please, move to the required location and try again.</string>
     <string name="enable_location_permission">Location permission for the application is disabled. Please, enable it in the system settings and try again.</string>
+    <string name="enable_gps_for_better_precision">GPS is currently disabled on your device. Since positioning via network lacks precision, we recommend you to enable GPS.</string>
 
     <!--HabitListFragment-->
     <string name="today_capital_case">TODAY</string>
