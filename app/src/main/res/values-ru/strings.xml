@@ -144,5 +144,7 @@
     <string name="add_habit_name_position">Местоположение</string>
     <string name="marker_delete">Удалить маркер?</string>
     <string name="delete_marker">Удалить маркер</string>
+    <string name="not_within_set_range">Вы находитесь вне радиуса выполнения привычки. Пожалуйста, пройдите в требуемое место и попробуйте снова.</string>
+    <string name="enable_location_permission">У приложения нет разрешения на получение текущего местоположения. Пожалуйста, дайте его в настройках системы и попробуйте снова.</string>
 
 </resources>

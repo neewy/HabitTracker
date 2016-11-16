@@ -64,4 +64,7 @@ public class StringConstants {
 
     public static final long DAY_IN_MS = 1000 * 60 * 60 * 24;
     public static final long MIN_IN_MS = 1000 * 60;
+
+    public static final int LOCATION_REFRESH_TIME = 100;
+    public static final int LOCATION_REFRESH_DISTANCE = 3;
 }

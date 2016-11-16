@@ -1,8 +1,14 @@
 package ru.android4life.habittracker.activity;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -24,6 +30,7 @@ import ru.android4life.habittracker.fragment.HabitListFragment;
 import ru.android4life.habittracker.fragment.HabitsFragment;
 import ru.android4life.habittracker.fragment.SettingsFragment;
 import ru.android4life.habittracker.fragment.StatisticsFragment;
+import ru.android4life.habittracker.utils.StringConstants;
 
 import static ru.android4life.habittracker.enumeration.DrawerSelectionMode.NEXT_MONTH;
 import static ru.android4life.habittracker.enumeration.DrawerSelectionMode.TODAY;
@@ -32,7 +39,7 @@ import static ru.android4life.habittracker.enumeration.DrawerSelectionMode.findD
 import static ru.android4life.habittracker.utils.StringConstants.FIRSTRUN;
 import static ru.android4life.habittracker.utils.StringConstants.LOCALE;
 
-public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, LocationListener {
 
     public static Locale locale;
     public static DrawerSelectionMode drawerSelectionMode;
@@ -80,6 +87,19 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         DatabaseManager.setHelper(getContext());
 
         setUpFirstFragment(navigationView);
+
+        final LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+        boolean fineLocationPermissionsEnabled = ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        if (fineLocationPermissionsEnabled)
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, StringConstants.LOCATION_REFRESH_TIME,
+                    StringConstants.LOCATION_REFRESH_DISTANCE, this);
+        boolean coarseLocationPermissionsEnabled = ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        if (coarseLocationPermissionsEnabled)
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, StringConstants.LOCATION_REFRESH_TIME,
+                    StringConstants.LOCATION_REFRESH_DISTANCE, this);
     }
 
     // Sets up initial fragment and drawer menu
@@ -243,5 +263,25 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 habitList.switchEmptyView();
             }
         }
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
     }
 }

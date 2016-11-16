@@ -1,7 +1,12 @@
 package ru.android4life.habittracker.adapter;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.PopupMenu;
@@ -273,10 +278,45 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
         holder.done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!BaseActivity.isLocationServiceEnabled()) {
+                Toast toast;
+                boolean locationPermissionsEnabled = ActivityCompat.checkSelfPermission(context,
+                        Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
+                        ActivityCompat.checkSelfPermission(context,
+                                Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+
+                if (!locationPermissionsEnabled) {
+                    toast = Toast.makeText(context,
+                            context.getString(R.string.not_within_set_range), Toast.LENGTH_LONG);
+                    toast.show();
+                } else if (!BaseActivity.isFineLocationServiceEnabled(context) &&
+                        !BaseActivity.isCoarseLocationServiceEnabled(context)) {
                     BaseActivity.buildAlertMessageNoGps();
                 } else {
-                    onPerformClick(habitSchedule, v, true);
+                    Habit habit = (Habit) habitDAO.findById(habitSchedule.getHabitId());
+                    Location habitsLocation = new Location(context.getString(R.string.habits_location));
+
+                    toast = Toast.makeText(context,
+                            context.getString(R.string.not_within_set_range), Toast.LENGTH_LONG);
+
+                    habitsLocation.setLatitude(habit.getLatitude());
+                    habitsLocation.setLongitude(habit.getLongitude());
+
+                    final LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+
+                    Location currentLocation;
+
+                    if (BaseActivity.isFineLocationServiceEnabled(context)) {
+                        currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                    } else {
+                        currentLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                    }
+
+                    float distanceBetweenHabitAndCurrentLocation = habitsLocation.distanceTo(currentLocation);
+
+                    if (distanceBetweenHabitAndCurrentLocation <= habit.getRange())
+                        onPerformClick(habitSchedule, v, true);
+                    else
+                        toast.show();
                 }
             }
         });
