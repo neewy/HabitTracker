@@ -57,9 +57,6 @@ public class HabitPerformReceiver extends BroadcastReceiver {
 
             //cancel the notification to hide it from the screen
             notificationManager.cancel(habitScheduleId * 2 + 1);
-
-            //FIXME: is this possible to update list of habits if a notification action was checked?
-            //(probably not)
         }
     }
 }

@@ -120,7 +120,7 @@ public class SettingsListAdapter extends RecyclerView.Adapter<SettingsViewHolder
                 @Override
                 public void onColorSelected(SelectableColor selectedItem) {
                     //FIXME: replace with getID
-                    mainActivity.getSharedPreferences(SHARED_PREF, MODE_PRIVATE).edit().putString(COLOR, selectedItem.getName()).apply();
+                    mainActivity.getSharedPreferences(SHARED_PREF, MODE_PRIVATE).edit().putString(COLOR, selectedItem.getId()).apply();
                     dialog.dismiss();
                     mainActivity.recreate();
                 }

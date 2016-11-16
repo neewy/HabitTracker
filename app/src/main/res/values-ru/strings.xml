@@ -136,14 +136,15 @@
     <string name="undo">ОТМЕНА</string>
     <string name="sort_by_time">По времени</string>
     <string name="sort_by_title">По названию</string>
-    <string name="ascending">Восходящий</string>
-    <string name="descending">Нисходящий</string>
+    <string name="ascending">По возрастанию</string>
+    <string name="descending">По убыванию</string>
     <string name="after_hour">После 60 минут</string>
 
     <string name="perform_future_habit">Хей, не жульничай! Можно выполнить только сегодняшнюю привычку</string>
     <string name="add_habit_name_position">Местоположение</string>
     <string name="marker_delete">Удалить маркер?</string>
     <string name="delete_marker">Удалить маркер</string>
+    <string name="color_select">Выберите цвет темы</string>
     <string name="add_note">Добавить заметку</string>
 
 </resources>
