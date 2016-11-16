@@ -184,12 +184,12 @@ public class AddHabitActivity extends BaseActivity {
                 habitSettings.setNotificationSoundName(r.getTitle(getContext()));
                 Log.i("AUDIO", "Name: " + habitSettings.getNotificationSoundName());
 
-                mAdapter.updateHintForTuneParameterIfExists(habitSettings.getNotificationSoundName());
+                mAdapter.updateHintForParameterByItsNameIfExists(getString(R.string.add_habit_name_tune),
+                        habitSettings.getNotificationSoundName());
                 notificationSoundChanged = true;
             }
         } else if (resultCode == Activity.RESULT_OK) {
             //TODO: why request code does not work?
-            //FIXME: pass the data in habit parameter!
             boolean hasPosition = resultData.getBooleanExtra(POSITION, false);
             if (hasPosition) {
                 double latitude = resultData.getDoubleExtra(LATITUDE, 0);
@@ -201,10 +201,12 @@ public class AddHabitActivity extends BaseActivity {
                 positionChanged = true;
 
                 //FIXME: this is temporary workaround! fix it
-                mAdapter.updatePosition(getString(R.string.position_format, df.format(latitude),
-                        df.format(longitude), String.valueOf(range)));
+                mAdapter.updateHintForParameterByItsNameIfExists(getString(R.string.add_habit_name_position),
+                        getString(R.string.position_format, df.format(latitude),
+                                df.format(longitude), String.valueOf(range)));
             } else {
-                mAdapter.updatePosition(getString(R.string.none));
+                mAdapter.updateHintForParameterByItsNameIfExists(getString(R.string.add_habit_name_position),
+                        getString(R.string.none));
             }
         }
     }
