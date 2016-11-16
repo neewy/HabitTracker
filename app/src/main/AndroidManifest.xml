@@ -71,7 +71,6 @@
 
         <activity
             android:name=".activity.PopupActivity"
-            android:launchMode="singleInstance"
             android:theme="@android:style/Theme.DeviceDefault.Dialog" />
     </application>
 

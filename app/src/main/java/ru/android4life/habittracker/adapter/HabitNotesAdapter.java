@@ -18,10 +18,9 @@ import ru.android4life.habittracker.db.tablesrepresentations.HabitSchedule;
 public class HabitNotesAdapter extends RecyclerView.Adapter<HabitNotesAdapter.ViewHolder> {
 
     private List<String> mDataset;
-    private HabitScheduleDAO habitScheduleDAO;
 
     public HabitNotesAdapter(int habitId, Context context) {
-        habitScheduleDAO = new HabitScheduleDAO(context);
+        HabitScheduleDAO habitScheduleDAO = new HabitScheduleDAO(context);
         List<HabitSchedule> schedules = habitScheduleDAO.findByHabitId(habitId);
         mDataset = new ArrayList<>();
         for (HabitSchedule schedule : schedules) {
@@ -34,8 +33,7 @@ public class HabitNotesAdapter extends RecyclerView.Adapter<HabitNotesAdapter.Vi
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.note_text_view, parent, false);
 
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
+        return new ViewHolder(v);
     }
 
     @Override

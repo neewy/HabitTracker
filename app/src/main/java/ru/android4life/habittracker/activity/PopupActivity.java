@@ -42,6 +42,7 @@ public class PopupActivity extends Activity {
                     habitSchedule.setNote(noteText);
                     habitScheduleDAO.update(habitSchedule);
                     finish();
+                    android.os.Process.killProcess(android.os.Process.myUid());
                 }
             }
         });
@@ -50,6 +51,7 @@ public class PopupActivity extends Activity {
             @Override
             public void onClick(View v) {
                 finish();
+                android.os.Process.killProcess(android.os.Process.myUid());
             }
         });
     }
