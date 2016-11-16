@@ -129,7 +129,7 @@
     <!-- Habit Parameter-->
     <string name="after_string_minutes">"After %1$s minutes"</string>
     <string name="zero_colon_zero_zero">0:00</string>
-    <string name="position_format">%1$s, %2$s, range: %3$s m</string>
+    <string name="position_format">%1$s and %2$s, range: %3$s m</string>
 
     <!--Category names-->
     <string name="sport">Sport</string>

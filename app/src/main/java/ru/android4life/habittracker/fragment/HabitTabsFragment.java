@@ -13,7 +13,6 @@ import ru.android4life.habittracker.R;
 import ru.android4life.habittracker.activity.BaseActivity;
 import ru.android4life.habittracker.adapter.PagerAdapter;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitDAO;
-import ru.android4life.habittracker.db.dataaccessobjects.HabitScheduleDAO;
 import ru.android4life.habittracker.db.tablesrepresentations.Habit;
 
 /**
@@ -26,7 +25,6 @@ import ru.android4life.habittracker.db.tablesrepresentations.Habit;
 public class HabitTabsFragment extends Fragment {
 
     private int habitId;
-    private HabitScheduleDAO habitScheduleDAO;
     private HabitDAO habitDAO;
 
     /*
@@ -52,7 +50,6 @@ public class HabitTabsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         habitId = this.getArguments().getInt(BaseActivity.getContext().getString(R.string.habit_id));
-        habitScheduleDAO = new HabitScheduleDAO(BaseActivity.getContext());
         habitDAO = new HabitDAO(BaseActivity.getContext());
     }
 
