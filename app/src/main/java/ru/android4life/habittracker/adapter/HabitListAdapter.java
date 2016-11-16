@@ -290,7 +290,7 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
                         ActivityCompat.checkSelfPermission(context,
                                 Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
 
-                if(habit.getRange() == 0) {
+                if (habit.getRange() == 0) {
                     onPerformClick(habitSchedule, v, true);
                 } else if (!locationPermissionsEnabled) {
                     toast = Toast.makeText(context,
