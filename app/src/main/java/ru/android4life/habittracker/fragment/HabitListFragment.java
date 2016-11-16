@@ -36,10 +36,10 @@ public class HabitListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        mAdapter = new HabitListAdapter(this, getFragmentManager(), MainActivity.drawerSelectionMode);
+        mAdapter = new HabitListAdapter(this, getActivity(), getFragmentManager(), MainActivity.drawerSelectionMode);
     }
 
-    public void invalidateDataSet() {
+    private void invalidateDataSet() {
         mAdapter.fillDependOnDrawerSelectionMode();
         mAdapter.notifyDataSetChanged();
     }
@@ -136,5 +136,11 @@ public class HabitListFragment extends Fragment {
                 return true;
         }
         return false;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        invalidateDataSet();
     }
 }

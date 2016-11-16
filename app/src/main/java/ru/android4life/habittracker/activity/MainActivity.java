@@ -32,9 +32,7 @@ import ru.android4life.habittracker.fragment.SettingsFragment;
 import ru.android4life.habittracker.fragment.StatisticsFragment;
 import ru.android4life.habittracker.utils.StringConstants;
 
-import static ru.android4life.habittracker.enumeration.DrawerSelectionMode.NEXT_MONTH;
 import static ru.android4life.habittracker.enumeration.DrawerSelectionMode.TODAY;
-import static ru.android4life.habittracker.enumeration.DrawerSelectionMode.TOMORROW;
 import static ru.android4life.habittracker.enumeration.DrawerSelectionMode.findDrawerSelectionMode;
 import static ru.android4life.habittracker.utils.StringConstants.FIRSTRUN;
 import static ru.android4life.habittracker.utils.StringConstants.LOCALE;
@@ -250,19 +248,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         super.onConfigurationChanged(newConfig);
         // Pass any configuration change to the drawer toggles
         toggle.onConfigurationChanged(newConfig);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        setContext(this);
-        if (drawerSelectionMode == TODAY || drawerSelectionMode == TOMORROW || drawerSelectionMode == NEXT_MONTH) {
-            HabitListFragment habitList = (HabitListFragment) fragmentManager.findFragmentByTag(drawerSelectionMode.stringValue);
-            if (habitList != null) {
-                habitList.invalidateDataSet();
-                habitList.switchEmptyView();
-            }
-        }
     }
 
     @Override

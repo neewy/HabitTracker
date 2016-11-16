@@ -192,6 +192,7 @@
     <string name="title_activity_maps">Map</string>
     <string name="marker_delete">Delete the marker?</string>
     <string name="delete_marker">Delete marker</string>
+    <string name="add_note">Add note</string>
 
 
 </resources>
