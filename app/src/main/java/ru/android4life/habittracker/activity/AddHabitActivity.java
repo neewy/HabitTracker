@@ -488,4 +488,10 @@ public class AddHabitActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeValuesForHabitSettingsFromPreferences();
+    }
 }
