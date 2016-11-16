@@ -325,13 +325,14 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
                     Location currentLocation;
                     Location latestGPSLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
-                    boolean isNetworkLocationUsed = false;
+                    boolean isNetworkLocationUsedBecauseGPSIsDisabled = false;
 
                     if (BaseActivity.isFineLocationServiceEnabled(context) && latestGPSLocation != null) {
                         currentLocation = latestGPSLocation;
                     } else {
                         currentLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                        isNetworkLocationUsed = true;
+                        if (latestGPSLocation != null) // FineLocationService (GPS) is disabled
+                            isNetworkLocationUsedBecauseGPSIsDisabled = true;
                     }
 
                     if (currentLocation == null) {
@@ -346,7 +347,7 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
                         onPerformClick(habitSchedule, v, true);
                     } else {
                         toast.show();
-                        if (isNetworkLocationUsed) {
+                        if (isNetworkLocationUsedBecauseGPSIsDisabled) {
                             toast = Toast.makeText(context,
                                     context.getString(R.string.enable_gps_for_better_precision), Toast.LENGTH_LONG);
                             alignToastMessageToTheCenter(toast);
