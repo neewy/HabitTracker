@@ -223,16 +223,24 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
         }
     }
 
+    private void showNotCheatToast() {
+        Toast toast = Toast.makeText(context,
+                context.getString(R.string.perform_future_habit), Toast.LENGTH_LONG);
+        alignToastMessageToTheCenter(toast);
+        toast.show();
+    }
+
+    private void alignToastMessageToTheCenter(Toast toast) {
+        LinearLayout layout = (LinearLayout) toast.getView();
+        if (layout.getChildCount() > 0) {
+            TextView tv = (TextView) layout.getChildAt(0);
+            tv.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
+        }
+    }
+
     private void onPerformClick(final HabitSchedule habitSchedule, View v, boolean isDone) {
         if (!DateUtils.isToday(habitSchedule.getDatetime().getTime())) {
-            Toast toast = Toast.makeText(context,
-                    context.getString(R.string.perform_future_habit), Toast.LENGTH_LONG);
-            LinearLayout layout = (LinearLayout) toast.getView();
-            if (layout.getChildCount() > 0) {
-                TextView tv = (TextView) layout.getChildAt(0);
-                tv.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
-            }
-            toast.show();
+            showNotCheatToast();
             return;
         }
         HabitSchedule updatedHabitSchedule = new HabitSchedule(habitSchedule.getId(),
@@ -290,11 +298,14 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
                         ActivityCompat.checkSelfPermission(context,
                                 Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
 
-                if (habit.getRange() == 0) {
+                if (!DateUtils.isToday(habitSchedule.getDatetime().getTime())) {
+                    showNotCheatToast();
+                } else if (habit.getRange() == 0) {
                     onPerformClick(habitSchedule, v, true);
                 } else if (!locationPermissionsEnabled) {
                     toast = Toast.makeText(context,
-                            context.getString(R.string.not_within_set_range), Toast.LENGTH_LONG);
+                            context.getString(R.string.enable_location_permission), Toast.LENGTH_LONG);
+                    alignToastMessageToTheCenter(toast);
                     toast.show();
                 } else if (!BaseActivity.isFineLocationServiceEnabled(context) &&
                         !BaseActivity.isCoarseLocationServiceEnabled(context)) {
@@ -304,6 +315,7 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
 
                     toast = Toast.makeText(context,
                             context.getString(R.string.not_within_set_range), Toast.LENGTH_LONG);
+                    alignToastMessageToTheCenter(toast);
 
                     habitsLocation.setLatitude(habit.getLatitude());
                     habitsLocation.setLongitude(habit.getLongitude());
@@ -313,10 +325,13 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
                     Location currentLocation;
                     Location latestGPSLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
+                    boolean isNetworkLocationUsed = false;
+
                     if (BaseActivity.isFineLocationServiceEnabled(context) && latestGPSLocation != null) {
                         currentLocation = latestGPSLocation;
                     } else {
                         currentLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                        isNetworkLocationUsed = true;
                     }
 
                     if (currentLocation == null) {
@@ -327,10 +342,17 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
 
                     float distanceBetweenHabitAndCurrentLocation = habitsLocation.distanceTo(currentLocation);
 
-                    if (distanceBetweenHabitAndCurrentLocation <= habit.getRange())
+                    if (distanceBetweenHabitAndCurrentLocation <= habit.getRange()) {
                         onPerformClick(habitSchedule, v, true);
-                    else
+                    } else {
                         toast.show();
+                        if (isNetworkLocationUsed) {
+                            toast = Toast.makeText(context,
+                                    context.getString(R.string.enable_gps_for_better_precision), Toast.LENGTH_LONG);
+                            alignToastMessageToTheCenter(toast);
+                            toast.show();
+                        }
+                    }
                 }
             }
         });
