@@ -5,6 +5,7 @@
     <style name="BaseStyle" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="colorControlHighlight">#cfd8dc</item>
     </style>
 
     <style name="AppThemeBlueAndPink" parent="BaseStyle">
@@ -13,7 +14,6 @@
         <item name="colorAccent">@color/pink</item>
         <item name="colorControlNormal">@color/pink</item>
         <item name="colorControlActivated">#ff6b9e</item>
-        <item name="colorControlHighlight">#ff6b9e</item>
     </style>
 
     <style name="AppThemePurpleAndGreen" parent="BaseStyle">
@@ -22,7 +22,6 @@
         <item name="colorAccent">@color/green</item>
         <item name="colorControlNormal">@color/green</item>
         <item name="colorControlActivated">#45ffa4</item>
-        <item name="colorControlHighlight">#45ffa4</item>
     </style>
 
     <style name="AppThemeRedAndBlue" parent="BaseStyle">
@@ -32,7 +31,6 @@
         <item name="colorAccent">@color/brightBlue</item>
         <item name="colorControlNormal">@color/brightBlue</item>
         <item name="colorControlActivated">#536DFE</item>
-        <item name="colorControlHighlight">#536DFE</item>
     </style>
 
     <style name="AppThemeTealAndLime" parent="BaseStyle">
@@ -42,7 +40,6 @@
         <item name="colorAccent">@color/lime</item>
         <item name="colorControlNormal">@color/lime</item>
         <item name="colorControlActivated">#ebfd34</item>
-        <item name="colorControlHighlight">#ebfd34</item>
     </style>
 
     <style name="HabitCardButtonDone" parent="ThemeOverlay.AppCompat.Light">
