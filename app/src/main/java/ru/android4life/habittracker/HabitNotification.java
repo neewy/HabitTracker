@@ -90,7 +90,6 @@ public class HabitNotification {
         Notification notification = builder.build();
         //notification.defaults |= Notification.DEFAULT_ALL; //all default settings (vibration, tune, etc.)
 
-        //TODO: Add custom tune and vibration!
         notification.sound = Uri.parse(habit.getAudioResource());
 
         NotificationManager notificationManager = (NotificationManager) context

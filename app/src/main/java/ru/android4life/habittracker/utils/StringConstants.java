@@ -31,10 +31,10 @@ public class StringConstants {
     public static final String FIRSTRUN = "firstrun";
     public static final String COLOR = "color";
     public static final String PRIMARY_COLOR_DIALOG = "primary_color_dialog";
-    public static final String BLUE = "Blue";
-    public static final String RED = "Red";
-    public static final String PURPLE = "Purple";
-    public static final String TEAL = "Teal";
+    public static final String BLUE = "blue";
+    public static final String RED = "red";
+    public static final String PURPLE = "purple";
+    public static final String TEAL = "teal";
 
     public static final String DAILY = "DAILY";
     public static final String WEEKLY = "WEEKLY";

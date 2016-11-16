@@ -19,6 +19,7 @@ import ru.android4life.habittracker.activity.MainActivity;
 import ru.android4life.habittracker.adapter.SettingsListAdapter;
 import ru.android4life.habittracker.enumeration.SettingsType;
 import ru.android4life.habittracker.models.Setting;
+import ru.android4life.habittracker.utils.Translator;
 
 import static android.content.Context.MODE_PRIVATE;
 import static ru.android4life.habittracker.utils.StringConstants.COLOR;
@@ -93,7 +94,7 @@ public class SettingsFragment extends Fragment {
         List<Setting> personalSettingsList = new ArrayList<>();
         String locale = MainActivity.getContext().getResources().getConfiguration().locale.getDisplayName();
         personalSettingsList.add(new Setting(getString(R.string.first_name), getString(R.string.username)));
-        personalSettingsList.add(new Setting(getString(R.string.primary_color), prefs.getString(COLOR, "")));
+        personalSettingsList.add(new Setting(getString(R.string.primary_color), Translator.translateColor(prefs.getString(COLOR, ""))));
         personalSettingsList.add(new Setting(getString(R.string.language), locale));
         return personalSettingsList;
     }

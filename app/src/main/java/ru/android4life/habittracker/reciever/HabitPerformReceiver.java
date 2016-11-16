@@ -43,16 +43,11 @@ public class HabitPerformReceiver extends BroadcastReceiver {
             habitScheduleDAO.update(updatedHabitSchedule);
             String habitName = ((Habit) habitDAO.findById(schedule.getHabitId())).getName();
 
-            //TODO: add motivational messages!
-
             String message = (isDone) ? context.getString(R.string.was_done) : context.getString(R.string.was_skipped);
             Toast.makeText(context, habitName + " " + message, Toast.LENGTH_LONG).show();
 
             //cancel the notification to hide it from the screen
             notificationManager.cancel(habitScheduleId * 2 + 1);
-
-            //FIXME: is this possible to update list of habits if a notification action was checked?
-            //(probably not)
         }
     }
 }
