@@ -29,6 +29,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import ru.android4life.habittracker.HabitNotification;
+import ru.android4life.habittracker.NoteDialog;
 import ru.android4life.habittracker.R;
 import ru.android4life.habittracker.activity.BaseActivity;
 import ru.android4life.habittracker.db.Constants;
@@ -64,10 +65,10 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
     private ImageButton contextMenu;
     private PopupMenu popup;
 
-    public HabitListAdapter(HabitListFragment listFragment, FragmentManager fragmentManager, DrawerSelectionMode drawerSelectionMode) {
+    public HabitListAdapter(HabitListFragment listFragment, Context context, FragmentManager fragmentManager, DrawerSelectionMode drawerSelectionMode) {
         this.listFragment = listFragment;
         this.fragmentManager = fragmentManager;
-        context = BaseActivity.getContext();
+        this.context = context;
         habitDAO = new HabitDAO(context);
         habitScheduleDAO = new HabitScheduleDAO(context);
         habitCategoryDAO = new HabitCategoryDAO(context);
@@ -234,6 +235,10 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
         habitScheduleDAO.update(updatedHabitSchedule);
         fillDependOnDrawerSelectionMode();
         notifyDataSetChanged();
+        if (isDone) {
+            NoteDialog noteDialog = new NoteDialog(context, habitSchedule.getId());
+            noteDialog.createNoteDialog();
+        }
         makeUndoSnackbar(isDone, habitSchedule, v);
         listFragment.switchEmptyView();
 
@@ -248,7 +253,7 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
 
         Snackbar snackbar = Snackbar
                 .make(v, (context.getString(R.string.empty_delimiter_strings,
-                        ((Habit) habitDAO.findById(habitSchedule.getHabitId())).getName(), message)), Snackbar.LENGTH_LONG)
+                        ((Habit) habitDAO.findById(habitSchedule.getHabitId())).getName(), message)), Snackbar.LENGTH_INDEFINITE)
                 .setAction(getStringFromResources(R.string.undo), new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

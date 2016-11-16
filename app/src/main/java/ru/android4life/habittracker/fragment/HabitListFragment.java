@@ -36,7 +36,7 @@ public class HabitListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        mAdapter = new HabitListAdapter(this, getFragmentManager(), MainActivity.drawerSelectionMode);
+        mAdapter = new HabitListAdapter(this, getActivity(), getFragmentManager(), MainActivity.drawerSelectionMode);
     }
 
     private void invalidateDataSet() {

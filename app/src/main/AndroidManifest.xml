@@ -39,7 +39,7 @@
         </receiver>
         <receiver
             android:name=".reciever.AlarmReceiver"
-            android:enabled="true"></receiver>
+            android:enabled="true" />
 
         <activity
             android:name=".activity.MainActivity"
@@ -66,6 +66,11 @@
         <activity
             android:name=".activity.MapsActivity"
             android:label="@string/title_activity_maps" />
+
+        <activity
+            android:name=".activity.PopupActivity"
+            android:launchMode="singleInstance"
+            android:theme="@android:style/Theme.DeviceDefault.Dialog" />
     </application>
 
 </manifest>

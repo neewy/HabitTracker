@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import ru.android4life.habittracker.R;
+import ru.android4life.habittracker.activity.PopupActivity;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitDAO;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitScheduleDAO;
 import ru.android4life.habittracker.db.tablesrepresentations.Habit;
@@ -44,6 +45,12 @@ public class HabitPerformReceiver extends BroadcastReceiver {
             String habitName = ((Habit) habitDAO.findById(schedule.getHabitId())).getName();
 
             //TODO: add motivational messages!
+
+            if (isDone) {
+                Intent openNoteActivity = new Intent(context, PopupActivity.class);
+                openNoteActivity.putExtra(HABIT_SCHEDULE_ID, habitScheduleId);
+                context.startActivity(openNoteActivity);
+            }
 
             String message = (isDone) ? context.getString(R.string.was_done) : context.getString(R.string.was_skipped);
             Toast.makeText(context, habitName + " " + message, Toast.LENGTH_LONG).show();
