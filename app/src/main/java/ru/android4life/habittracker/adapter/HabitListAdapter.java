@@ -304,11 +304,18 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
                     final LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
 
                     Location currentLocation;
+                    Location latestGPSLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
-                    if (BaseActivity.isFineLocationServiceEnabled(context)) {
-                        currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                    if (BaseActivity.isFineLocationServiceEnabled(context) && latestGPSLocation != null) {
+                        currentLocation = latestGPSLocation;
                     } else {
                         currentLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                    }
+
+                    if (currentLocation == null) {
+                        currentLocation = new Location(context.getString(R.string.current_location));
+                        currentLocation.setLatitude(0);
+                        currentLocation.setLongitude(0);
                     }
 
                     float distanceBetweenHabitAndCurrentLocation = habitsLocation.distanceTo(currentLocation);
