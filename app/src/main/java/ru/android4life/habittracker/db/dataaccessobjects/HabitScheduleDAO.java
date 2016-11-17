@@ -337,4 +337,18 @@ public class HabitScheduleDAO implements ExtendedCrud {
         else
             return null;
     }
+
+    public List<HabitSchedule> findByHabitIdSortedInDescendingOrder(int habitId) {
+        List<HabitSchedule> items = new ArrayList<>();
+        try {
+            QueryBuilder<HabitSchedule, Integer> qBuilder = helper.getHabitScheduleDao().queryBuilder();
+            qBuilder.where().eq(Constants.HABIT_ID, habitId);
+            qBuilder.orderBy(Constants.DATETIME, false); // false for descending order
+            items = qBuilder.query();
+        } catch (SQLException e) {
+            Log.d(Constants.DAO_ERROR, Constants.SQL_EXCEPTION_IN + Constants.SPACE +
+                    HabitScheduleDAO.class.getSimpleName());
+        }
+        return items;
+    }
 }
