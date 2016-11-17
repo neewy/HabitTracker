@@ -48,7 +48,7 @@ public class HabitTrackerApplication extends Application {
         Calendar habitScheduleDateTimeCalendar = new GregorianCalendar();
 
         Date maxOfCurrentTimeAndNewestScheduleTime;
-        Date newestHabitScheduleDate = habitScheduleDAO.getNewestHabitScheduleForDistinctHabitByHabitId(habitId);
+        Date newestHabitScheduleDate = habitScheduleDAO.getDateOfNewestHabitScheduleForDistinctHabitByHabitId(habitId);
         if (newestHabitScheduleDate != null) {
             maxOfCurrentTimeAndNewestScheduleTime = new Date(Math.max(habitScheduleDateTimeCalendar.getTime().getTime(),
                     newestHabitScheduleDate.getTime()));

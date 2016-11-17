@@ -564,7 +564,7 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         date = c.getTime();
         otherHabitSchedule = new HabitSchedule(date, true, 45);
         habitScheduleDAO.create(otherHabitSchedule);
-        Date newestHabitSchedule = habitScheduleDAO.getNewestHabitScheduleForDistinctHabitByHabitId(id);
+        Date newestHabitSchedule = habitScheduleDAO.getDateOfNewestHabitScheduleForDistinctHabitByHabitId(id);
         assertEquals(newHabitSchedule.getDatetime(), newestHabitSchedule);
     }
 }

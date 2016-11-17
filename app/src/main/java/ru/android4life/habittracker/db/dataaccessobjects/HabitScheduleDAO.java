@@ -317,7 +317,7 @@ public class HabitScheduleDAO implements ExtendedCrud {
         return percentage;
     }
 
-    public Date getNewestHabitScheduleForDistinctHabitByHabitId(int habitId) {
+    public Date getDateOfNewestHabitScheduleForDistinctHabitByHabitId(int habitId) {
         HabitSchedule habitSchedule = null;
         try {
             QueryBuilder<HabitSchedule, Integer> qBuilder = helper.getHabitScheduleDao().queryBuilder();
@@ -326,16 +326,15 @@ public class HabitScheduleDAO implements ExtendedCrud {
             qBuilder.limit(1);
             if (qBuilder.query().size() > 0) {
                 habitSchedule = helper.getHabitScheduleDao().queryForId(qBuilder.query().get(0).getId());
-            } else {
-                Calendar cal = Calendar.getInstance();
-                cal.add(Calendar.DATE, -30);
-                return cal.getTime();
             }
-
         } catch (SQLException e) {
             Log.d(Constants.DAO_ERROR, Constants.SQL_EXCEPTION_IN + Constants.SPACE +
                     HabitScheduleDAO.class.getSimpleName());
         }
-        return habitSchedule.getDatetime();
+
+        if (habitSchedule != null)
+            return habitSchedule.getDatetime();
+        else
+            return null;
     }
 }
