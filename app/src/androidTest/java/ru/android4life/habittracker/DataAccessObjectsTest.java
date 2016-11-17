@@ -547,6 +547,11 @@ public class DataAccessObjectsTest extends AndroidTestCase {
     @Test
     public void testGettingNewestHabitScheduleForDistinctHabitByHabitId() {
         HabitScheduleDAO habitScheduleDAO = new HabitScheduleDAO(this.getContext());
+
+        Date newestHabitSchedule = habitScheduleDAO.getDateOfNewestHabitScheduleForDistinctHabitByHabitId(id);
+
+        assertEquals(newestHabitSchedule, null);
+
         Calendar c = new GregorianCalendar();
         c.add(Calendar.DATE, -7);
         Date date = c.getTime();
@@ -564,7 +569,7 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         date = c.getTime();
         otherHabitSchedule = new HabitSchedule(date, true, 45);
         habitScheduleDAO.create(otherHabitSchedule);
-        Date newestHabitSchedule = habitScheduleDAO.getDateOfNewestHabitScheduleForDistinctHabitByHabitId(id);
+        newestHabitSchedule = habitScheduleDAO.getDateOfNewestHabitScheduleForDistinctHabitByHabitId(id);
         assertEquals(newHabitSchedule.getDatetime(), newestHabitSchedule);
     }
 
