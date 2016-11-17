@@ -99,21 +99,21 @@ public class HabitSchedule {
         HabitSchedule that = (HabitSchedule) o;
 
         if (getId() != that.getId()) return false;
-        if (!getNote().equals(that.getNote())) return false;
         if (getHabitId() != that.getHabitId()) return false;
         if (getDatetime() != null ? !getDatetime().equals(that.getDatetime()) : that.getDatetime() != null)
             return false;
-        return isDone != null ? isDone.equals(that.isDone) : that.isDone == null;
+        if (isDone != null ? !isDone.equals(that.isDone) : that.isDone != null) return false;
+        return getNote() != null ? getNote().equals(that.getNote()) : that.getNote() == null;
 
     }
 
     @Override
     public int hashCode() {
-        int result = id;
-        result = 31 * result + datetime.hashCode();
-        result = 31 * result + (isDone == null ? 0 : isDone.hashCode());
-        result = 31 * result + (note == null ? 0 : note.hashCode());
-        result = 31 * result + habitId;
+        int result = getId();
+        result = 31 * result + (getDatetime() != null ? getDatetime().hashCode() : 0);
+        result = 31 * result + (isDone != null ? isDone.hashCode() : 0);
+        result = 31 * result + (getNote() != null ? getNote().hashCode() : 0);
+        result = 31 * result + getHabitId();
         return result;
     }
 }
