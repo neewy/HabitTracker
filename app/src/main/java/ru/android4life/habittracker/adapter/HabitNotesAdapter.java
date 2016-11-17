@@ -7,12 +7,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import ru.android4life.habittracker.R;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitScheduleDAO;
 import ru.android4life.habittracker.db.tablesrepresentations.HabitSchedule;
+import ru.android4life.habittracker.utils.StringConstants;
 
 
 public class HabitNotesAdapter extends RecyclerView.Adapter<HabitNotesAdapter.ViewHolder> {
@@ -23,8 +27,25 @@ public class HabitNotesAdapter extends RecyclerView.Adapter<HabitNotesAdapter.Vi
         HabitScheduleDAO habitScheduleDAO = new HabitScheduleDAO(context);
         List<HabitSchedule> schedules = habitScheduleDAO.findByHabitId(habitId);
         mDataset = new ArrayList<>();
+        SimpleDateFormat dateFormatDaysAndMonthNumbers =
+                new SimpleDateFormat("dd.MM", Locale.ENGLISH);
         for (HabitSchedule schedule : schedules) {
-            mDataset.add(schedule.getNote());
+            Date currentDate = new Date();
+            if(schedule.getDatetime().before(currentDate)) {
+                String historyNote = context.getString(R.string.two_subsequent_strings,
+                        dateFormatDaysAndMonthNumbers.format(schedule.getDatetime()),
+                        StringConstants.SPACE);
+                if (schedule.isDone() != null && schedule.isDone() && schedule.getNote() != null &&
+                        !schedule.getNote().equals(StringConstants.EMPTY_STRING))
+                    historyNote += context.getString(R.string.habit_was_performed_and_note,
+                            schedule.getNote());
+                else if (schedule.isDone() != null && schedule.isDone())
+                    historyNote += context.getString(R.string.habit_was_performed);
+                else
+                    historyNote += context.getString(R.string.habit_was_skipped);
+
+                mDataset.add(historyNote);
+            }
         }
     }
 

@@ -61,6 +61,8 @@ public class StringConstants {
     public static final String IS_DONE = "isDone";
     public static final String DONE = "done";
     public static final String CONFIRMATION = "confirmation";
+    public static final String EMPTY_STRING = "";
+    public static final String SPACE = " ";
 
     public static final long DAY_IN_MS = 1000 * 60 * 60 * 24;
     public static final long MIN_IN_MS = 1000 * 60;

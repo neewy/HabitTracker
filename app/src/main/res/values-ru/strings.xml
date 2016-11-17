@@ -149,5 +149,8 @@
     <string name="not_within_set_range">Вы находитесь вне радиуса выполнения привычки. Пожалуйста, пройдите в требуемое место и попробуйте снова.</string>
     <string name="enable_location_permission">У приложения нет разрешения на получение текущего местоположения. Пожалуйста, дайте его в настройках системы и попробуйте снова.</string>
     <string name="enable_gps_for_better_precision">GPS выключено на вашем устройстве. Поскольку позиционирование по сети имеет малую точность, рекомендуем Вам включить GPS.</string>
+    <string name="habit_was_performed">привычка выполнена</string>
+    <string name="habit_was_performed_and_note">привычка выполнена. Заметка: %1$s</string>
+    <string name="habit_was_skipped">привычка пропущена</string>
 
 </resources>
