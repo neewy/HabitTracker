@@ -130,7 +130,6 @@
     <string name="confirm_delete">Да, удалить</string>
     <string name="habit_tabs_general">Информация</string>
     <string name="habit_tabs_statistics">Статистика</string>
-    <string name="habit_tabs_notes">Заметки</string>
     <string name="was_done">выполнено</string>
     <string name="was_skipped">пропущено</string>
     <string name="undo">ОТМЕНА</string>
@@ -152,5 +151,6 @@
     <string name="habit_was_performed">привычка выполнена</string>
     <string name="habit_was_performed_and_note">привычка выполнена. Заметка: %1$s</string>
     <string name="habit_was_skipped">привычка пропущена</string>
+    <string name="habit_tabs_history">История</string>
 
 </resources>

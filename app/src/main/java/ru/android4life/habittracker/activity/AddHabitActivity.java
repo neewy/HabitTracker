@@ -338,7 +338,8 @@ public class AddHabitActivity extends BaseActivity {
 
         int habitsEditionResult = habitDAO.update(new Habit(editedHabit.getId(), habitName, habitQuestion, habitDay,
                 habitSettings.getLatitude(), habitSettings.getLongitude(), habitSettings.getRange(),
-                habitSettings.getNotificationSoundUri().toString(), true, 60, habitSettings.getCategoryId()));
+                habitSettings.getNotificationSoundUri().toString(), true, habitSettings.getMinutesBeforeConfirmation(),
+                habitSettings.getCategoryId()));
         if (habitsEditionResult >= 0) {
             if (habitSettingsPrefs.contains(NOTIFICATION_FREQUENCY_TYPE) ||
                     habitSettingsPrefs.contains(NOTIFICATION_HOUR) ||
@@ -357,7 +358,8 @@ public class AddHabitActivity extends BaseActivity {
     private boolean createHabitAccordingToHabitPreferencesIfDataIsCorrect(Date habitDay, String habitName, String habitQuestion) {
         Habit habitToCreate = new Habit(habitName, habitQuestion, habitDay,
                 habitSettings.getLatitude(), habitSettings.getLongitude(), habitSettings.getRange(),
-                habitSettings.getNotificationSoundUri().toString(), true, 60, habitSettings.getCategoryId());
+                habitSettings.getNotificationSoundUri().toString(), true, habitSettings.getMinutesBeforeConfirmation(),
+                habitSettings.getCategoryId());
         int habitsCreationResult = habitDAO.create(habitToCreate);
         if (habitsCreationResult > 0) {
             Habit habitWithMaxId = (Habit) habitDAO.getObjectWithMaxId();

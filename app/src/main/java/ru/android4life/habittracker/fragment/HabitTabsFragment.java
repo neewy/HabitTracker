@@ -76,7 +76,7 @@ public class HabitTabsFragment extends Fragment {
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.getTabAt(0).setText(R.string.habit_tabs_general);
         tabLayout.getTabAt(1).setText(R.string.habit_tabs_statistics);
-        tabLayout.getTabAt(2).setText(R.string.habit_tabs_notes);
+        tabLayout.getTabAt(2).setText(R.string.habit_tabs_history);
 
         // Now when a user swipes ViewPager, TabLayout will update its indicator and selected tab;
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));

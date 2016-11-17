@@ -35,7 +35,7 @@ public class HabitNotesAdapter extends RecyclerView.Adapter<HabitNotesAdapter.Vi
         SimpleDateFormat dateFormatDaysAndMonthNumbers =
                 new SimpleDateFormat("dd.MM", Locale.ENGLISH);
         for (HabitSchedule schedule : schedules) {
-            Habit habit = (Habit) habitDAO.findById(schedule.getId());
+            Habit habit = (Habit) habitDAO.findById(schedule.getHabitId());
             Calendar calendar = new GregorianCalendar();
             Date currentDate = calendar.getTime();
             calendar.add(Calendar.DATE, 1);
@@ -48,10 +48,9 @@ public class HabitNotesAdapter extends RecyclerView.Adapter<HabitNotesAdapter.Vi
             calendar.add(Calendar.MINUTE, habit.getConfirmAfterMinutes());
             Date habitsPerformanceConfirmationTime = calendar.getTime();
 
-            // if schedule is done or its planned confirmation time passed
+            // if schedule is done or skipped its planned confirmation time passed
             if (schedule.getDatetime().before(tomorrow) &&
-                    (schedule.isDone() != null && schedule.isDone() ||
-                            habitsPerformanceConfirmationTime.before(currentDate))) {
+                    (schedule.isDone() != null || habitsPerformanceConfirmationTime.before(currentDate))) {
                 String historyNote = context.getString(R.string.two_subsequent_strings,
                         dateFormatDaysAndMonthNumbers.format(schedule.getDatetime()),
                         StringConstants.SPACE);
