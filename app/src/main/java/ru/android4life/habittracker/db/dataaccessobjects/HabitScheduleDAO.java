@@ -338,7 +338,7 @@ public class HabitScheduleDAO implements ExtendedCrud {
             return null;
     }
 
-    public List<HabitSchedule> findByHabitIdSortedInDescendingOrder(int habitId) {
+    public List<HabitSchedule> findByHabitIdSortedByDateInDescendingOrder(int habitId) {
         List<HabitSchedule> items = new ArrayList<>();
         try {
             QueryBuilder<HabitSchedule, Integer> qBuilder = helper.getHabitScheduleDao().queryBuilder();

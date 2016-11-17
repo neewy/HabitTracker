@@ -30,7 +30,7 @@ public class HabitNotesAdapter extends RecyclerView.Adapter<HabitNotesAdapter.Vi
     public HabitNotesAdapter(int habitId, Context context) {
         HabitScheduleDAO habitScheduleDAO = new HabitScheduleDAO(context);
         HabitDAO habitDAO = new HabitDAO(context);
-        List<HabitSchedule> schedules = habitScheduleDAO.findByHabitIdSortedInDescendingOrder(habitId);
+        List<HabitSchedule> schedules = habitScheduleDAO.findByHabitIdSortedByDateInDescendingOrder(habitId);
         mDataset = new ArrayList<>();
         SimpleDateFormat dateFormatDaysAndMonthNumbers =
                 new SimpleDateFormat("dd.MM", Locale.ENGLISH);

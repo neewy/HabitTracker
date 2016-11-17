@@ -567,4 +567,29 @@ public class DataAccessObjectsTest extends AndroidTestCase {
         Date newestHabitSchedule = habitScheduleDAO.getDateOfNewestHabitScheduleForDistinctHabitByHabitId(id);
         assertEquals(newHabitSchedule.getDatetime(), newestHabitSchedule);
     }
+
+    @Test
+    public void testFindingByHabitIdSortedByDateInDescendingOrder() throws ParseException {
+        HabitScheduleDAO habitScheduleDAO = new HabitScheduleDAO(this.getContext());
+        Date currentDate = new Date();
+        HabitSchedule newHabitSchedule = new HabitSchedule(currentDate, isDone, id);
+        habitScheduleDAO.create(newHabitSchedule);
+        currentDate = new Date();
+        newHabitSchedule = new HabitSchedule(currentDate, isDone, id);
+        habitScheduleDAO.create(newHabitSchedule);
+        currentDate = new Date();
+        newHabitSchedule = new HabitSchedule(currentDate, isDone, id);
+        habitScheduleDAO.create(newHabitSchedule);
+        // changing habitId to 2
+        id = 2;
+        newHabitSchedule = new HabitSchedule(modifiedDateTime, isDone, id);
+        habitScheduleDAO.create(newHabitSchedule);
+        List<HabitSchedule> habitScheduleList = habitScheduleDAO.findByHabitIdSortedByDateInDescendingOrder(1);
+        assertEquals(habitScheduleList.size(), 3);
+        for (HabitSchedule habitSchedule : habitScheduleList) {
+            assertEquals(habitSchedule.getHabitId(), 1);
+        }
+        assertTrue(habitScheduleList.get(2).getDatetime().before(habitScheduleList.get(1).getDatetime()) &&
+                habitScheduleList.get(1).getDatetime().before(habitScheduleList.get(0).getDatetime()));
+    }
 }
