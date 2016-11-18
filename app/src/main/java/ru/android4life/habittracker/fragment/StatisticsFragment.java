@@ -77,23 +77,29 @@ public class StatisticsFragment extends Fragment {
     }
 
     private void generateData() {
-        Calendar c = Calendar.getInstance();
+        Calendar monthAgo = Calendar.getInstance();
+        Calendar today = Calendar.getInstance();
         // Get how many days in current month
-        int monthMaxDays = c.getActualMaximum(Calendar.DAY_OF_MONTH);
+        int monthMaxDays = monthAgo.getActualMaximum(Calendar.DAY_OF_MONTH);
         List<PointValue> values = new ArrayList<>();
         HabitScheduleDAO habitScheduleDAO = new HabitScheduleDAO(MainActivity.getContext());
-        c = new GregorianCalendar();
+        monthAgo = new GregorianCalendar();
         // Get how many days in current month
-        c.set(Calendar.HOUR_OF_DAY, 0);
-        c.set(Calendar.MINUTE, 0);
-        c.set(Calendar.SECOND, 0);
-        c.set(Calendar.MILLISECOND, 0);
-        Date habitDay = c.getTime();
-        c.add(Calendar.MONTH, -1);
-        c.add(Calendar.DATE, 1);
-        Date date = c.getTime();
+        monthAgo.set(Calendar.HOUR_OF_DAY, 0);
+        today.set(Calendar.HOUR_OF_DAY, 0);
+        monthAgo.set(Calendar.MINUTE, 0);
+        today.set(Calendar.MINUTE, 0);
+        monthAgo.set(Calendar.SECOND, 0);
+        today.set(Calendar.SECOND, 0);
+        monthAgo.set(Calendar.MILLISECOND, 0);
+        today.set(Calendar.MILLISECOND, 0);
+        Date habitDay = monthAgo.getTime();
+        monthAgo.add(Calendar.MONTH, -1);
+        monthAgo.add(Calendar.DATE, 1);
+        today.add(Calendar.DATE, 1);
+        Date date = monthAgo.getTime();
         List<HabitSchedule> habitSchedules = new ArrayList<>(habitScheduleDAO
-                .findInRange(new Date(habitDay.getTime() - (monthMaxDays * DAY_IN_MS)), new Date()));
+                .findInRange(new Date(habitDay.getTime() - (monthMaxDays * DAY_IN_MS)), today.getTime()));
         int skipped, performed;
         int pointsOrder = 0; // order in which point added to the graph
         SimpleDateFormat dateFormatDayOfMonthNumber =
@@ -116,8 +122,8 @@ public class StatisticsFragment extends Fragment {
 
             pv = pv.setLabel(dateFormatDayOfMonthNumber.format(date));
             values.add(pv);
-            c.add(Calendar.DATE, 1);
-            date = c.getTime();
+            monthAgo.add(Calendar.DATE, 1);
+            date = monthAgo.getTime();
             pointsOrder++;
         }
 
