@@ -2,8 +2,8 @@
 <resources>
 
     <color name="neutral">#CFCFCF</color>
-    <color name="positive">#9EF59E</color>
-    <color name="negative">#FF8080</color>
+    <color name="positive">#00c853</color>
+    <color name="negative">#ef5350</color>
     <color name="indicator_selected">#616161</color>
     <color name="transparent">#80000000</color>
 

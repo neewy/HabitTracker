@@ -1,15 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/note_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
     <TextView
-        android:id="@+id/note_name"
+        android:id="@+id/note_date"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
+        android:layout_marginBottom="10dp"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="10dp"
-        android:text="Habit with really long name (save us God)"
+        android:text="18 Nov"
         android:textColor="#333333"
         android:textSize="22sp" />
-</LinearLayout>
+
+    <TextView
+        android:id="@+id/note_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@+id/note_date"
+        android:text="Habit with reall"
+        android:textColor="#333333"
+        android:textSize="22sp" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:layout_below="@+id/note_name"
+        android:background="@color/neutral" />
+</RelativeLayout>
