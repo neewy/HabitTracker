@@ -10,7 +10,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -29,8 +28,6 @@ import ru.android4life.habittracker.R;
 import ru.android4life.habittracker.activity.MainActivity;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitScheduleDAO;
 import ru.android4life.habittracker.db.tablesrepresentations.HabitSchedule;
-
-import static ru.android4life.habittracker.utils.StringConstants.DAY_IN_MS;
 
 /**
  * Created by Bulat Mukhutdinov on 06.10.2016.
@@ -77,42 +74,33 @@ public class StatisticsFragment extends Fragment {
     }
 
     private void generateData() {
-        Calendar monthAgo = Calendar.getInstance();
-        Calendar today = Calendar.getInstance();
-        // Get how many days in current month
-        int monthMaxDays = monthAgo.getActualMaximum(Calendar.DAY_OF_MONTH);
+        Calendar calendar = Calendar.getInstance();
         List<PointValue> values = new ArrayList<>();
         HabitScheduleDAO habitScheduleDAO = new HabitScheduleDAO(MainActivity.getContext());
-        monthAgo = new GregorianCalendar();
-        // Get how many days in current month
-        monthAgo.set(Calendar.HOUR_OF_DAY, 0);
-        today.set(Calendar.HOUR_OF_DAY, 0);
-        monthAgo.set(Calendar.MINUTE, 0);
-        today.set(Calendar.MINUTE, 0);
-        monthAgo.set(Calendar.SECOND, 0);
-        today.set(Calendar.SECOND, 0);
-        monthAgo.set(Calendar.MILLISECOND, 0);
-        today.set(Calendar.MILLISECOND, 0);
-        Date habitDay = monthAgo.getTime();
-        monthAgo.add(Calendar.MONTH, -1);
-        monthAgo.add(Calendar.DATE, 1);
-        today.add(Calendar.DATE, 1);
-        Date date = monthAgo.getTime();
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        calendar.add(Calendar.DATE, 1);
+        Date tomorrow = calendar.getTime();
+        calendar.add(Calendar.MONTH, -1);
+        calendar.add(Calendar.DATE, 1);
+        Date monthAgo = calendar.getTime();
         List<HabitSchedule> habitSchedules = new ArrayList<>(habitScheduleDAO
-                .findInRange(new Date(habitDay.getTime() - (monthMaxDays * DAY_IN_MS)), today.getTime()));
+                .findInRange(monthAgo, tomorrow));
         int skipped, performed;
         int pointsOrder = 0; // order in which point added to the graph
         SimpleDateFormat dateFormatDayOfMonthNumber =
-                new SimpleDateFormat("d", Locale.ENGLISH);
-        while (date.before(habitDay) || date.equals(habitDay)) {
+                new SimpleDateFormat("d MMM", Locale.ENGLISH);
+        while (calendar.getTime().before(tomorrow)) {
             skipped = 0;
             performed = 0;
             for (HabitSchedule habitSchedule : habitSchedules) {
                 if (dateFormatDayOfMonthNumber.format(habitSchedule.getDatetime())
-                        .equals(dateFormatDayOfMonthNumber.format(date))) {
+                        .equals(dateFormatDayOfMonthNumber.format(monthAgo))) {
                     if (habitSchedule.isDone() != null && habitSchedule.isDone()) {
                         performed++;
-                    } else {
+                    } else if (habitSchedule.getDatetime().before(new Date())) {
                         skipped++;
                     }
                 }
@@ -120,10 +108,10 @@ public class StatisticsFragment extends Fragment {
             float ratio = performed == 0 && skipped == 0 ? 0 : (float) performed / (skipped + performed);
             PointValue pv = new PointValue(pointsOrder, ratio);
 
-            pv = pv.setLabel(dateFormatDayOfMonthNumber.format(date));
+            pv = pv.setLabel(dateFormatDayOfMonthNumber.format(monthAgo));
             values.add(pv);
-            monthAgo.add(Calendar.DATE, 1);
-            date = monthAgo.getTime();
+            calendar.add(Calendar.DATE, 1);
+            monthAgo = calendar.getTime();
             pointsOrder++;
         }
 
