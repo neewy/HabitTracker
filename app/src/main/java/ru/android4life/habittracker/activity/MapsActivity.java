@@ -1,13 +1,20 @@
 package ru.android4life.habittracker.activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.AppCompatButton;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 import com.etiennelawlor.discreteslider.library.ui.DiscreteSlider;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -17,6 +24,8 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.List;
 
 import ru.android4life.habittracker.R;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitDAO;
@@ -46,6 +55,8 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
 
+    private RelativeLayout mapWrapper;
+
     private RippleView back;
     private RippleView confirm;
 
@@ -56,13 +67,13 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
     private boolean isMarkerVisible;
     private Circle currentCircle;
 
-    private Habit habit;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        mapWrapper = (RelativeLayout) findViewById(R.id.map_wrapper);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -82,30 +93,50 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
         uiSettings.setMyLocationButtonEnabled(true);
         uiSettings.setZoomControlsEnabled(true);
 
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        mMap.setMyLocationEnabled(true);
+
         int habitId = getIntent().getExtras().getInt(HABIT_ID, -1);
+
+        Location myLocation = getLastKnownLocation();
 
         if (habitId != -1) {
             HabitDAO habitDAO = new HabitDAO(this);
-            habit = (Habit) habitDAO.findById(habitId);
+            Habit habit = (Habit) habitDAO.findById(habitId);
 
             if (isPositionNone(habit)) {
-                moveCameraToCurrentLocation();
+                if (myLocation != null) {
+                    moveCameraToLatLng(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
+                }
             } else {
                 placeMarker(new LatLng(habit.getLatitude(), habit.getLongitude()));
                 setRangeByMeters((int) habit.getRange());
+                moveCameraToLatLng(currentMarker.getPosition());
             }
         } else {
-            moveCameraToCurrentLocation();
+            if (myLocation != null) {
+                moveCameraToLatLng(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
+            }
         }
 
         setupControls();
     }
 
-    private void moveCameraToCurrentLocation() {
-        //moves camera to current position
-        //TODO: uncomment for non-emulator apk
-        //TODO: check if has gps permissions
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(mMap.getMyLocation().getLatitude(), mMap.getMyLocation().getLongitude())));
+    private void moveCameraToLatLng(LatLng latLng) {
+
+        if (latLng != null) {
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+        }
     }
 
     private boolean isPositionNone(Habit habit) {
@@ -253,6 +284,33 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
                 placeMarker(latLng);
             }
         });
+    }
+
+    private Location getLastKnownLocation() {
+        LocationManager mLocationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
+        List<String> providers = mLocationManager.getProviders(true);
+        Location bestLocation = null;
+        for (String provider : providers) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return null;
+            }
+            Location l = mLocationManager.getLastKnownLocation(provider);
+            if (l == null) {
+                continue;
+            }
+            if (bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
+                // Found best last known location: %s", l);
+                bestLocation = l;
+            }
+        }
+        return bestLocation;
     }
 
 }
