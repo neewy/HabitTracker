@@ -142,5 +142,6 @@ public class HabitListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         invalidateDataSet();
+        switchEmptyView();
     }
 }
