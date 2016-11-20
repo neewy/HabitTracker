@@ -25,6 +25,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="20dp"
+                android:gravity="center"
                 android:text="Really long long long long name "
                 android:textColor="#3999b2"
                 android:textSize="40sp" />
@@ -36,8 +37,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/habit_card_name"
                 android:layout_centerHorizontal="true"
-                android:layout_marginLeft="15dp"
                 android:layout_marginBottom="16dp"
+                android:layout_marginLeft="15dp"
+                android:gravity="center"
                 android:text="Did I biceps?"
                 android:textSize="20sp" />
 
