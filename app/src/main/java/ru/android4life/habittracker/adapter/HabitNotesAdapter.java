@@ -54,7 +54,8 @@ public class HabitNotesAdapter extends RecyclerView.Adapter<HabitNotesAdapter.Vi
             holder.name.setText(R.string.was_skipped);
         }
         if (mDataset.get(position).getNote() != null) {
-            holder.name.setText(holder.name.getText() + " " + mDataset.get(position).getNote());
+            holder.name.setText(context.getString(R.string.empty_delimiter_strings,
+                    holder.name.getText(), mDataset.get(position).getNote()));
         }
 
     }
