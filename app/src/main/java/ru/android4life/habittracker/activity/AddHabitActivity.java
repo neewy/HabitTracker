@@ -8,6 +8,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -70,6 +71,7 @@ public class AddHabitActivity extends BaseActivity {
     private boolean notificationSoundChanged;
     private boolean positionChanged;
 
+    private boolean doubleBackToExitPressedOnce = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -162,6 +164,27 @@ public class AddHabitActivity extends BaseActivity {
             mAdapter.setHabitId(editedHabitId);
         }
         mRecyclerView.setAdapter(mAdapter);
+    }
+
+    @Override
+    public void onBackPressed() {
+        int delayMillis = 2000;
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce = false;
+            }
+            // Extract 2000 to a local constant +
+        }, delayMillis);
+
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+        } else {
+            Snackbar.make(findViewById(R.id.add_habit_wrapper), R.string.edit_back, Snackbar.LENGTH_LONG).show();
+        }
+
+        doubleBackToExitPressedOnce = true;
     }
 
     private boolean isHabitNameEntered() {

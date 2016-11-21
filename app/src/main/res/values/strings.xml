@@ -197,6 +197,7 @@
     <string name="habit_was_performed">habit was performed</string>
     <string name="habit_was_performed_and_note">habit was performed. Note: %1$s</string>
     <string name="habit_was_skipped">habit was skipped</string>
+    <string name="edit_back">Press back again to cancel editing a habit</string>
 
 
 </resources>
