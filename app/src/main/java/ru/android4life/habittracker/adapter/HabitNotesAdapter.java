@@ -29,7 +29,7 @@ public class HabitNotesAdapter extends RecyclerView.Adapter<HabitNotesAdapter.Vi
         List<HabitSchedule> schedules = habitScheduleDAO.findByHabitIdSortedByDateInDescendingOrder(habitId);
         mDataset = new ArrayList<>();
         for (HabitSchedule schedule : schedules) {
-            if (schedule.isDone() != null && !schedule.getNote().isEmpty()) {
+            if (schedule.isDone() != null) {
                 mDataset.add(schedule);
             }
         }
@@ -53,7 +53,10 @@ public class HabitNotesAdapter extends RecyclerView.Adapter<HabitNotesAdapter.Vi
         } else {
             holder.name.setText(R.string.was_skipped);
         }
-        holder.name.setText(holder.name.getText() + " " +  mDataset.get(position).getNote());
+        if (mDataset.get(position).getNote() != null) {
+            holder.name.setText(holder.name.getText() + " " + mDataset.get(position).getNote());
+        }
+
     }
 
 
