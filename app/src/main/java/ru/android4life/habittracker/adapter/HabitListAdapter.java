@@ -267,7 +267,7 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
 
     private void makeUndoSnackbar(boolean isDone, final HabitSchedule habitSchedule, View v) {
 
-        String message = (isDone) ? getStringFromResources(R.string.was_done) : getStringFromResources(R.string.was_skipped);
+        String message = (isDone) ? getStringFromResources(R.string.habit_done) : getStringFromResources(R.string.habit_skip);
 
         Snackbar snackbar = Snackbar
                 .make(v, (context.getString(R.string.empty_delimiter_strings,
