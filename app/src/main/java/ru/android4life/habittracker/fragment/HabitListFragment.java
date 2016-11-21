@@ -36,7 +36,6 @@ public class HabitListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        mAdapter = new HabitListAdapter(this, getActivity(), getFragmentManager(), MainActivity.drawerSelectionMode);
     }
 
     private void invalidateDataSet() {
@@ -49,6 +48,7 @@ public class HabitListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //creating view from layout, attachToRoot false — so the parent cannot listen to events of inflated view
         view = (RelativeLayout) inflater.inflate(R.layout.habit_list, container, false);
+        mAdapter = new HabitListAdapter(this, getActivity(), getFragmentManager(), MainActivity.drawerSelectionMode, view);
         RecyclerView listView = (RecyclerView) view.findViewById(R.id.habits_list);
 
         LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity());

@@ -1,7 +1,9 @@
 package ru.android4life.habittracker.adapter;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
@@ -11,6 +13,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.text.format.DateUtils;
 import android.view.GestureDetector;
 import android.view.Gravity;
@@ -20,6 +23,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -34,7 +38,6 @@ import java.util.Comparator;
 import java.util.List;
 
 import ru.android4life.habittracker.HabitNotification;
-import ru.android4life.habittracker.NoteDialog;
 import ru.android4life.habittracker.R;
 import ru.android4life.habittracker.activity.BaseActivity;
 import ru.android4life.habittracker.db.Constants;
@@ -69,14 +72,16 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
     private DrawerSelectionMode drawerSelectionMode;
     private ImageButton contextMenu;
     private PopupMenu popup;
+    private RelativeLayout view;
 
-    public HabitListAdapter(HabitListFragment listFragment, Context context, FragmentManager fragmentManager, DrawerSelectionMode drawerSelectionMode) {
+    public HabitListAdapter(HabitListFragment listFragment, Context context, FragmentManager fragmentManager, DrawerSelectionMode drawerSelectionMode, RelativeLayout view) {
         this.listFragment = listFragment;
         this.fragmentManager = fragmentManager;
         this.context = context;
         habitDAO = new HabitDAO(context);
         habitScheduleDAO = new HabitScheduleDAO(context);
         habitCategoryDAO = new HabitCategoryDAO(context);
+        this.view = view;
         this.drawerSelectionMode = drawerSelectionMode;
         fillDependOnDrawerSelectionMode();
     }
@@ -249,15 +254,15 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
         fillDependOnDrawerSelectionMode();
         notifyDataSetChanged();
         if (isDone) {
-            NoteDialog noteDialog = new NoteDialog(context, habitSchedule.getId());
-            noteDialog.createNoteDialog();
-        }
-        makeUndoSnackbar(isDone, habitSchedule, v);
-        listFragment.switchEmptyView();
+            createNoteDialog(habitSchedule.getId(), view);
+        } else {
+            makeUndoSnackbar(false, habitSchedule, v);
+            listFragment.switchEmptyView();
 
-        //delete notifications if the habit was performed manually
-        HabitNotification notification = new HabitNotification(context);
-        notification.deleteHabitScheduleAlarms(habitSchedule.getId());
+            //delete notifications if the habit was performed manually
+            HabitNotification notification = new HabitNotification(context);
+            notification.deleteHabitScheduleAlarms(habitSchedule.getId());
+        }
     }
 
     private void makeUndoSnackbar(boolean isDone, final HabitSchedule habitSchedule, View v) {
@@ -266,7 +271,7 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
 
         Snackbar snackbar = Snackbar
                 .make(v, (context.getString(R.string.empty_delimiter_strings,
-                        ((Habit) habitDAO.findById(habitSchedule.getHabitId())).getName(), message)), Snackbar.LENGTH_INDEFINITE)
+                        ((Habit) habitDAO.findById(habitSchedule.getHabitId())).getName(), message)), Snackbar.LENGTH_LONG)
                 .setAction(getStringFromResources(R.string.undo), new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -420,5 +425,36 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
         notifyDataSetChanged();
     }
 
+    private void createNoteDialog(final int habitScheduleId, final View view) {
+
+        final String[] noteText = {""};
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(context.getString(R.string.add_note));
+
+        final EditText input = new EditText(context);
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+
+        builder.setPositiveButton(getStringFromResources(android.R.string.ok), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                noteText[0] = input.getText().toString();
+                HabitSchedule habitSchedule = (HabitSchedule) habitScheduleDAO.findById(habitScheduleId);
+                habitSchedule.setNote(noteText[0]);
+                habitScheduleDAO.update(habitSchedule);
+                listFragment.switchEmptyView();
+                makeUndoSnackbar(true, habitSchedule, view);
+            }
+        });
+        builder.setNegativeButton(getStringFromResources(android.R.string.cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+    }
 
 }
