@@ -95,7 +95,7 @@
 
     <!--Main Activity-->
     <string name="drawerSelectionMode">drawerSelectionMode</string>
-    <string name="done_to_skipped_ratio">How well you done</string>
+    <string name="done_to_skipped_ratio">The percentage of completion</string>
     <string name="accent_color">Accent color</string>
 
     <!-- Material Design colors names -->
