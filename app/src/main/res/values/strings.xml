@@ -199,6 +199,19 @@
     <string name="habit_was_performed_and_note">habit was performed. Note: %1$s</string>
     <string name="habit_was_skipped">habit was skipped</string>
     <string name="edit_back">Press back again to cancel editing a habit</string>
+    
+    <!-- Confirm After Minutes -->
+    <string name="after_fifteen_minutes">After 15 minutes</string>
+    <string name="after_thirty_minutes">After 30 minutes</string>
+    <string name="after_sixty_minutes">After one hour</string>
+    <string name="after_ninety_minutes">After an hour and a half</string>
+    <string name="after_one_hundred_twenty_minutes">After two hours</string>
+    <string name="after_one_hundred_fifty_minutes">After two hours and a half</string>
+    <string name="disabled">Disabled</string>
+    <string name="minutes_to_confirmation_text">minutes_to_confirmation_text</string>
+    <string name="array">array</string>
+    <string name="minutes_to_confirmation">minutes_to_confirmation</string>
+    <string name="confirmation">Confirmation</string>
 
 
 </resources>

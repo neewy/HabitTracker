@@ -153,4 +153,14 @@
     <string name="habit_was_skipped">привычка пропущена</string>
     <string name="habit_tabs_history">История</string>
 
+    <!-- Confirm After Minutes -->
+    <string name="after_fifteen_minutes">Через 15 минут</string>
+    <string name="after_thirty_minutes">Через 30 минут</string>
+    <string name="after_sixty_minutes">Через час</string>
+    <string name="after_ninety_minutes">Через полтора часа</string>
+    <string name="after_one_hundred_twenty_minutes">Через два часа</string>
+    <string name="after_one_hundred_fifty_minutes">Через два с половиной часа</string>
+    <string name="disabled">Отключено</string>
+    <string name="confirmation">Подтверждение</string>
+
 </resources>

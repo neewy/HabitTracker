@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="fifteen">15</integer>
+    <integer name="thirty">30</integer>
+    <integer name="sixty">60</integer>
+    <integer name="ninety">90</integer>
+    <integer name="one_hundred_twenty">120</integer>
+    <integer name="one_hundred_fifty">150</integer>
+    <integer name="zero">0</integer>
+</resources>

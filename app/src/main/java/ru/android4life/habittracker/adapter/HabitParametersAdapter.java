@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.media.RingtoneManager;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
@@ -35,6 +36,7 @@ import ru.android4life.habittracker.viewholder.HabitParameterViewHolder;
 import static android.content.Context.MODE_PRIVATE;
 import static ru.android4life.habittracker.utils.StringConstants.CATEGORY_ID;
 import static ru.android4life.habittracker.utils.StringConstants.HABIT_ID;
+import static ru.android4life.habittracker.utils.StringConstants.MINUTES_BEFORE_CONFIRMATION;
 import static ru.android4life.habittracker.utils.StringConstants.NOTIFICATION_FREQUENCY_TYPE;
 import static ru.android4life.habittracker.utils.StringConstants.NOTIFICATION_FREQUENCY_WEEK_NUMBER_OR_DATE;
 import static ru.android4life.habittracker.utils.StringConstants.NOTIFICATION_HOUR;
@@ -242,7 +244,34 @@ public class HabitParametersAdapter extends RecyclerView.Adapter<HabitParameterV
 
             @Override
             public void onConfirmation(View caller, final TextView hint) {
+                Resources res = context.getResources();
+                int resId = res.getIdentifier(context.getString(R.string.minutes_to_confirmation_text),
+                        context.getString(R.string.array), context.getPackageName());
+                final String[] textLabelsForVariantsToSelectList = res.getStringArray(resId);
+                resId = res.getIdentifier(context.getString(R.string.minutes_to_confirmation),
+                        context.getString(R.string.array), context.getPackageName());
+                final int[] integersForVariantsToSelectList = res.getIntArray(resId);
 
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                        parent.getContext());
+                alertDialogBuilder.setTitle(context.getResources().getString(R.string.confirmation));
+                alertDialogBuilder
+                        .setSingleChoiceItems(textLabelsForVariantsToSelectList, 0, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int item) {
+                                habitSettings.setMinutesBeforeConfirmation(integersForVariantsToSelectList[item]);
+                                hint.setText(textLabelsForVariantsToSelectList[item]);
+                                prefs.edit().putInt(MINUTES_BEFORE_CONFIRMATION, integersForVariantsToSelectList[item]).apply();
+                                dialog.cancel();
+                            }
+                        }).setNegativeButton(context.getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+                // create alert dialog
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                // show it
+                alertDialog.show();
             }
         };
     }

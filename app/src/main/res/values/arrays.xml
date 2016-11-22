@@ -22,4 +22,24 @@
         <item>@string/color_setting_name_teal_id</item>
     </string-array>
 
+    <string-array name="minutes_to_confirmation_text">
+        <item>@string/after_fifteen_minutes</item>
+        <item>@string/after_thirty_minutes</item>
+        <item>@string/after_sixty_minutes</item>
+        <item>@string/after_ninety_minutes</item>
+        <item>@string/after_one_hundred_twenty_minutes</item>
+        <item>@string/after_one_hundred_fifty_minutes</item>
+        <item>@string/disabled</item>
+    </string-array>
+
+    <integer-array name="minutes_to_confirmation">
+        <item>@integer/fifteen</item>
+        <item>@integer/thirty</item>
+        <item>@integer/sixty</item>
+        <item>@integer/ninety</item>
+        <item>@integer/one_hundred_twenty</item>
+        <item>@integer/one_hundred_fifty</item>
+        <item>@integer/zero</item>
+    </integer-array>
+
 </resources>
