@@ -18,6 +18,10 @@ android {
         }
     }
 
+    lintOptions {
+        checkReleaseBuilds false
+    }
+
     // To avoid "Method ... not mocked." errors
     // The android.jar file that is used to run unit tests does not contain
     // any actual code - that is provided by the Android system image on real devices.
