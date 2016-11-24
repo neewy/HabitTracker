@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import lecho.lib.hellocharts.gesture.ZoomType;
 import lecho.lib.hellocharts.listener.ViewportChangeListener;
@@ -91,7 +90,7 @@ public class StatisticsFragment extends Fragment {
         int skipped, performed;
         int pointsOrder = 0; // order in which point added to the graph
         SimpleDateFormat dateFormatDayOfMonthNumber =
-                new SimpleDateFormat("d MMM", Locale.ENGLISH);
+                new SimpleDateFormat("d MMM", MainActivity.locale);
         while (calendar.getTime().before(tomorrow)) {
             skipped = 0;
             performed = 0;
@@ -141,6 +140,7 @@ public class StatisticsFragment extends Fragment {
             axisValues.add(axisValue);
         }
         axisX.setValues(axisValues);
+        axisX.setMaxLabelChars(5);
 
         data.setAxisXBottom(axisX);
         Axis axisY = new Axis();
