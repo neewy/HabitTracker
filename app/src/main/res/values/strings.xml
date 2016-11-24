@@ -1,10 +1,9 @@
 <resources>
 
-    <string name="app_name">Did I?</string>
+    <string name="app_name">Did I? Habit Tracker</string>
     <string name="title_habits">Habits</string>
     <string name="title_progress">Progress</string>
     <string name="menu_settings">Settings</string>
-    <string name="title_activity_main">Did I?</string>
 
     <!-- Habits and progress screen -->
 
@@ -41,7 +40,7 @@
 
 
     <!--Navigation bar header text-->
-    <string name="navigation_drawer_header_title">Did I? 2K16</string>
+    <string name="navigation_drawer_header_title">Did I? Habit Tracker</string>
     <string name="navigation_drawer_header_support_address">support@android4life.ru</string>
 
 

@@ -3,7 +3,6 @@
     <string name="title_habits">Привычки</string>
     <string name="title_progress">Прогресс</string>
     <string name="menu_settings">Настройки</string>
-    <string name="title_activity_main">Сделал ли я?</string>
 
     <!-- Habits and progress screen -->
 
@@ -162,5 +161,6 @@
     <string name="after_one_hundred_fifty_minutes">Через два с половиной часа</string>
     <string name="disabled">Отключено</string>
     <string name="confirmation">Подтверждение</string>
+    <string name="app_name">Сделал ли я? Контроль привычек</string>
 
 </resources>
