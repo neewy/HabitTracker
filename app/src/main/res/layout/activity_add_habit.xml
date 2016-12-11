@@ -63,7 +63,7 @@
                 android:ems="10"
                 android:hint="@string/add_habit_name"
                 android:inputType="textAutoCorrect"
-                android:singleLine="true"
+                android:maxLines="1"
                 android:textColor="@color/colorText"
                 android:textColorHint="?colorAccent" />
         </android.support.design.widget.TextInputLayout>
@@ -84,7 +84,7 @@
                 android:ems="10"
                 android:hint="@string/add_habit_question"
                 android:inputType="textAutoCorrect"
-                android:singleLine="true"
+                android:maxLines="1"
                 android:textColor="@color/colorText"
                 android:textColorHint="?colorAccent" />
         </android.support.design.widget.TextInputLayout>

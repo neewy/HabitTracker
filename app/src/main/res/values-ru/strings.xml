@@ -56,7 +56,7 @@
     <string name="about">О нас</string>
     <string name="contributors">Разработчики</string>
     <string name="notifications">Оповещения</string>
-    <string name="show_notifications">Показывать оповещения</string>
+    <string name="show_notifications">Тихий режим</string>
     <!--Habits List-->
     <string name="did_i_question">Сделал ли я %1$s?</string>
 
@@ -162,5 +162,7 @@
     <string name="disabled">Отключено</string>
     <string name="confirmation">Подтверждение</string>
     <string name="app_name">Сделал ли я? Контроль привычек</string>
+    <string name="silent_title">Привычки с подтверждением</string>
+    <string name="silent_message">У вас есть привычки, для которых вы установили подтверждение. После включения тихого режима вы сможете подтверждать привычки только в открытом приложении.</string>
 
 </resources>

@@ -149,7 +149,6 @@ public class HabitNotification {
                         habit.getQuestion()));
 
         Notification notification = builder.build();
-        notification.vibrate = new long[]{1000, 100, 1000, 100, 1000, 2000};
 
         // in order to expand the buttons
         notification.priority = Notification.PRIORITY_MAX;
@@ -215,9 +214,12 @@ public class HabitNotification {
                 alarmManager.cancel(reminderIntent);
                 alarmManager.set(AlarmManager.RTC_WAKEUP, schedule.getDatetime().getTime(), reminderIntent);
 
-                PendingIntent confirmationIntent = createPendingIntent(schedule.getId(), false); //create intent for confirmation
-                alarmManager.cancel(confirmationIntent);
-                alarmManager.set(AlarmManager.RTC_WAKEUP, schedule.getDatetime().getTime() + habit.getConfirmAfterMinutes() * MIN_IN_MS, confirmationIntent);
+                //FIXME: this is temporary solution for habits without confirmation
+                if (habit.getConfirmAfterMinutes() != 0) {
+                    PendingIntent confirmationIntent = createPendingIntent(schedule.getId(), false); //create intent for confirmation
+                    alarmManager.cancel(confirmationIntent);
+                    alarmManager.set(AlarmManager.RTC_WAKEUP, schedule.getDatetime().getTime() + habit.getConfirmAfterMinutes() * MIN_IN_MS, confirmationIntent);
+                }
             }
         }
     }

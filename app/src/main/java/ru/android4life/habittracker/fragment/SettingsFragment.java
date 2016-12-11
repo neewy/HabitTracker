@@ -1,14 +1,18 @@
 package ru.android4life.habittracker.fragment;
 
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
@@ -17,6 +21,7 @@ import java.util.List;
 import ru.android4life.habittracker.R;
 import ru.android4life.habittracker.activity.MainActivity;
 import ru.android4life.habittracker.adapter.SettingsListAdapter;
+import ru.android4life.habittracker.db.dataaccessobjects.HabitDAO;
 import ru.android4life.habittracker.enumeration.SettingsType;
 import ru.android4life.habittracker.models.Setting;
 import ru.android4life.habittracker.utils.Translator;
@@ -24,6 +29,7 @@ import ru.android4life.habittracker.utils.Translator;
 import static android.content.Context.MODE_PRIVATE;
 import static ru.android4life.habittracker.utils.StringConstants.COLOR;
 import static ru.android4life.habittracker.utils.StringConstants.SHARED_PREF;
+import static ru.android4life.habittracker.utils.StringConstants.SILENT_MODE;
 
 /**
  * This class is a controller for in-app settings view.
@@ -42,9 +48,17 @@ public class SettingsFragment extends Fragment {
     private SettingsListAdapter personalAdapter;
     private SettingsListAdapter inAppAdapter;
 
+    //switch to disable notifications
+    private SwitchCompat silentModeSwitch;
+    private SharedPreferences sharedPreferences;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (sharedPreferences == null) {
+            sharedPreferences = getActivity().getSharedPreferences(SHARED_PREF, MODE_PRIVATE);
+        }
 
         // two types are possible, and each is using different views for their elements (1 or 2 text lines list element)
         SettingsListAdapter.fragmentManager = getFragmentManager();
@@ -60,10 +74,54 @@ public class SettingsFragment extends Fragment {
         personalSettings = (RecyclerView) view.findViewById(R.id.personal_settings);
         inAppSettings = (RecyclerView) view.findViewById(R.id.in_app_info);
 
+        silentModeSwitch = (SwitchCompat) view.findViewById(R.id.settings_notifications_switch);
+        if (sharedPreferences.getBoolean(SILENT_MODE, false)) {
+            silentModeSwitch.setChecked(true);
+        }
+
+        silentModeSwitch.setOnCheckedChangeListener(setupSilentSwitch());
+
         setupPersonalSettings();
         setupInAppSettings();
 
         return view;
+    }
+
+    private CompoundButton.OnCheckedChangeListener setupSilentSwitch() {
+        return new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    HabitDAO habitDAO = new HabitDAO(getContext());
+                    if (habitDAO.checkForConfirmation()) {
+                        AlertDialog.Builder ad = new AlertDialog.Builder(getContext());
+                        ad.setTitle(R.string.silent_title);
+                        ad.setMessage(R.string.silent_message);
+                        ad.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int arg1) {
+                                sharedPreferences.edit().putBoolean(SILENT_MODE, true).apply();
+                            }
+                        });
+                        ad.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int arg1) {
+                                silentModeSwitch.setChecked(false);
+                            }
+                        });
+                        ad.setCancelable(true);
+                        ad.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                            public void onCancel(DialogInterface dialog) {
+                                silentModeSwitch.setChecked(false);
+                            }
+                        });
+                        ad.show();
+                    } else {
+                        sharedPreferences.edit().putBoolean(SILENT_MODE, true).apply();
+                    }
+                } else {
+                    sharedPreferences.edit().putBoolean(SILENT_MODE, false).apply();
+                }
+            }
+        };
     }
 
     private void setupPersonalSettings() {

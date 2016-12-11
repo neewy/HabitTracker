@@ -74,7 +74,7 @@
     <string name="about">About</string>
     <string name="contributors">Contributors</string>
     <string name="notifications">Notifications</string>
-    <string name="show_notifications">Show notifications</string>
+    <string name="show_notifications">Silent mode</string>
 
     <!--Habits List-->
     <string name="did_i_question">Did I %1$s?</string>
@@ -211,6 +211,8 @@
     <string name="array">array</string>
     <string name="minutes_to_confirmation">minutes_to_confirmation</string>
     <string name="confirmation">Confirmation</string>
+    <string name="silent_title">Habits with confirmation</string>
+    <string name="silent_message">It seems that you have habits with confirmation. After turning on this mode you can confirm habits inside opened application only.</string>
 
 
 </resources>

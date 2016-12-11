@@ -3,7 +3,9 @@ package ru.android4life.habittracker.db.dataaccessobjects;
 import android.content.Context;
 import android.util.Log;
 
+import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.stmt.Where;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -76,6 +78,31 @@ public class HabitDAO implements ExtendedCrud {
 
         return index;
 
+    }
+
+    /**
+     * Checks if there is a habit with confirmation
+     *
+     * @return true if it has at least a single habit with confirmation, false otherwise
+     */
+    public boolean checkForConfirmation() {
+        try {
+            QueryBuilder<Habit, Integer> queryBuilder = helper.getHabitDao().queryBuilder();
+            Where<Habit, Integer> where = queryBuilder.where();
+            //FIXME: that is a temp solution — we have separate field in the database, but we are not using it
+            where.ne("confirmAfterMinutes", 0); //not equal to zero
+            PreparedQuery<Habit> preparedQuery = queryBuilder.prepare();
+            Object habit = helper.getHabitDao().queryForFirst(preparedQuery);
+            if (habit == null) {
+                return false;
+            } else {
+                return true;
+            }
+        } catch (SQLException e) {
+            Log.d(Constants.DAO_ERROR, Constants.SQL_EXCEPTION_IN + Constants.SPACE +
+                    HabitDAO.class.getSimpleName());
+        }
+        return false;
     }
 
     @Override
