@@ -164,5 +164,12 @@
     <string name="app_name">Сделал ли я? Контроль привычек</string>
     <string name="silent_title">Привычки с подтверждением</string>
     <string name="silent_message">У вас есть привычки, для которых вы установили подтверждение. После включения тихого режима вы сможете подтверждать привычки только в открытом приложении.</string>
+    <string name="intro_first_title">Достижение успеха</string>
+    <string name="intro_first_desc">Больше продуктивных привычек и полное отсутствие вредных — это ключ к успеху. Это приложение может помочь вам стать успешнее.</string>
+    <string name="intro_third_desc">Теперь вы готовы создать свою первую привычку!</string>
+    <string name="intro_third_title">Приятно познакомиться</string>
+    <string name="enter_your_name">Введите своё имя</string>
+    <string name="before_we_start_please_enter_your_first_name">Перед тем, как начать работу, скажите нам как вас зовут</string>
+    <string name="array"></string>
 
 </resources>

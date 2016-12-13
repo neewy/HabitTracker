@@ -208,11 +208,17 @@
     <string name="after_one_hundred_fifty_minutes">After two hours and a half</string>
     <string name="disabled">Disabled</string>
     <string name="minutes_to_confirmation_text">minutes_to_confirmation_text</string>
-    <string name="array">array</string>
+    <string name="array" translatable="false">array</string>
     <string name="minutes_to_confirmation">minutes_to_confirmation</string>
     <string name="confirmation">Confirmation</string>
     <string name="silent_title">Habits with confirmation</string>
     <string name="silent_message">It seems that you have habits with confirmation. After turning on this mode you can confirm habits inside opened application only.</string>
+    <string name="enter_your_name">Enter your name</string>
+    <string name="intro_first_title">Being successful</string>
+    <string name="intro_first_desc">The key to professionalism is to have more healthy and life improving habits and no bad habits at all. Our application may help you with that.</string>
+    <string name="intro_third_title">Nice to meet you</string>
+    <string name="intro_third_desc">You are ready to start managing your habits</string>
+    <string name="before_we_start_please_enter_your_first_name">Before we start please enter your first name</string>
 
 
 </resources>

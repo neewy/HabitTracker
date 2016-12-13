@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import jonathanfinerty.once.Once;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitDAO;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitScheduleDAO;
 import ru.android4life.habittracker.db.tablesrepresentations.Habit;
@@ -113,6 +114,7 @@ public class HabitTrackerApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Once.initialise(this);
         // this method fires once as well as constructor
         // but also application has context here
         createSchedulesForExistingHabitsForTheNextMonthAndDeleteHabitSchedulesOlderThanThirtyOneDay(getApplicationContext());

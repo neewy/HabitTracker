@@ -1,6 +1,7 @@
 package ru.android4life.habittracker.activity;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.location.Location;
@@ -20,6 +21,7 @@ import android.view.View;
 
 import java.util.Locale;
 
+import jonathanfinerty.once.Once;
 import ru.android4life.habittracker.R;
 import ru.android4life.habittracker.db.Constants;
 import ru.android4life.habittracker.db.DatabaseManager;
@@ -98,6 +100,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         if (coarseLocationPermissionsEnabled)
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, StringConstants.LOCATION_REFRESH_TIME,
                     StringConstants.LOCATION_REFRESH_DISTANCE, this);
+
+        if (!Once.beenDone(Once.THIS_APP_INSTALL, "showTour")) {
+            startActivity(new Intent(this, FirstTimeIntroActivity.class));
+            Once.markDone("showTour");
+        }
+
     }
 
     // Sets up initial fragment and drawer menu

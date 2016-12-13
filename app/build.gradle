@@ -55,6 +55,9 @@ dependencies {
     compile 'com.android.support:percent:24.2.1'
     compile 'org.ocpsoft.prettytime:prettytime:4.0.1.Final' //human readable date
 
+    compile 'com.jonathanfinerty.once:once:1.2.1' //to complete some actions once
+    compile 'com.heinrichreimersoftware:material-intro:1.6' //first-time launch intro
+
     /* Charts */
     compile 'com.github.lecho:hellocharts-android:v1.5.8'
     compile 'pl.coreorb:selection-dialogs:0.9.1'

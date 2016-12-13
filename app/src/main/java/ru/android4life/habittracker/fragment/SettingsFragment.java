@@ -30,6 +30,7 @@ import static android.content.Context.MODE_PRIVATE;
 import static ru.android4life.habittracker.utils.StringConstants.COLOR;
 import static ru.android4life.habittracker.utils.StringConstants.SHARED_PREF;
 import static ru.android4life.habittracker.utils.StringConstants.SILENT_MODE;
+import static ru.android4life.habittracker.utils.StringConstants.USER_NAME;
 
 /**
  * This class is a controller for in-app settings view.
@@ -151,7 +152,7 @@ public class SettingsFragment extends Fragment {
         SharedPreferences prefs = getActivity().getSharedPreferences(SHARED_PREF, MODE_PRIVATE);
         List<Setting> personalSettingsList = new ArrayList<>();
         String locale = MainActivity.getContext().getResources().getConfiguration().locale.getDisplayName();
-        personalSettingsList.add(new Setting(getString(R.string.first_name), getString(R.string.username)));
+        personalSettingsList.add(new Setting(getString(R.string.first_name), sharedPreferences.getString(USER_NAME, getString(R.string.username))));
         personalSettingsList.add(new Setting(getString(R.string.primary_color), Translator.translateColor(prefs.getString(COLOR, ""))));
         personalSettingsList.add(new Setting(getString(R.string.language), locale));
         return personalSettingsList;
