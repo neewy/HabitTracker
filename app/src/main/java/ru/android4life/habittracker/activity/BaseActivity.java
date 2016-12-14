@@ -15,11 +15,11 @@ import android.support.v7.app.AppCompatActivity;
 
 import java.lang.reflect.Method;
 
+import jonathanfinerty.once.Once;
 import ru.android4life.habittracker.R;
 
 import static ru.android4life.habittracker.utils.StringConstants.BLUE;
 import static ru.android4life.habittracker.utils.StringConstants.COLOR;
-import static ru.android4life.habittracker.utils.StringConstants.FIRSTRUN;
 import static ru.android4life.habittracker.utils.StringConstants.PURPLE;
 import static ru.android4life.habittracker.utils.StringConstants.RED;
 import static ru.android4life.habittracker.utils.StringConstants.SHARED_PREF;
@@ -91,8 +91,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         //any activity which inherits now can use shared preferences
         prefs = getSharedPreferences(SHARED_PREF, MODE_PRIVATE);
 
-        if (prefs.getBoolean(FIRSTRUN, true)) {
+        if (!Once.beenDone(Once.THIS_APP_INSTALL, "applyColor")) {
             prefs.edit().putString(COLOR, BLUE).apply();
+            Once.markDone("applyColor");
         }
 
         setApplicationStyle();

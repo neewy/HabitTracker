@@ -61,11 +61,10 @@ public class StringConstants {
     public static final String IS_DONE = "isDone";
     public static final String DONE = "done";
     public static final String CONFIRMATION = "confirmation";
-    public static final String EMPTY_STRING = "";
-    public static final String SPACE = " ";
 
     public static final String SILENT_MODE = "silent_mode";
 
+    public static final String INTRO_SKIPPED = "introSkipped";
     public static final String USER_NAME = "userName";
 
     public static final long DAY_IN_MS = 1000 * 60 * 60 * 24;

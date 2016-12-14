@@ -43,9 +43,13 @@ public class UserNameFragment extends SlideFragment {
     @Override
     public boolean canGoForward() {
         TextInputLayout habitNameTextInputLayout = (TextInputLayout) root.findViewById(R.id.user_name_text);
-        String userName = habitNameTextInputLayout.getEditText().getText().toString();
-        sharedPreferences.edit().putString(USER_NAME, userName).apply();
-        return !(userName.length() == 0);
+        String userName = habitNameTextInputLayout.getEditText().getText().toString().trim();
+        if (userName.length() > 0) {
+            sharedPreferences.edit().putString(USER_NAME, userName).apply();
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

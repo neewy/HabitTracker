@@ -8,6 +8,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -36,15 +37,16 @@ import ru.android4life.habittracker.utils.StringConstants;
 
 import static ru.android4life.habittracker.enumeration.DrawerSelectionMode.TODAY;
 import static ru.android4life.habittracker.enumeration.DrawerSelectionMode.findDrawerSelectionMode;
-import static ru.android4life.habittracker.utils.StringConstants.FIRSTRUN;
+import static ru.android4life.habittracker.utils.StringConstants.INTRO_SKIPPED;
 import static ru.android4life.habittracker.utils.StringConstants.LOCALE;
+import static ru.android4life.habittracker.utils.StringConstants.SHARED_PREF;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, LocationListener {
 
     public static Locale locale;
     public static DrawerSelectionMode drawerSelectionMode;
-    public static DrawerLayout drawer;
     public static ActionBarDrawerToggle toggle;
+    public DrawerLayout drawer;
     private FragmentManager fragmentManager;
 
     /**
@@ -55,6 +57,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         super.onCreate(savedInstanceState);
         setContext(this);
         locale = new Locale(prefs.getString(LOCALE, getResources().getString(R.string.locale_en)));
+
+        if (!prefs.contains(LOCALE) &&
+                getResources().getConfiguration().locale.getLanguage().equals(new Locale("ru").getLanguage())) {
+            locale = new Locale("ru");
+        }
         Constants.updatePrettyTime();
         Locale.setDefault(locale);
         Configuration config = new Configuration();
@@ -79,10 +86,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         //Init the database manager
         DatabaseManager.setHelper(this);
-        // run method forFirstRun only if the application wasn't run after installation
-        if (prefs.getBoolean(FIRSTRUN, true)) {
-            forFirstRun();
-        }
+
         // Initiate db
         DatabaseManager.setHelper(getContext());
 
@@ -101,11 +105,16 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, StringConstants.LOCATION_REFRESH_TIME,
                     StringConstants.LOCATION_REFRESH_DISTANCE, this);
 
-        if (!Once.beenDone(Once.THIS_APP_INSTALL, "showTour")) {
+        if (!Once.beenDone(Once.THIS_APP_INSTALL, "createCategories")) {
+            createCategories();
+            Once.markDone("createCategories");
+        }
+
+        if (!Once.beenDone(Once.THIS_APP_INSTALL, "showTour")
+                || getSharedPreferences(SHARED_PREF, MODE_PRIVATE).getBoolean(INTRO_SKIPPED, false)) {
             startActivity(new Intent(this, FirstTimeIntroActivity.class));
             Once.markDone("showTour");
         }
-
     }
 
     // Sets up initial fragment and drawer menu
@@ -120,7 +129,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
         // Create a new fragment and specify the fragment to show based on nav item clicked
         Fragment fragment = null;
@@ -225,8 +234,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         MainActivity.toggle.syncState();
     }
 
-    void forFirstRun() {
-
+    void createCategories() {
         // Do first run stuff here then set 'firstrun' as false
         /* Creation of categories */
         HabitCategoryDAO habitCategoryDAO = new HabitCategoryDAO(this.getApplicationContext());
@@ -237,9 +245,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         habitCategoryDAO.create(new HabitCategory(getResources().getString(R.string.studying)));
         habitCategoryDAO.create(new HabitCategory(getResources().getString(R.string.health)));
         habitCategoryDAO.create(new HabitCategory(getResources().getString(R.string.other)));
-
-        // using the following line to edit/commit prefs
-        prefs.edit().putBoolean(FIRSTRUN, false).apply();
     }
 
     // `onPostCreate` called when activity start-up is complete after `onStart()`

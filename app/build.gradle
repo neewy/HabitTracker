@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "24.0.2"
+    compileSdkVersion 25
+    buildToolsVersion "25.0.1"
 
     defaultConfig {
         applicationId "ru.android4life.habittracker"
         minSdkVersion 16
-        targetSdkVersion 24
+        targetSdkVersion 25
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
@@ -47,12 +47,12 @@ dependencies {
     compile 'com.github.lawloretienne:discreteslider:0.0.9'
     compile 'com.google.android:flexbox:0.2.3'
 
-    compile 'com.android.support:appcompat-v7:24.2.1' /*Library for support design */
-    compile 'com.android.support:design:24.2.1' /*the same as above*/
-    compile 'com.android.support:cardview-v7:24.2.1'
+    compile 'com.android.support:appcompat-v7:25.0.1' /*Library for support design */
+    compile 'com.android.support:design:25.0.1' /*the same as above*/
+    compile 'com.android.support:cardview-v7:25.0.1'
     /*to display material design card for habit card*/
-    compile 'com.android.support:recyclerview-v7:24.2.1' /*to use RecyclerView as a list of habits*/
-    compile 'com.android.support:percent:24.2.1'
+    compile 'com.android.support:recyclerview-v7:25.0.1' /*to use RecyclerView as a list of habits*/
+    compile 'com.android.support:percent:25.0.1'
     compile 'org.ocpsoft.prettytime:prettytime:4.0.1.Final' //human readable date
 
     compile 'com.jonathanfinerty.once:once:1.2.1' //to complete some actions once
@@ -65,7 +65,7 @@ dependencies {
 
     /* for Android Tests to work */
     androidTestCompile 'com.android.support.test:runner:0.5'
-    androidTestCompile 'com.android.support:support-annotations:24.2.1'
+    androidTestCompile 'com.android.support:support-annotations:25.0.1'
     androidTestCompile 'com.android.support.test:rules:0.5'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
     androidTestCompile('com.android.support.test.espresso:espresso-contrib:2.0') {

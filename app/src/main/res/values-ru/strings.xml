@@ -171,5 +171,7 @@
     <string name="enter_your_name">Введите своё имя</string>
     <string name="before_we_start_please_enter_your_first_name">Перед тем, как начать работу, скажите нам как вас зовут</string>
     <string name="array"></string>
+    <string name="open_settings">Открыть настройки</string>
+    <string name="saving_mode_text">Для правильной работы приложения рекомендуем отключить параметры энергосбережения для этого приложения. Откройте настройки ниже и отключите энергосбережение для приложения.</string>
 
 </resources>

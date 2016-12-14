@@ -219,6 +219,8 @@
     <string name="intro_third_title">Nice to meet you</string>
     <string name="intro_third_desc">You are ready to start managing your habits</string>
     <string name="before_we_start_please_enter_your_first_name">Before we start please enter your first name</string>
+    <string name="saving_mode_text">For proper work of the application, it is suggested to turn off battery optimization. Click on the button to turn it off for the application.</string>
+    <string name="open_settings">Open settings</string>
 
 
 </resources>

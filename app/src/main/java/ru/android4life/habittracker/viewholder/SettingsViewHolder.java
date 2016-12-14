@@ -10,7 +10,7 @@ public class SettingsViewHolder extends RecyclerView.ViewHolder implements View.
 
     public TextView settingTitle;
     public TextView settingSelection;
-    SettingsListener mListener;
+    private SettingsListener mListener;
 
     public SettingsViewHolder(View itemView) {
         super(itemView);
