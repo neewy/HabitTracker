@@ -82,10 +82,13 @@ public class FirstTimeIntroActivity extends IntroActivity {
     }
 
     @Override
-    public void onBackPressed() {
+    protected void onDestroy() {
+        super.onDestroy();
         if (slide == 0) {
             getSharedPreferences(SHARED_PREF, MODE_PRIVATE).edit().putBoolean(INTRO_SKIPPED, true).apply();
+        } else {
+            getSharedPreferences(SHARED_PREF, MODE_PRIVATE).edit().putBoolean(INTRO_SKIPPED, false).apply();
         }
-        super.onBackPressed();
+
     }
 }
