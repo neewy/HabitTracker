@@ -28,7 +28,6 @@ public class StringConstants {
 
     public static final String LOCALE = "locale";
     public final static String SHARED_PREF = "SHARED_PREF";
-    public static final String FIRSTRUN = "firstrun";
     public static final String COLOR = "color";
     public static final String PRIMARY_COLOR_DIALOG = "primary_color_dialog";
     public static final String BLUE = "blue";
@@ -66,6 +65,7 @@ public class StringConstants {
 
     public static final String INTRO_SKIPPED = "introSkipped";
     public static final String USER_NAME = "userName";
+    public static final String HIDE_SETTINGS = "hideSettings";
 
     public static final long DAY_IN_MS = 1000 * 60 * 60 * 24;
     public static final long MIN_IN_MS = 1000 * 60;

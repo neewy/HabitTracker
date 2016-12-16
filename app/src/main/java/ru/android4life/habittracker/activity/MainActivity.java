@@ -37,9 +37,16 @@ import ru.android4life.habittracker.utils.StringConstants;
 
 import static ru.android4life.habittracker.enumeration.DrawerSelectionMode.TODAY;
 import static ru.android4life.habittracker.enumeration.DrawerSelectionMode.findDrawerSelectionMode;
+import static ru.android4life.habittracker.utils.StringConstants.CLEANING;
+import static ru.android4life.habittracker.utils.StringConstants.COOKING;
+import static ru.android4life.habittracker.utils.StringConstants.HEALTH;
 import static ru.android4life.habittracker.utils.StringConstants.INTRO_SKIPPED;
 import static ru.android4life.habittracker.utils.StringConstants.LOCALE;
+import static ru.android4life.habittracker.utils.StringConstants.OTHER;
+import static ru.android4life.habittracker.utils.StringConstants.READING;
 import static ru.android4life.habittracker.utils.StringConstants.SHARED_PREF;
+import static ru.android4life.habittracker.utils.StringConstants.SPORT;
+import static ru.android4life.habittracker.utils.StringConstants.STUDYING;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, LocationListener {
 
@@ -55,7 +62,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContext(this);
+
         locale = new Locale(prefs.getString(LOCALE, getResources().getString(R.string.locale_en)));
 
         if (!prefs.contains(LOCALE) &&
@@ -66,6 +73,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         Locale.setDefault(locale);
         Configuration config = new Configuration();
         config.locale = locale;
+
+        setContext(this);
+
         getContext().getResources().updateConfiguration(config,
                 getContext().getResources().getDisplayMetrics());
         setContentView(R.layout.activity_main);
@@ -112,9 +122,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         if (!Once.beenDone(Once.THIS_APP_INSTALL, "showTour")
                 || getSharedPreferences(SHARED_PREF, MODE_PRIVATE).getBoolean(INTRO_SKIPPED, false)) {
-            startActivity(new Intent(this, FirstTimeIntroActivity.class));
+            startActivity(new Intent(this, AppIntroActivity.class));
             Once.markDone("showTour");
         }
+
     }
 
     // Sets up initial fragment and drawer menu
@@ -235,20 +246,17 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     void createCategories() {
-        // Do first run stuff here then set 'firstrun' as false
-        /* Creation of categories */
         HabitCategoryDAO habitCategoryDAO = new HabitCategoryDAO(this.getApplicationContext());
-        habitCategoryDAO.create(new HabitCategory(getResources().getString(R.string.sport)));
-        habitCategoryDAO.create(new HabitCategory(getResources().getString(R.string.reading)));
-        habitCategoryDAO.create(new HabitCategory(getResources().getString(R.string.cooking)));
-        habitCategoryDAO.create(new HabitCategory(getResources().getString(R.string.cleaning)));
-        habitCategoryDAO.create(new HabitCategory(getResources().getString(R.string.studying)));
-        habitCategoryDAO.create(new HabitCategory(getResources().getString(R.string.health)));
-        habitCategoryDAO.create(new HabitCategory(getResources().getString(R.string.other)));
+        habitCategoryDAO.create(new HabitCategory(SPORT));
+        habitCategoryDAO.create(new HabitCategory(READING));
+        habitCategoryDAO.create(new HabitCategory(COOKING));
+        habitCategoryDAO.create(new HabitCategory(CLEANING));
+        habitCategoryDAO.create(new HabitCategory(STUDYING));
+        habitCategoryDAO.create(new HabitCategory(HEALTH));
+        habitCategoryDAO.create(new HabitCategory(OTHER));
     }
 
-    // `onPostCreate` called when activity start-up is complete after `onStart()`
-    // NOTE! Make sure to override the method with only a single `Bundle` argument
+
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);

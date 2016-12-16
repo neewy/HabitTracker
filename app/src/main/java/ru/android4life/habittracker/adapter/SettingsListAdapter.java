@@ -1,21 +1,30 @@
 package ru.android4life.habittracker.adapter;
 
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.os.OperationCanceledException;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import java.util.List;
+import java.util.Locale;
 
 import pl.coreorb.selectiondialogs.data.SelectableColor;
 import pl.coreorb.selectiondialogs.dialogs.ColorSelectDialog;
 import ru.android4life.habittracker.R;
+import ru.android4life.habittracker.activity.AppIntroActivity;
 import ru.android4life.habittracker.enumeration.SettingsType;
 import ru.android4life.habittracker.models.Setting;
 import ru.android4life.habittracker.viewholder.SettingsViewHolder;
@@ -23,9 +32,11 @@ import ru.android4life.habittracker.viewholder.SettingsViewHolder;
 import static android.content.Context.MODE_PRIVATE;
 import static ru.android4life.habittracker.activity.MainActivity.getContext;
 import static ru.android4life.habittracker.utils.StringConstants.COLOR;
+import static ru.android4life.habittracker.utils.StringConstants.HIDE_SETTINGS;
 import static ru.android4life.habittracker.utils.StringConstants.LOCALE;
 import static ru.android4life.habittracker.utils.StringConstants.PRIMARY_COLOR_DIALOG;
 import static ru.android4life.habittracker.utils.StringConstants.SHARED_PREF;
+import static ru.android4life.habittracker.utils.StringConstants.USER_NAME;
 
 /**
  * This adapter populates the list of settings in the application.
@@ -36,7 +47,6 @@ import static ru.android4life.habittracker.utils.StringConstants.SHARED_PREF;
 
 public class SettingsListAdapter extends RecyclerView.Adapter<SettingsViewHolder> {
 
-
     // in order to create dialogs of settings
     public static FragmentManager fragmentManager;
     // list of settings
@@ -45,8 +55,6 @@ public class SettingsListAdapter extends RecyclerView.Adapter<SettingsViewHolder
     private SettingsType type;
     // for access to shared prefs and in order to change the style
     private AppCompatActivity mainActivity;
-
-    private Integer selectedLanguage;
 
     public SettingsListAdapter(List<Setting> applicationSettings, SettingsType type) {
         this.applicationSettings = applicationSettings;
@@ -67,16 +75,28 @@ public class SettingsListAdapter extends RecyclerView.Adapter<SettingsViewHolder
         int layout = 0;
         switch (type) {
             case INAPP:
-                layout = android.R.layout.simple_list_item_1;
+                layout = R.layout.list_item_1;
                 break;
             case PERSONAL:
-                layout = android.R.layout.simple_list_item_2;
+                layout = R.layout.list_item_2;
                 break;
         }
 
         View v = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
+
         SettingsViewHolder vh = new SettingsViewHolder(v);
+        setListeners(parent, vh);
+
+        return vh;
+    }
+
+    private void setListeners(final ViewGroup parent, SettingsViewHolder vh) {
         vh.setListener(new SettingsViewHolder.SettingsListener() {
+            @Override
+            public void onFirstName(View caller) {
+                createFirstNameDialog(caller);
+            }
+
             @Override
             public void onPrimaryColor(View caller) {
                 createPrimaryColorPickerDialog();
@@ -86,8 +106,24 @@ public class SettingsListAdapter extends RecyclerView.Adapter<SettingsViewHolder
             public void onLanguage(View caller) {
                 createLanguageDialog(parent);
             }
+
+            @Override
+            public void onAbout() {
+                Intent aboutIntro = new Intent(getContext(), AppIntroActivity.class);
+                aboutIntro.putExtra(HIDE_SETTINGS, true);
+                getContext().startActivity(aboutIntro);
+            }
+
+            @Override
+            public void onContributors() {
+
+            }
+
+            @Override
+            public void onVersion() {
+
+            }
         });
-        return vh;
     }
 
     @Override
@@ -95,7 +131,7 @@ public class SettingsListAdapter extends RecyclerView.Adapter<SettingsViewHolder
         Setting setting = applicationSettings.get(position);
         holder.settingTitle.setText(setting.title);
 
-        // set the text for second line, if the type of elements are personal settings
+        // set the text for second line, if the type of elements is "personal settings"
         if (type == SettingsType.PERSONAL) {
             holder.settingSelection.setText(setting.selection);
         }
@@ -104,6 +140,37 @@ public class SettingsListAdapter extends RecyclerView.Adapter<SettingsViewHolder
     @Override
     public int getItemCount() {
         return applicationSettings.size();
+    }
+
+    private void createFirstNameDialog(final View caller) {
+        Context baseContext = getContext();
+        final SharedPreferences prefs = baseContext.getSharedPreferences(SHARED_PREF, MODE_PRIVATE);
+
+        AlertDialog.Builder firstNameDialog = new AlertDialog.Builder(baseContext);
+        firstNameDialog.setTitle(baseContext.getResources().getString(R.string.first_name_title));
+
+        final EditText input = getEditText(baseContext, prefs);
+        firstNameDialog.setView(input);
+
+        firstNameDialog.setNegativeButton(android.R.string.cancel, null);
+        firstNameDialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                TextView settingSelection = (TextView) caller.findViewById(R.id.text2);
+                String newFirstName = input.getText().toString();
+                settingSelection.setText(newFirstName);
+                prefs.edit().putString(USER_NAME, newFirstName).apply();
+            }
+        });
+        firstNameDialog.show();
+    }
+
+    @NonNull
+    private EditText getEditText(Context baseContext, SharedPreferences prefs) {
+        final EditText input = new EditText(baseContext);
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        input.setText(prefs.getString(USER_NAME, mainActivity.getString(R.string.username)));
+        return input;
     }
 
     private void createPrimaryColorPickerDialog() {
@@ -119,8 +186,7 @@ public class SettingsListAdapter extends RecyclerView.Adapter<SettingsViewHolder
             dialog.setOnColorSelectedListener(new ColorSelectDialog.OnColorSelectedListener() {
                 @Override
                 public void onColorSelected(SelectableColor selectedItem) {
-                    //FIXME: replace with getID
-                    mainActivity.getSharedPreferences(SHARED_PREF, MODE_PRIVATE).edit().putString(COLOR, selectedItem.getId()).apply();
+                    getContext().getSharedPreferences(SHARED_PREF, MODE_PRIVATE).edit().putString(COLOR, selectedItem.getId()).apply();
                     dialog.dismiss();
                     mainActivity.recreate();
                 }
@@ -132,25 +198,21 @@ public class SettingsListAdapter extends RecyclerView.Adapter<SettingsViewHolder
 
     private void createLanguageDialog(final ViewGroup parent) {
         final CharSequence[] items = {parent.getResources().getString(R.string.english), parent.getResources().getString(R.string.russian)};
-        if (selectedLanguage == null) {
-            selectedLanguage = getSelectedLocale(mainActivity.getSharedPreferences(SHARED_PREF, MODE_PRIVATE).getString(LOCALE, parent.getResources().getString(R.string.locale_en)), parent);
-        }
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+        AlertDialog.Builder languageSelection = new AlertDialog.Builder(
                 parent.getContext());
-        alertDialogBuilder.setTitle(parent.getResources().getString(R.string.select_language));
-        alertDialogBuilder
-                .setSingleChoiceItems(items, selectedLanguage, new DialogInterface.OnClickListener() {
+        languageSelection.setTitle(parent.getResources().getString(R.string.select_language));
+        languageSelection
+                .setSingleChoiceItems(items, getSelectedLocale(), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int item) {
                         switch (item) {
                             case 0:
-                                mainActivity.getSharedPreferences(SHARED_PREF, MODE_PRIVATE).edit().putString(LOCALE, parent.getResources().getString(R.string.locale_en)).apply();
+                                getContext().getSharedPreferences(SHARED_PREF, MODE_PRIVATE).edit().putString(LOCALE, getContext().getResources().getString(R.string.locale_en)).apply();
                                 break;
                             case 1:
-                                mainActivity.getSharedPreferences(SHARED_PREF, MODE_PRIVATE).edit().putString(LOCALE, parent.getResources().getString(R.string.locale_ru)).apply();
+                                getContext().getSharedPreferences(SHARED_PREF, MODE_PRIVATE).edit().putString(LOCALE, getContext().getResources().getString(R.string.locale_ru)).apply();
                                 break;
                         }
-                        if (selectedLanguage != item) {
-                            selectedLanguage = item;
+                        if (getSelectedLocale() != item) {
                             mainActivity.recreate();
                         }
                         dialog.cancel();
@@ -160,14 +222,11 @@ public class SettingsListAdapter extends RecyclerView.Adapter<SettingsViewHolder
                 dialog.cancel();
             }
         });
-        // create alert dialog
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        // show it
-        alertDialog.show();
+        languageSelection.show();
     }
 
-    private int getSelectedLocale(String locale, ViewGroup parent) {
-        if (parent.getResources().getString(R.string.locale_en).equals(locale)) {
+    private int getSelectedLocale() {
+        if (getContext().getResources().getConfiguration().locale.getLanguage().equals(new Locale("en").getLanguage())) {
             return 0;
         } else {
             return 1;

@@ -12,6 +12,7 @@ import ru.android4life.habittracker.R;
 import ru.android4life.habittracker.fragment.SavingModeFragment;
 import ru.android4life.habittracker.fragment.UserNameFragment;
 
+import static ru.android4life.habittracker.utils.StringConstants.HIDE_SETTINGS;
 import static ru.android4life.habittracker.utils.StringConstants.INTRO_SKIPPED;
 import static ru.android4life.habittracker.utils.StringConstants.SHARED_PREF;
 
@@ -19,12 +20,15 @@ import static ru.android4life.habittracker.utils.StringConstants.SHARED_PREF;
  * Created by neewy on 13.12.16.
  */
 
-public class FirstTimeIntroActivity extends IntroActivity {
+public class AppIntroActivity extends IntroActivity {
 
     private int slide;
+    private boolean hideSettings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        hideSettings = getIntent().getExtras().getBoolean(HIDE_SETTINGS, false);
 
         setFullscreen(true);
 
@@ -39,27 +43,32 @@ public class FirstTimeIntroActivity extends IntroActivity {
                 .scrollable(true)
                 .build());
 
-        if (android.os.Build.MANUFACTURER.toLowerCase().equals("samsung")) {
+        if (!hideSettings) {
+
+            if (android.os.Build.MANUFACTURER.toLowerCase().equals("samsung")) {
+                addSlide(new FragmentSlide.Builder()
+                        .fragment(SavingModeFragment.newInstance())
+                        .background(R.color.selectiondialogs_materialdesign500_deep_purple)
+                        .backgroundDark(R.color.selectiondialogs_materialdesign500_purple)
+                        .build());
+            }
+
             addSlide(new FragmentSlide.Builder()
-                    .fragment(SavingModeFragment.newInstance())
-                    .background(R.color.selectiondialogs_materialdesign500_deep_purple)
-                    .backgroundDark(R.color.selectiondialogs_materialdesign500_purple)
+                    .fragment(UserNameFragment.newInstance())
+                    .background(R.color.teal)
+                    .backgroundDark(R.color.tealDark)
+                    .build());
+
+            addSlide(new SimpleSlide.Builder()
+                    .title(R.string.intro_third_title)
+                    .description(R.string.intro_third_desc)
+                    .image(R.drawable.third)
+                    .background(R.color.dark_gray_press)
+                    .backgroundDark(R.color.dark_gray)
                     .build());
         }
 
-        addSlide(new FragmentSlide.Builder()
-                .fragment(UserNameFragment.newInstance())
-                .background(R.color.teal)
-                .backgroundDark(R.color.tealDark)
-                .build());
 
-        addSlide(new SimpleSlide.Builder()
-                .title(R.string.intro_third_title)
-                .description(R.string.intro_third_desc)
-                .image(R.drawable.third)
-                .background(R.color.dark_gray_press)
-                .backgroundDark(R.color.dark_gray)
-                .build());
 
         addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -84,10 +93,12 @@ public class FirstTimeIntroActivity extends IntroActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (slide == 0) {
-            getSharedPreferences(SHARED_PREF, MODE_PRIVATE).edit().putBoolean(INTRO_SKIPPED, true).apply();
-        } else {
-            getSharedPreferences(SHARED_PREF, MODE_PRIVATE).edit().putBoolean(INTRO_SKIPPED, false).apply();
+        if (!hideSettings) {
+            if (slide == 0) {
+                getSharedPreferences(SHARED_PREF, MODE_PRIVATE).edit().putBoolean(INTRO_SKIPPED, true).apply();
+            } else {
+                getSharedPreferences(SHARED_PREF, MODE_PRIVATE).edit().putBoolean(INTRO_SKIPPED, false).apply();
+            }
         }
 
     }

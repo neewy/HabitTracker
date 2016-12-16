@@ -14,8 +14,8 @@ public class SettingsViewHolder extends RecyclerView.ViewHolder implements View.
 
     public SettingsViewHolder(View itemView) {
         super(itemView);
-        settingTitle = (TextView) itemView.findViewById(android.R.id.text1);
-        settingSelection = (TextView) itemView.findViewById(android.R.id.text2);
+        settingTitle = (TextView) itemView.findViewById(R.id.text1);
+        settingSelection = (TextView) itemView.findViewById(R.id.text2);
         itemView.setOnClickListener(this);
     }
 
@@ -25,16 +25,32 @@ public class SettingsViewHolder extends RecyclerView.ViewHolder implements View.
 
     @Override
     public void onClick(View v) {
-        if (settingTitle.getText().toString().equals(v.getResources().getString(R.string.primary_color))) {
+        if (settingTitle.getText().toString().equals(v.getResources().getString(R.string.first_name))) {
+            mListener.onFirstName(v);
+        } else if (settingTitle.getText().toString().equals(v.getResources().getString(R.string.primary_color))) {
             mListener.onPrimaryColor(v);
         } else if (settingTitle.getText().toString().equals(v.getResources().getString(R.string.language))) {
             mListener.onLanguage(v);
+        } else if (settingTitle.getText().toString().equals(v.getResources().getString(R.string.about))) {
+            mListener.onAbout();
+        } else if (settingTitle.getText().toString().equals(v.getResources().getString(R.string.contributors))) {
+            mListener.onContributors();
+        } else if (settingTitle.getText().toString().equals(v.getResources().getString(R.string.version))) {
+            mListener.onVersion();
         }
     }
 
     public interface SettingsListener {
+        void onFirstName(View caller);
+
         void onPrimaryColor(View caller);
 
         void onLanguage(View caller);
+
+        void onAbout();
+
+        void onContributors();
+
+        void onVersion();
     }
 }

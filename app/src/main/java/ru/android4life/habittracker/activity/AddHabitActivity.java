@@ -77,7 +77,6 @@ public class AddHabitActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_habit);
-        setContext(this.getApplicationContext());
 
         notificationSoundChanged = false;
         positionChanged = false;

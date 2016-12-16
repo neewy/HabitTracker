@@ -1,8 +1,8 @@
 package ru.android4life.habittracker.utils;
 
 import ru.android4life.habittracker.R;
-import ru.android4life.habittracker.activity.MainActivity;
 
+import static ru.android4life.habittracker.activity.BaseActivity.getContext;
 import static ru.android4life.habittracker.utils.StringConstants.BLUE;
 import static ru.android4life.habittracker.utils.StringConstants.CLEANING;
 import static ru.android4life.habittracker.utils.StringConstants.COOKING;
@@ -25,19 +25,19 @@ public class Translator {
     public static String translate(String word) {
         switch (word) {
             case SPORT:
-                return MainActivity.getContext().getResources().getString(R.string.sport);
+                return getContext().getResources().getString(R.string.sport);
             case READING:
-                return MainActivity.getContext().getResources().getString(R.string.reading);
+                return getContext().getResources().getString(R.string.reading);
             case COOKING:
-                return MainActivity.getContext().getResources().getString(R.string.cooking);
+                return getContext().getResources().getString(R.string.cooking);
             case CLEANING:
-                return MainActivity.getContext().getResources().getString(R.string.cleaning);
+                return getContext().getResources().getString(R.string.cleaning);
             case STUDYING:
-                return MainActivity.getContext().getResources().getString(R.string.studying);
+                return getContext().getResources().getString(R.string.studying);
             case HEALTH:
-                return MainActivity.getContext().getResources().getString(R.string.health);
+                return getContext().getResources().getString(R.string.health);
             case OTHER:
-                return MainActivity.getContext().getResources().getString(R.string.other);
+                return getContext().getResources().getString(R.string.other);
             default:
                 return word;
         }
@@ -46,13 +46,13 @@ public class Translator {
     public static String translateColor(String word) {
         switch (word) {
             case BLUE:
-                return MainActivity.getContext().getResources().getString(R.string.color_setting_name_blue);
+                return getContext().getResources().getString(R.string.color_setting_name_blue);
             case TEAL:
-                return MainActivity.getContext().getResources().getString(R.string.color_setting_name_teal);
+                return getContext().getResources().getString(R.string.color_setting_name_teal);
             case RED:
-                return MainActivity.getContext().getResources().getString(R.string.color_setting_name_red);
+                return getContext().getResources().getString(R.string.color_setting_name_red);
             case PURPLE:
-                return MainActivity.getContext().getResources().getString(R.string.color_setting_name_purple);
+                return getContext().getResources().getString(R.string.color_setting_name_purple);
             default:
                 return word;
         }
