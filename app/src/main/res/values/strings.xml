@@ -222,6 +222,25 @@
     <string name="saving_mode_text">For proper work of the application, it is suggested to turn off battery optimization. Click on the button to turn it off for the application.</string>
     <string name="open_settings">Open settings</string>
     <string name="first_name_title">Change your first name</string>
+    <string name="contributors_text"><![CDATA[Developers<br /><b>Nikolay Yushkevich</b> <br /> <b>Bulat Mukhutdinov</b> <br /> <b>Alexander Nedorezov</b> <br /> <br />Application is using 3rd party libraries, namely:]]></string>
 
+
+    <string name="define_freepik">Freepik</string>
+    <!-- Author section -->
+    <string name="library_freepik_author">Freepik</string>
+    <string name="library_freepik_authorWebsite">http://freepik.com</string>
+    <!-- Library section -->
+    <string name="library_freepik_libraryName">Freepik</string>
+    <string name="library_freepik_libraryDescription">Free vector images</string>
+    <string name="library_freepik_libraryWebsite">http://freepik.com</string>
+    <string name="library_freepik_libraryVersion">1.0.0</string>
+    <!-- OpenSource section -->
+    <string name="library_freepik_isOpenSource">true</string>
+    <string name="library_freepik_repositoryLink">http://www.freepik.com/dmca_notification</string>
+    <!-- ClassPath for autoDetect section -->
+    <string name="library_freepik_classPath">com.freepik</string>
+    <!-- License section -->
+    <string name="library_freepik_licenseId">cc30</string>
+    <!-- Custom variables section -->
 
 </resources>

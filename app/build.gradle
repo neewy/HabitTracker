@@ -16,6 +16,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
+
+        debug {
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
     }
 
     lintOptions {
@@ -57,6 +61,9 @@ dependencies {
 
     compile 'com.jonathanfinerty.once:once:1.2.1' //to complete some actions once
     compile 'com.heinrichreimersoftware:material-intro:1.6' //first-time launch intro
+    compile('com.mikepenz:aboutlibraries:5.9.1@aar') {
+        transitive = true
+    }
 
     /* Charts */
     compile 'com.github.lecho:hellocharts-android:v1.5.8'

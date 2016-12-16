@@ -18,6 +18,9 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.mikepenz.aboutlibraries.Libs;
+import com.mikepenz.aboutlibraries.LibsBuilder;
+
 import java.util.List;
 import java.util.Locale;
 
@@ -116,7 +119,16 @@ public class SettingsListAdapter extends RecyclerView.Adapter<SettingsViewHolder
 
             @Override
             public void onContributors() {
-
+                new LibsBuilder()
+                        //provide a style (optional) (LIGHT, DARK, LIGHT_DARK_TOOLBAR)
+                        .withActivityStyle(Libs.ActivityStyle.LIGHT_DARK_TOOLBAR)
+                        //start the activity
+                        .withAboutIconShown(true)
+                        .withAboutVersionShown(true)
+                        .withLicenseShown(true)
+                        .withActivityTitle(getContext().getString(R.string.contributors))
+                        .withAboutDescription(getContext().getString(R.string.contributors_text))
+                        .start(getContext());
             }
 
             @Override
