@@ -128,12 +128,9 @@ public class SettingsListAdapter extends RecyclerView.Adapter<SettingsViewHolder
                         .withLicenseShown(true)
                         .withActivityTitle(getContext().getString(R.string.contributors))
                         .withAboutDescription(getContext().getString(R.string.contributors_text))
+                        .withAboutSpecial1(getContext().getString(R.string.updates))
+                        .withAboutSpecial1Description(getContext().getString(R.string.change_log))
                         .start(getContext());
-            }
-
-            @Override
-            public void onVersion() {
-
             }
         });
     }

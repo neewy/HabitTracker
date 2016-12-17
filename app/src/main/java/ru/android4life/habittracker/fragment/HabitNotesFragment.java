@@ -37,7 +37,7 @@ public class HabitNotesFragment extends Fragment {
         setHasOptionsMenu(true);
         habitId = this.getArguments()
                 .getInt(BaseActivity.getContext().getString(R.string.habit_id));
-        mAdapter = new HabitNotesAdapter(habitId, BaseActivity.getContext());
+        mAdapter = new HabitNotesAdapter(habitId);
         ((MainActivity) getActivity()).foo();
     }
 

@@ -151,10 +151,10 @@ public class SettingsFragment extends Fragment {
     private List<Setting> createListOfPersonalSettings() {
         SharedPreferences prefs = getActivity().getSharedPreferences(SHARED_PREF, MODE_PRIVATE);
         List<Setting> personalSettingsList = new ArrayList<>();
-        String locale = MainActivity.getContext().getResources().getConfiguration().locale.getDisplayName();
+        String locale = getContext().getResources().getConfiguration().locale.getDisplayName();
         personalSettingsList.add(new Setting(getString(R.string.first_name), sharedPreferences.getString(USER_NAME, getString(R.string.username))));
         personalSettingsList.add(new Setting(getString(R.string.primary_color), Translator.translateColor(prefs.getString(COLOR, ""))));
-        personalSettingsList.add(new Setting(getString(R.string.language), locale));
+        personalSettingsList.add(new Setting(getString(R.string.language), locale.substring(0, 1).toUpperCase() + locale.substring(1)));
         return personalSettingsList;
     }
 
@@ -167,7 +167,6 @@ public class SettingsFragment extends Fragment {
         List<Setting> inAppSettingsList = new ArrayList<>();
         inAppSettingsList.add(new Setting(getString(R.string.about)));
         inAppSettingsList.add(new Setting(getString(R.string.contributors)));
-        inAppSettingsList.add(new Setting(getString(R.string.version)));
         return inAppSettingsList;
     }
 }

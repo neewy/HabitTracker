@@ -270,8 +270,7 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitCardViewHolder> 
         String message = (isDone) ? getStringFromResources(R.string.habit_done) : getStringFromResources(R.string.habit_skip);
 
         Snackbar snackbar = Snackbar
-                .make(v, (context.getString(R.string.empty_delimiter_strings,
-                        ((Habit) habitDAO.findById(habitSchedule.getHabitId())).getName(), message)), Snackbar.LENGTH_LONG)
+                .make(v, (String.format(message, ((Habit) habitDAO.findById(habitSchedule.getHabitId())).getName())), Snackbar.LENGTH_LONG)
                 .setAction(getStringFromResources(R.string.undo), new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

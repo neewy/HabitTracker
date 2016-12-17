@@ -112,7 +112,6 @@
 
     <!--Habits Parameters Adapter-->
     <string name="two_subsequent_strings">%1$s%2$s</string>
-    <string name="empty_delimiter_strings">%1$s %2$s</string>
     <string name="every_month_on_space_string">Every month on %1$s</string>
     <string name="on_every">On every %1$s</string>
     <string name="every_day">Every day</string>
@@ -169,8 +168,8 @@
     <string name="productivity">Productivity</string>
     <string name="days">Days</string>
 
-    <string name="habit_done">done</string>
-    <string name="habit_skip">skipped</string>
+    <string name="habit_done">Habit \"%1$s\" was done</string>
+    <string name="habit_skip">Habit \"%1$s\" was skipped</string>
 
     <string name="select_category">Select a category</string>
     <string name="version">Version</string>
@@ -222,8 +221,16 @@
     <string name="saving_mode_text">For proper work of the application, it is suggested to turn off battery optimization. Click on the button to turn it off for the application.</string>
     <string name="open_settings">Open settings</string>
     <string name="first_name_title">Change your first name</string>
-    <string name="contributors_text"><![CDATA[Developers<br /><b>Nikolay Yushkevich</b> <br /> <b>Bulat Mukhutdinov</b> <br /> <b>Alexander Nedorezov</b> <br /> <br />Application is using 3rd party libraries, namely:]]></string>
-
+    <string name="contributors_text">
+        <![CDATA[
+            Developers<br>
+            <b>Alexander Nedorezov</b> <br />
+            <b>Bulat Mukhutdinov</b> <br />
+            <b>Nikolay Yushkevich</b> <br />
+            <br />
+            Application is using 3rd party libraries, namely:
+        ]]>
+    </string>
 
     <string name="define_freepik">Freepik</string>
     <!-- Author section -->
@@ -241,6 +248,19 @@
     <string name="library_freepik_classPath">com.freepik</string>
     <!-- License section -->
     <string name="library_freepik_licenseId">cc30</string>
+    <string name="change_log">
+    <![CDATA[
+        <h3>Version 1.0.3</h3>
+            <h5>Added app intro tour</h5>
+                <p>One the user installed the app he or she
+                can be notified about key features of the application,
+                as well as set the username and disable phone-specific settings.</p>
+            <br>
+            <h5>Small fixes</h5>
+                <p>Fixed translation issues.</p>
+    ]]>
+    </string>
+    <string name="updates">New features</string>
     <!-- Custom variables section -->
 
 </resources>

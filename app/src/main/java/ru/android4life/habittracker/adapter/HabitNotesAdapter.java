@@ -1,6 +1,5 @@
 package ru.android4life.habittracker.adapter;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,20 +16,20 @@ import ru.android4life.habittracker.activity.MainActivity;
 import ru.android4life.habittracker.db.dataaccessobjects.HabitScheduleDAO;
 import ru.android4life.habittracker.db.tablesrepresentations.HabitSchedule;
 
+import static ru.android4life.habittracker.activity.BaseActivity.getContext;
+
 
 public class HabitNotesAdapter extends RecyclerView.Adapter<HabitNotesAdapter.ViewHolder> {
 
-    private List<HabitSchedule> mDataset;
-    private Context context;
+    private List<HabitSchedule> schedules;
 
-    public HabitNotesAdapter(int habitId, Context context) {
-        this.context = context;
-        HabitScheduleDAO habitScheduleDAO = new HabitScheduleDAO(context);
+    public HabitNotesAdapter(int habitId) {
+        HabitScheduleDAO habitScheduleDAO = new HabitScheduleDAO(getContext());
         List<HabitSchedule> schedules = habitScheduleDAO.findByHabitIdSortedByDateInDescendingOrder(habitId);
-        mDataset = new ArrayList<>();
+        this.schedules = new ArrayList<>();
         for (HabitSchedule schedule : schedules) {
             if (schedule.isDone() != null) {
-                mDataset.add(schedule);
+                this.schedules.add(schedule);
             }
         }
     }
@@ -45,17 +44,16 @@ public class HabitNotesAdapter extends RecyclerView.Adapter<HabitNotesAdapter.Vi
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM", MainActivity.locale);
-        String date = dateFormat.format(mDataset.get(position).getDatetime());
+        String date = dateFormat.format(schedules.get(position).getDatetime());
         holder.date.setText(date);
-        holder.name.setText(mDataset.get(position).getNote());
-        if (mDataset.get(position).isDone()) {
+        holder.name.setText(schedules.get(position).getNote());
+        if (schedules.get(position).isDone()) {
             holder.name.setText(R.string.was_done);
         } else {
             holder.name.setText(R.string.was_skipped);
         }
-        if (mDataset.get(position).getNote() != null) {
-            holder.name.setText(context.getString(R.string.empty_delimiter_strings,
-                    holder.name.getText(), mDataset.get(position).getNote()));
+        if (schedules.get(position).getNote() != null) {
+            holder.name.setText(holder.name.getText() + " " + schedules.get(position).getNote());
         }
 
     }
@@ -63,15 +61,15 @@ public class HabitNotesAdapter extends RecyclerView.Adapter<HabitNotesAdapter.Vi
 
     @Override
     public int getItemCount() {
-        return mDataset.size();
+        return schedules.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView date;
         public TextView name;
         public RelativeLayout layout;
 
-        public ViewHolder(View v) {
+        ViewHolder(View v) {
             super(v);
             date = (TextView) itemView.findViewById(R.id.note_date);
             name = (TextView) itemView.findViewById(R.id.note_name);

@@ -35,8 +35,6 @@ public class SettingsViewHolder extends RecyclerView.ViewHolder implements View.
             mListener.onAbout();
         } else if (settingTitle.getText().toString().equals(v.getResources().getString(R.string.contributors))) {
             mListener.onContributors();
-        } else if (settingTitle.getText().toString().equals(v.getResources().getString(R.string.version))) {
-            mListener.onVersion();
         }
     }
 
@@ -50,7 +48,5 @@ public class SettingsViewHolder extends RecyclerView.ViewHolder implements View.
         void onAbout();
 
         void onContributors();
-
-        void onVersion();
     }
 }

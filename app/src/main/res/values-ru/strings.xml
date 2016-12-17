@@ -64,8 +64,7 @@
     <string name="today_capital_case">Сегодня</string>
 
     <!--Main Activity-->
-    <string name="done_to_skipped_ratio">Процент выполенения</string>
-    <string name="accent_color">Цвет акцента</string>
+    <string name="done_to_skipped_ratio">Процент выполнения</string>
 
     <!-- Material Design colors names -->
     <string name="color_setting_name_blue">Синий</string>
@@ -121,7 +120,8 @@
     <string name="productivity">Продуктивность</string>
     <string name="days">Дни</string>
 
-    <string name="habit_done">Готово</string>
+    <string name="habit_done">Привычка \"%1$s\" была выполнена</string>
+    <string name="habit_skip">Привычка \"%1$s\" была пропущена</string>
     <string name="select_category">Выберите категорию</string>
     <string name="version">Версия</string>
 
@@ -170,10 +170,32 @@
     <string name="intro_third_title">Приятно познакомиться</string>
     <string name="enter_your_name">Введите своё имя</string>
     <string name="before_we_start_please_enter_your_first_name">Перед тем, как начать работу, скажите нам как вас зовут</string>
-    <string name="array"></string>
     <string name="open_settings">Открыть настройки</string>
     <string name="saving_mode_text">Для правильной работы приложения рекомендуем отключить параметры энергосбережения для этого приложения. Откройте настройки ниже и отключите энергосбережение для приложения.</string>
     <string name="first_name_title">Как вас зовут?</string>
-    <string name="contributors_text"><![CDATA[Разработчики<br /><b>Николай Юшкевич</b> <br /> <b>Булат Мухутдинов</b> <br /> <b>Александр Недорезов</b> <br /> <br />Приложение использует следующие сторонние библиотеки:]]></string>
+    <string name="contributors_text">
+        <![CDATA[
+            Разработчики<br>
+            <b>Александр Недорезов</b><br>
+            <b>Булат Мухутдинов</b><br>
+            <b>Николай Юшкевич</b><br>
+            <br>
+            Приложение использует следующие сторонние библиотеки:
+        ]]>
+    </string>
+    <string name="edit_back">Нажмите ещё раз чтобы отменить редактирование привычки</string>
+    <string name="change_log">
+    <![CDATA[
+        <h3>Версия 1.0.3</h3>
+            <h5>Тур по приложению</h5>
+                <p>Теперь при запуске приложения
+                пользователь может ознакомиться с ключевыми функциями приложения,
+                и настроить приложение для удобной работы</p>
+            <br>
+            <h5>Исправление багов</h5>
+                <p>Исправлены ошибки и неточности перевода</p>
+    ]]>
+    </string>
+    <string name="updates">В этой версии</string>
 
 </resources>
