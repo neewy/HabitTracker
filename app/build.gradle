@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "ru.android4life.habittracker"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 25
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
